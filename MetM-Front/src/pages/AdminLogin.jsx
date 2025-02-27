@@ -19,9 +19,9 @@ const AdminLogin = () => {
     setError(null);
     try {
       const data = await login(credentials.username, credentials.password);
-      console.log("Connexion réussie :", data); // 🔥 Vérifie ce que l'API renvoie
+      console.log("Connexion réussie :", data);
       localStorage.setItem("token", data.token);
-      navigate("/admin/dashboard"); // 🔥 Vérifie que cette route existe bien
+      navigate("/admin/dashboard");
     } catch (error) {
       setError(error.response?.data?.error || "Erreur de connexion");
       console.error("Détails de l'erreur :", error.response || error);
