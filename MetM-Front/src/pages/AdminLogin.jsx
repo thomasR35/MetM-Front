@@ -17,14 +17,19 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
     try {
       const data = await login(credentials.username, credentials.password);
-      console.log("Connexion réussie :", data);
-      localStorage.setItem("token", data.token);
-      navigate("/admin/dashboard");
+
+      if (data.token) {
+        localStorage.setItem("adminToken", data.token);
+        console.log("Token stocké :", data.token);
+        navigate("/admin/dashboard");
+      } else {
+        throw new Error("Aucun token reçu");
+      }
     } catch (error) {
       setError(error.response?.data?.error || "Erreur de connexion");
-      console.error("Détails de l'erreur :", error.response || error);
     }
   };
 

@@ -17,7 +17,7 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route
-        path="/admin/dashboard"
+        path="/admin/dashboard/*"
         element={
           <PrivateRoute>
             <AdminDashboard />

@@ -1,21 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css"; // ✅ Assurer le bon fonctionnement de Bootstrap
+import "@/styles/pages/_dashboard.scss";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Vérifie si l'admin est connecté
-  const isAuthenticated = localStorage.getItem("adminToken");
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    console.log("Token récupéré dans AdminLayout :", token);
+    if (!token) {
+      navigate("/admin/login");
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [navigate]);
 
   if (!isAuthenticated) {
-    navigate("/admin/login");
     return null;
   }
 
   return (
-    <div className="container mt-5">
-      <h1>Tableau de bord</h1>
-      <Outlet /> {/* Affiche les sous-pages du back-office */}
+    <div className="d-flex">
+      {/* ✅ Sidebar */}
+      <nav className="admin-sidebar bg-dark text-white d-flex flex-column">
+        <h2 className="text-center py-3 border-bottom">Admin Panel</h2>
+        <ul className="nav flex-column px-2">
+          <li className="nav-item">
+            <Link
+              className="nav-link text-white py-2"
+              to="/admin/dashboard/users"
+            >
+              👥 Gestion des utilisateurs
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              className="nav-link text-white py-2"
+              to="/admin/dashboard/images"
+            >
+              🖼 Gestion des images
+            </Link>
+          </li>
+        </ul>
+
+        <div className="mt-auto px-3 pb-4">
+          <button
+            className="btn btn-danger w-100 mt-4"
+            onClick={() => {
+              localStorage.removeItem("adminToken");
+              navigate("/admin/login");
+            }}
+          >
+            🔴 Déconnexion
+          </button>
+        </div>
+      </nav>
+
+      {/* ✅ Contenu principal */}
+      <div className="admin-content p-4 flex-grow-1">
+        <Outlet />
+      </div>
     </div>
   );
 };
