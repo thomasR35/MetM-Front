@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import axios from "@/api/axiosConfig";
-import "@/styles/components/_modal.scss";
+import "@/styles/pages/_admin.scss";
 
 const ImagesManagement = () => {
   const [images, setImages] = useState([]);
@@ -121,10 +121,7 @@ const ImagesManagement = () => {
 
   return (
     <main className="admin-content">
-      <header>
-        <h2>Gestion des images</h2>
-      </header>
-
+      <h2>Gestion des images</h2>
       {/* Section Formulaire d'upload */}
       <section className="form-container">
         <form onSubmit={handleUpload}>
@@ -158,7 +155,7 @@ const ImagesManagement = () => {
         <header>
           <h3>Liste des images</h3>
         </header>
-        <table className="table table-striped">
+        <table className="table">
           <thead>
             <tr>
               <th>ID</th>
@@ -188,7 +185,7 @@ const ImagesManagement = () => {
                         "❌ Erreur de chargement de l'image :",
                         image.url
                       );
-                      e.target.src = "/images/placeholder.png"; // 🔥 Image par défaut
+                      e.target.src = "/images/placeholder.png";
                     }}
                   />
                 </td>
@@ -223,7 +220,6 @@ const ImagesManagement = () => {
         </table>
       </section>
 
-      {/* 🔹 Modale bien positionnée */}
       {isModalOpen &&
         selectedImage &&
         createPortal(

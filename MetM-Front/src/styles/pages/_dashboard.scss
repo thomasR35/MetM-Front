@@ -1,47 +1,10 @@
 @import "../utils/variables";
 @import "../utils/mixins";
 
-/* 🎨 Sidebar Admin */
-.admin-sidebar {
-  height: 100vh;
-  width: 250px;
-  background-color: $dark-color;
-  padding: $spacing-md;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  h2 {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-
-  .nav {
-    flex-grow: 1;
-  }
-
-  .nav-link {
-    color: white;
-    font-size: 1rem;
-    padding: 10px;
-    transition: background 0.3s ease-in-out;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 5px;
-    }
-  }
-
-  .logout-btn {
-    width: 100%;
-    margin-top: auto;
-    @include button-style($danger-color);
-  }
+.d-flex {
+  max-height: 100vh;
+  overflow-y: hidden;
 }
-
-/* 🎨 Conteneur principal */
 .admin-content {
   width: calc(100% - 250px);
   min-height: 100vh;
@@ -50,177 +13,21 @@
   flex-direction: column;
   align-items: center;
   background: $light-gray;
+  margin-left: 250px;
+  overflow-y: auto;
+
+  section {
+    margin-bottom: 20px;
+  }
 
   @include responsive(tablet) {
-    width: 100%;
-    padding: $spacing-sm;
-  }
-}
-
-/* 🎨 Section contenant le formulaire et le tableau */
-.admin-section {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-lg;
-  justify-content: center;
-  align-items: center;
-}
-
-/* 🎨 Formulaire stylisé */
-.form-container {
-  @include card-style;
-  width: 100%;
-  max-width: 600px;
-  padding: $spacing-md;
-
-  input,
-  button {
-    width: 100%;
-    margin-top: $spacing-sm;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  button {
-    @include button-style($primary-color);
-  }
-}
-
-.table-container {
-  width: 100%;
-  max-width: 1200px;
-  overflow-x: auto;
-}
-
-.table {
-  width: 100%;
-  background: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-collapse: collapse;
-
-  th,
-  td {
-    padding: $spacing-sm;
-    text-align: center;
-    overflow: hidden;
-    justify-content: center;
-    align-items: center;
-    text-overflow: ellipsis;
-    max-width: 200px;
-  }
-
-  th {
-    background-color: $primary-color;
-    color: white;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f8f9fa;
-  }
-
-  .image-thumbnail {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .table-actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    button {
-      padding: 6px 12px;
-      font-size: 14px;
-      white-space: nowrap;
-    }
+    width: calc(100% - 180px);
+    margin-left: 180px;
   }
 
   @include responsive(mobile) {
-    th,
-    td {
-      font-size: 14px;
-    }
-
-    .image-thumbnail {
-      width: 60px;
-      height: 60px;
-    }
-
-    .table-actions {
-      flex-direction: column;
-      align-items: center;
-
-      button {
-        width: 100%;
-      }
-    }
-  }
-}
-
-/* 🎨 Modale bien centrée et superposée */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 50vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.modal {
-  width: 50%;
-  max-width: 500px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-  position: relative;
-  z-index: 10000;
-}
-
-.close {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  button {
-    background: $primary-color;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-
-    &:hover {
-      background: darken($primary-color, 10%);
-    }
+    margin-left: 0;
+    padding-top: 60px;
   }
 }
