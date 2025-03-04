@@ -32,11 +32,14 @@ const ImagesManagement = () => {
     }
 
     setUploadError(null);
+
     const formData = new FormData();
     formData.append("image", file);
     formData.append("title", title);
 
     const user = JSON.parse(localStorage.getItem("user"));
+    console.log("👤 Utilisateur connecté :", user);
+
     formData.append("uploaded_by", user?.id || "1");
 
     try {
@@ -46,12 +49,11 @@ const ImagesManagement = () => {
 
       console.log("✅ Réponse API :", response.data);
 
-      if (!response.data || !response.data.id) {
-        console.error("❌ Données invalides reçues de l'API :", response.data);
-        return;
+      if (response.data && response.data.id) {
+        setImages((prevImages) => [...prevImages, response.data]);
+      } else {
+        console.error("❌ Données invalides reçues :", response.data);
       }
-
-      setImages([...images, response.data]);
     } catch (error) {
       console.error("❌ Erreur lors du téléversement", error.response?.data);
     }
@@ -197,7 +199,7 @@ const ImagesManagement = () => {
                     : image.title || "Titre inconnu"}
                 </td>
 
-                <td>{image.uploaded_by}</td>
+                <td>{image.uploaded_by ? image.uploaded_by : "Inconnu"}</td>
 
                 {/* ✅ Boutons mieux disposés */}
                 <td className="table-actions">
@@ -225,30 +227,28 @@ const ImagesManagement = () => {
         createPortal(
           <div className="modal-overlay">
             <section className="modal">
-              <div className="modal-content">
-                <header>
-                  <span className="close" onClick={handleCloseModal}>
-                    &times;
-                  </span>
-                  <h3>Modifier l'image</h3>
-                </header>
-                <form onSubmit={handleUpdate}>
-                  <label htmlFor="edit-title">Titre</label>
-                  <input
-                    id="edit-title"
-                    type="text"
-                    value={editData.title}
-                    onChange={(e) =>
-                      setEditData({ ...editData, title: e.target.value })
-                    }
-                    required
-                  />
+              <header>
+                <span className="close" onClick={handleCloseModal}>
+                  &times;
+                </span>
+                <h3>Modifier l'image</h3>
+              </header>
+              <form onSubmit={handleUpdate}>
+                <label htmlFor="edit-title">Titre</label>
+                <input
+                  id="edit-title"
+                  type="text"
+                  value={editData.title}
+                  onChange={(e) =>
+                    setEditData({ ...editData, title: e.target.value })
+                  }
+                  required
+                />
 
-                  <button type="submit" className="btn btn-success">
-                    Mettre à jour
-                  </button>
-                </form>
-              </div>
+                <button type="submit" className="btn btn-success">
+                  Mettre à jour
+                </button>
+              </form>
             </section>
           </div>,
           document.body

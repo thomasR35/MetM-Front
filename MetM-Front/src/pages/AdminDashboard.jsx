@@ -1,16 +1,41 @@
 import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import AdminLayout from "@/layouts/AdminLayout";
 import UsersManagement from "@/pages/admin/UsersManagement";
 import ImagesManagement from "@/pages/admin/ImagesManagement";
 
 const AdminDashboard = () => {
+  const [adminName, setAdminName] = useState("");
+
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    console.log("📥 Contenu de localStorage.user :", userData);
+
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        console.log("👤 Admin récupéré :", user);
+        if (user && user.username) {
+          setAdminName(user.username);
+        }
+      } catch (error) {
+        console.error("❌ Erreur lors du parsing de l'utilisateur :", error);
+      }
+    }
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<AdminLayout />}>
-        {/* ✅ Ajout d'un écran par défaut si l'admin arrive sur /admin/dashboard */}
-        <Route index element={<h2>Bienvenue sur le Dashboard</h2>} />
-
-        {/* ✅ Routes correctes pour UsersManagement et ImagesManagement */}
+        <Route
+          index
+          element={
+            <h2>
+              Bienvenue sur le Dashboard Admin (
+              {adminName ? adminName : "Inconnu"})
+            </h2>
+          }
+        />
         <Route path="users" element={<UsersManagement />} />
         <Route path="images" element={<ImagesManagement />} />
       </Route>

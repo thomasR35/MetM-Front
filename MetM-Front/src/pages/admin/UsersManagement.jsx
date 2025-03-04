@@ -9,44 +9,75 @@ const UsersManagement = () => {
     username: "",
     email: "",
     password: "",
-    role: "user", // Ajout d'un rôle par défaut
+    role: "user", // ✅ Assure que "user" est la valeur par défaut
   });
   const [editUser, setEditUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 🔹 Charger les utilisateurs
+  // 🔹 Fonction pour récupérer les utilisateurs depuis l'API
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://metm-back.local/api/users");
+      setUsers(response.data);
+      console.log("📌 Utilisateurs mis à jour :", response.data);
+    } catch (error) {
+      console.error("❌ Erreur de chargement", error);
+    }
+  };
+
+  // 🔹 Charger les utilisateurs au montage
   useEffect(() => {
-    axios
-      .get("http://metm-back.local/api/users")
-      .then((response) => setUsers(response.data))
-      .catch((error) => console.error("Erreur de chargement", error));
+    fetchUsers();
   }, []);
 
   // 🔹 Gérer l'ajout d'un utilisateur
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("📤 Données envoyées :", newUser);
+
     try {
-      const response = await axios.post("/users", newUser);
-      setUsers([...users, response.data]); // Utiliser l'ID retourné par l'API
-      setNewUser({ username: "", email: "", password: "", role: "user" }); // Réinitialisation du formulaire
+      const response = await axios.post("/users", {
+        ...newUser,
+        role: newUser.role || "user", // ✅ Vérification du rôle avant l'envoi
+      });
+
+      if (response.data && response.data.id) {
+        console.log("✅ Nouvel utilisateur ajouté :", response.data);
+
+        // ✅ Rafraîchir la liste depuis l'API
+        await fetchUsers();
+
+        // ✅ Réinitialiser le formulaire
+        resetForm();
+      } else {
+        console.error("❌ Réponse API invalide :", response.data);
+      }
     } catch (error) {
-      console.error("Erreur lors de l'ajout", error);
+      console.error("❌ Erreur lors de l'ajout", error.response?.data || error);
     }
+  };
+
+  // 🔹 Réinitialiser le formulaire
+  const resetForm = () => {
+    setNewUser({ username: "", email: "", password: "", role: "user" });
   };
 
   // 🔹 Supprimer un utilisateur
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/users/${id}`);
-      setUsers(users.filter((user) => user.id !== id));
+      await fetchUsers(); // ✅ Rafraîchir la liste après suppression
     } catch (error) {
-      console.error("Erreur lors de la suppression", error);
+      console.error("❌ Erreur lors de la suppression", error);
     }
   };
 
   // 🔹 Ouvrir la modale d'édition
   const openEditModal = (user) => {
-    setEditUser(user);
+    setEditUser({
+      ...user,
+      role: user.role || "user", // ✅ Forcer un rôle par défaut si vide
+    });
     setIsModalOpen(true);
   };
 
@@ -60,20 +91,29 @@ const UsersManagement = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/users/${editUser.id}`, editUser);
-      setUsers(users.map((u) => (u.id === editUser.id ? editUser : u)));
-      closeModal();
+      const response = await axios.put(`/users/${editUser.id}`, {
+        ...editUser,
+        role: editUser.role || "user", // ✅ S'assurer que le rôle est bien envoyé
+      });
+
+      if (response.data) {
+        console.log("✅ Utilisateur mis à jour :", response.data);
+        await fetchUsers(); // ✅ Rafraîchir la liste après mise à jour
+        closeModal();
+      } else {
+        console.error("❌ Réponse API invalide :", response.data);
+      }
     } catch (error) {
-      console.error("Erreur lors de la mise à jour", error);
+      console.error("❌ Erreur lors de la mise à jour", error);
     }
   };
 
   return (
-    <main className="admin-content">
+    <main className="users-management">
       <h2>Gestion des utilisateurs</h2>
 
       {/* 🔹 Formulaire d'ajout */}
-      <section className="form-container">
+      <section className="users-form">
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -103,16 +143,18 @@ const UsersManagement = () => {
           <select
             value={newUser.role}
             onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+            required
           >
             <option value="user">Utilisateur</option>
-            <option value="admin">Administrateur</option>
+            <option value="admin">Admin</option>
           </select>
+
           <button type="submit">Ajouter</button>
         </form>
       </section>
 
       {/* 🔹 Liste des utilisateurs */}
-      <section className="table-container">
+      <section className="users-list">
         <table className="table">
           <thead>
             <tr>
@@ -129,7 +171,8 @@ const UsersManagement = () => {
                 <td>{user.id}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>{user.role}</td>
+                <td>{user.role || "user"}</td>
+                {/* ✅ Affichage correct du rôle */}
                 <td className="table-actions">
                   <button
                     className="btn btn-warning btn-sm"
@@ -150,36 +193,35 @@ const UsersManagement = () => {
         </table>
       </section>
 
+      {/* 🔹 Modale d'édition */}
       {isModalOpen &&
+        editUser &&
         createPortal(
           <div className="modal-overlay">
             <div className="modal">
-              <header>
-                <span className="close" onClick={closeModal}>
-                  &times;
-                </span>
-                <h3>Modifier l'utilisateur</h3>
-              </header>
+              <span className="close" onClick={closeModal}>
+                &times;
+              </span>
+              <h3>Modifier l'utilisateur</h3>
               <form onSubmit={handleUpdate}>
-                <label>Nom d'utilisateur</label>
                 <input
                   type="text"
+                  placeholder="Nom d'utilisateur"
                   value={editUser.username}
                   onChange={(e) =>
                     setEditUser({ ...editUser, username: e.target.value })
                   }
                   required
                 />
-                <label>Email</label>
                 <input
                   type="email"
+                  placeholder="Email"
                   value={editUser.email}
                   onChange={(e) =>
                     setEditUser({ ...editUser, email: e.target.value })
                   }
                   required
                 />
-                <label>Rôle</label>
                 <select
                   value={editUser.role}
                   onChange={(e) =>
@@ -187,9 +229,11 @@ const UsersManagement = () => {
                   }
                 >
                   <option value="user">Utilisateur</option>
-                  <option value="admin">Administrateur</option>
+                  <option value="admin">Admin</option>
                 </select>
-                <button type="submit">Mettre à jour</button>
+                <button type="submit" className="btn btn-success">
+                  Mettre à jour
+                </button>
               </form>
             </div>
           </div>,

@@ -21,12 +21,16 @@ const AdminLogin = () => {
     try {
       const data = await login(credentials.username, credentials.password);
 
-      if (data.token) {
+      if (data.token && data.user) {
         localStorage.setItem("adminToken", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user)); // ✅ Stocke l'utilisateur
+
         console.log("Token stocké :", data.token);
+        console.log("Utilisateur stocké :", data.user); // 🔍 Vérification
+
         navigate("/admin/dashboard");
       } else {
-        throw new Error("Aucun token reçu");
+        throw new Error("Aucun token ou utilisateur reçu");
       }
     } catch (error) {
       setError(error.response?.data?.error || "Erreur de connexion");
