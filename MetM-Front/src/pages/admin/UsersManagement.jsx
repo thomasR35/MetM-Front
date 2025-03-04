@@ -109,11 +109,11 @@ const UsersManagement = () => {
   };
 
   return (
-    <main className="users-management">
+    <main>
       <h2>Gestion des utilisateurs</h2>
 
       {/* 🔹 Formulaire d'ajout */}
-      <section className="users-form">
+      <section className="form-container">
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -154,7 +154,9 @@ const UsersManagement = () => {
       </section>
 
       {/* 🔹 Liste des utilisateurs */}
-      <section className="users-list">
+      <section>
+        <h2>Liste des utilisateurs</h2>
+        <p>{users.length} utilisateurs trouvés</p>
         <table className="table">
           <thead>
             <tr>
@@ -204,6 +206,7 @@ const UsersManagement = () => {
               </span>
               <h3>Modifier l'utilisateur</h3>
               <form onSubmit={handleUpdate}>
+                <label>Nom</label>
                 <input
                   type="text"
                   placeholder="Nom d'utilisateur"
@@ -213,6 +216,7 @@ const UsersManagement = () => {
                   }
                   required
                 />
+                <label>Email</label>
                 <input
                   type="email"
                   placeholder="Email"
@@ -222,6 +226,7 @@ const UsersManagement = () => {
                   }
                   required
                 />
+                <label>Rôle</label>
                 <select
                   value={editUser.role}
                   onChange={(e) =>

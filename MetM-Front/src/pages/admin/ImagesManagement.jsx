@@ -26,6 +26,7 @@ const ImagesManagement = () => {
   // 🔹 Gérer l'upload
   const handleUpload = async (e) => {
     e.preventDefault();
+
     if (!file || !title) {
       setUploadError("Veuillez sélectionner une image et saisir un titre.");
       return;
@@ -37,10 +38,9 @@ const ImagesManagement = () => {
     formData.append("image", file);
     formData.append("title", title);
 
+    // ✅ Récupérer l'ID de l'utilisateur connecté
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("👤 Utilisateur connecté :", user);
-
-    formData.append("uploaded_by", user?.id || "1");
+    formData.append("uploaded_by", user?.id || "1"); // ✅ Associer l'admin connecté
 
     try {
       const response = await axios.post("/images", formData, {
@@ -50,7 +50,12 @@ const ImagesManagement = () => {
       console.log("✅ Réponse API :", response.data);
 
       if (response.data && response.data.id) {
-        setImages((prevImages) => [...prevImages, response.data]);
+        setImages((prevImages) => [...prevImages, response.data]); // ✅ Mettre à jour immédiatement
+
+        // ✅ Réinitialiser le formulaire après l'ajout
+        setTitle("");
+        setFile(null);
+        document.getElementById("file").value = ""; // ✅ Réinitialiser l'input file
       } else {
         console.error("❌ Données invalides reçues :", response.data);
       }
@@ -122,7 +127,7 @@ const ImagesManagement = () => {
   };
 
   return (
-    <main className="admin-content">
+    <main>
       <h2>Gestion des images</h2>
       {/* Section Formulaire d'upload */}
       <section className="form-container">
@@ -153,10 +158,9 @@ const ImagesManagement = () => {
       </section>
 
       {/* Section Affichage des images */}
-      <section className="table-container">
-        <header>
-          <h3>Liste des images</h3>
-        </header>
+      <section>
+        <h2>Liste des images</h2>
+        <p>{images.length} image(s) trouvée(s)</p>
         <table className="table">
           <thead>
             <tr>
@@ -226,18 +230,19 @@ const ImagesManagement = () => {
         selectedImage &&
         createPortal(
           <div className="modal-overlay">
-            <section className="modal">
-              <header>
-                <span className="close" onClick={handleCloseModal}>
-                  &times;
-                </span>
-                <h3>Modifier l'image</h3>
-              </header>
+            <div className="modal">
+              <span className="close" onClick={handleCloseModal}>
+                &times;
+              </span>
+              <h3>Modifier l'image</h3>
               <form onSubmit={handleUpdate}>
-                <label htmlFor="edit-title">Titre</label>
+                <label>ID</label>
+                <input type="text" value={selectedImage.id} disabled />
+
+                <label>Titre</label>
                 <input
-                  id="edit-title"
                   type="text"
+                  placeholder="Titre de l'image"
                   value={editData.title}
                   onChange={(e) =>
                     setEditData({ ...editData, title: e.target.value })
@@ -245,11 +250,22 @@ const ImagesManagement = () => {
                   required
                 />
 
+                <label>Modifié par</label>
+                <select
+                  value={editData.uploaded_by}
+                  onChange={(e) =>
+                    setEditData({ ...editData, uploaded_by: e.target.value })
+                  }
+                >
+                  <option value="1">Sronnok</option>
+                  <option value="3">NewAdmin</option>
+                </select>
+
                 <button type="submit" className="btn btn-success">
                   Mettre à jour
                 </button>
               </form>
-            </section>
+            </div>
           </div>,
           document.body
         )}

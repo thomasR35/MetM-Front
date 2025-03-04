@@ -20,6 +20,11 @@
     margin-bottom: 20px;
   }
 
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
   @include responsive(tablet) {
     width: calc(100% - 180px);
     margin-left: 180px;

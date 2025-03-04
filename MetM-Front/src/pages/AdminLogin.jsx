@@ -23,10 +23,10 @@ const AdminLogin = () => {
 
       if (data.token && data.user) {
         localStorage.setItem("adminToken", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user)); // ✅ Stocke l'utilisateur
+        localStorage.setItem("user", JSON.stringify(data.user));
 
         console.log("Token stocké :", data.token);
-        console.log("Utilisateur stocké :", data.user); // 🔍 Vérification
+        console.log("Utilisateur stocké :", data.user);
 
         navigate("/admin/dashboard");
       } else {
