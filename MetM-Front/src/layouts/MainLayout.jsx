@@ -1,13 +1,12 @@
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
 const MainLayout = ({ children }) => {
   return (
     <div>
-      <header>
-        <h1>Marcelle & Maurice Shop</h1>
-      </header>
+      <Navbar />
       <main>{children}</main>
-      <footer>
-        <p>© 2025 - Tous droits réservés</p>
-      </footer>
+      <Footer />
     </div>
   );
 };

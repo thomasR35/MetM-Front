@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import "./Navbar.scss";
+import "@/styles/components/_navbar.scss";
 
 const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+
+  // 🔥 Fonction pour confirmer la déconnexion
+  const handleLogout = () => {
+    const confirmLogout = window.confirm(
+      "Voulez-vous vraiment vous déconnecter ?"
+    );
+    if (confirmLogout) {
+      logout();
+    }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -29,7 +39,6 @@ const Navbar = () => {
               </Link>
             </li>
 
-            {/* Afficher le bouton "Connexion" ou "Déconnexion" */}
             {!isAuthenticated ? (
               <li className="nav-item">
                 <Link className="nav-link btn btn-primary" to="/signup">
@@ -42,14 +51,16 @@ const Navbar = () => {
                   <span className="nav-link">Bonjour, {user.username}!</span>
                 </li>
                 <li className="nav-item">
-                  <button className="nav-link btn btn-danger" onClick={logout}>
+                  <button
+                    className="nav-link btn btn-danger"
+                    onClick={handleLogout}
+                  >
                     Déconnexion
                   </button>
                 </li>
               </>
             )}
 
-            {/* Afficher le lien Admin uniquement pour les administrateurs */}
             {isAdmin && (
               <li className="nav-item">
                 <Link

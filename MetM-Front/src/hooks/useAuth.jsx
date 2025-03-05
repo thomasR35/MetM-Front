@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     const userWithRole = {
       ...userData,
       role:
-        userData.role && userData.role.trim() !== "" ? userData.role : "user", // 🔥 Définit un rôle par défaut
+        userData.role && userData.role.trim() !== "" ? userData.role : "user",
     };
 
     localStorage.setItem("token", token);
