@@ -1,0 +1,56 @@
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
+
+.footer {
+  background-color: var.$navbar-bg;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var.$text;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.footer-link,
+.footer-text {
+  font-size: 1.2rem;
+  color: var.$text;
+  text-decoration: none;
+  text-align: center;
+
+  @include mix.responsive(lg) {
+    font-size: 1.1em;
+  }
+
+  @include mix.responsive(md-lg) {
+    font-size: 1.05rem;
+  }
+
+  @include mix.responsive(md) {
+    font-size: 1rem;
+  }
+
+  @include mix.responsive(sm-md) {
+    font-size: 0.95rem;
+  }
+
+  @include mix.responsive(sm) {
+    font-size: 0.9rem;
+  }
+
+  @include mix.responsive(xs) {
+    font-size: 0.85rem;
+  }
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+  color: var.$links;
+}
