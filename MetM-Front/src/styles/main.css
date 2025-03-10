@@ -457,7 +457,8 @@ form button:hover {
 .btn-gallery,
 .btn-login,
 .btn-logout,
-.btn-admin {
+.btn-admin,
+.btn-register {
   background-color: #fb6f92;
   color: #0b0809;
   padding: 0 1.5rem;
@@ -477,14 +478,16 @@ form button:hover {
 .btn-gallery:hover,
 .btn-login:hover,
 .btn-logout:hover,
-.btn-admin:hover {
+.btn-admin:hover,
+.btn-register:hover {
   background-color: #ff8fab;
 }
 @media (min-width: 1400px) {
   .btn-gallery,
   .btn-login,
   .btn-logout,
-  .btn-admin {
+  .btn-admin,
+  .btn-register {
     font-size: 2.5rem;
     min-width: 120px;
     min-height: 50px;
@@ -494,7 +497,8 @@ form button:hover {
   .btn-gallery,
   .btn-login,
   .btn-logout,
-  .btn-admin {
+  .btn-admin,
+  .btn-register {
     font-size: 2rem;
     min-width: 110px;
   }
@@ -503,7 +507,8 @@ form button:hover {
   .btn-gallery,
   .btn-login,
   .btn-logout,
-  .btn-admin {
+  .btn-admin,
+  .btn-register {
     font-size: 1.8rem;
     min-width: 100px;
   }
@@ -512,7 +517,8 @@ form button:hover {
   .btn-gallery,
   .btn-login,
   .btn-logout,
-  .btn-admin {
+  .btn-admin,
+  .btn-register {
     font-size: 1.5rem;
     min-width: 90px;
   }
@@ -691,6 +697,86 @@ body {
 .admin-content h2 {
   margin-bottom: 20px;
   text-align: center;
+}
+
+.register-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffc2d1;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+.register-container h2 {
+  margin-bottom: 1rem;
+}
+.register-container .input-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+.register-container .input-group label {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.register-container .input-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #0b0809;
+  border-radius: 5px;
+}
+.register-container .btn-submit {
+  background: #fb6f92;
+  color: #0b0809;
+  border: none;
+  padding: 0.8rem;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1.2rem;
+}
+.register-container .btn-submit:hover {
+  background: #ff8fab;
+}
+
+.success-message {
+  color: #395619;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffe5ec;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 a {

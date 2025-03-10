@@ -1,30 +1,34 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { FaShoppingCart, FaBars } from "react-icons/fa"; // Icône menu burger
+import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import "../styles/components/_navbar.scss";
 
-const Navbar = () => {
+const Navbar = ({ setShowSignup, setShowRegister }) => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     if (window.confirm("Voulez-vous vraiment vous déconnecter ?")) {
       logout();
+      setMenuOpen(false);
     }
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
+        {/* ✅ MENU BURGER - Affichage correct */}
         <div className="burger-menu" onClick={() => setMenuOpen(!menuOpen)}>
-          <FaBars />
+          {menuOpen ? <FaTimes /> : <FaBars />}
         </div>
 
+        {/* ✅ LOGO */}
         <Link className="logo" to="/">
           Marcelle & Maurice Shop
         </Link>
 
+        {/* ✅ NAVIGATION GRAND ÉCRAN */}
         <div className={`nav-center ${menuOpen ? "open" : ""}`}>
           {isAuthenticated && (
             <span className="user-info">Bonjour, {user.username}!</span>
@@ -35,9 +39,17 @@ const Navbar = () => {
           </Link>
 
           {!isAuthenticated ? (
-            <Link className="btn-login" to="/signup">
-              Connexion
-            </Link>
+            <>
+              <button className="btn-login" onClick={() => setShowSignup(true)}>
+                Connexion
+              </button>
+              <button
+                className="btn-register"
+                onClick={() => setShowRegister(true)}
+              >
+                Inscription
+              </button>
+            </>
           ) : (
             <button className="btn-logout" onClick={handleLogout}>
               Déconnexion
@@ -51,11 +63,13 @@ const Navbar = () => {
           )}
         </div>
 
+        {/* ✅ PANIER */}
         <Link className="cart-icon" to="/cart">
           <FaShoppingCart />
         </Link>
       </div>
 
+      {/* ✅ MENU MOBILE - S'affiche uniquement si `menuOpen` est `true` */}
       {menuOpen && (
         <ul className="nav-links-mobile">
           <li>
@@ -70,20 +84,20 @@ const Navbar = () => {
 
           {!isAuthenticated ? (
             <li>
-              <Link
+              <button
                 className="btn-login"
-                to="/signup"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  setShowSignup(true);
+                  setMenuOpen(false);
+                }}
               >
                 Connexion
-              </Link>
+              </button>
             </li>
           ) : (
-            <>
-              <li>
-                <button onClick={handleLogout}>Déconnexion</button>
-              </li>
-            </>
+            <li>
+              <button onClick={handleLogout}>Déconnexion</button>
+            </li>
           )}
 
           {isAdmin && (

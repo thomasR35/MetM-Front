@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { login } from "@/api/auth"; // ✅ Import de la fonction API
+import { login } from "@/api/auth";
+import "../styles/components/_signup.scss";
 
-const Signup = () => {
-  const { login: authLogin } = useAuth(); // ✅ Renommé pour éviter conflit avec la fonction API
+const Signup = ({ closeModal }) => {
+  const { login: authLogin } = useAuth();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     username: "",
@@ -26,6 +28,7 @@ const Signup = () => {
       if (data.token && data.user) {
         authLogin(data.user, data.token);
         navigate("/");
+        closeModal();
       } else {
         setError("Réponse inattendue de l'API.");
       }
@@ -35,40 +38,49 @@ const Signup = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="mb-4">Connexion</h2>
-
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Nom d'utilisateur</label>
-          <input
-            type="text"
-            name="username"
-            className="form-control"
-            value={credentials.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Mot de passe</label>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            value={credentials.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary w-100">
-          Se connecter
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="close-modal" onClick={closeModal}>
+          ✖
         </button>
-      </form>
+        <h2 className="modal-title">Connexion</h2>
+
+        {error && <div className="error-message">{error}</div>}
+
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label>Nom d'utilisateur</label>
+            <input
+              type="text"
+              name="username"
+              value={credentials.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="btn-submit">
+            Se connecter
+          </button>
+          <p className="signup-link">
+            pas encore inscrit ?{" "}
+            <Link to="/register" onClick={closeModal}>
+              Rejoignez-nous !
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
