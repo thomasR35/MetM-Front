@@ -23,7 +23,6 @@ const AdminRoute = ({ children }) => {
 const AppRouter = () => {
   return (
     <Routes>
-      {/* 🌍 Pages accessibles à tous */}
       <Route
         path="/"
         element={

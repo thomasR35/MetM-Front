@@ -1,7 +1,7 @@
-@import "../utils/variables"; // Variables globales
-@import "../utils/mixins"; // Mixins de responsive et styles réutilisables
-@import "../components/sidebar"; // Sidebar admin (desktop & mobile)
-@import "../pages/dashboard"; // Conteneur principal et sections admin
-@import "../components/table"; // Styles spécifiques aux tableaux
-@import "../components/modal"; // Styles des modales (édition utilisateur, image…)
-@import "../components/forms"; // Formulaires (ajout utilisateur, image…)
+@use "../utils/variables";
+@use "../utils/mixins";
+@use "../components/sidebar";
+@use "../pages/dashboard";
+@use "../components/table";
+@use "../components/modal";
+@use "../components/forms";

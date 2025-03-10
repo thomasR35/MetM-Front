@@ -1,7 +1,20 @@
-@use "utils/variables";
-@use "bootstrap/scss/bootstrap";
-@import "components/modal";
+@use "utils/variables" as var;
+@use "utils/mixins";
+@use "utils/global";
 
-body {
-  background-color: #f8f9fa;
+@use "components/footer";
+@use "components/forms";
+@use "components/gallery";
+@use "components/modal";
+@use "components/navbar";
+@use "components/sidebar";
+@use "components/table";
+
+@use "pages/admin";
+@use "pages/dashboard";
+@use "pages/home";
+@use "pages/login";
+
+a {
+  text-decoration: none;
 }

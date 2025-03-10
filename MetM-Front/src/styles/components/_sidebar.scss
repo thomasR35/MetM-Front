@@ -1,13 +1,13 @@
-@import "../utils/variables";
-@import "../utils/mixins";
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
 
 /* 🎨 Sidebar Admin */
 .admin-sidebar {
   position: fixed;
   height: 100vh;
   width: 250px;
-  background-color: $dark-color;
-  padding: $spacing-md;
+  background-color: var.$dark-color;
+  padding: var.$spacing-md;
   color: white;
   display: flex;
   flex-direction: column;
@@ -41,17 +41,17 @@
   .logout-btn {
     width: 100%;
     margin-top: auto;
-    @include button-style($danger-color);
+    @include mix.button-style(var.$danger-color);
   }
 
   /* ✅ Mode mobile : Burger Menu */
-  @include responsive(mobile) {
+  @include mix.responsive(mobile) {
     width: 100%;
     height: 60px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0 $spacing-sm;
+    padding: 0 var.$spacing-sm;
 
     .nav {
       display: none;

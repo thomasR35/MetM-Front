@@ -24,8 +24,8 @@ const Signup = () => {
       const data = await login(credentials.username, credentials.password);
 
       if (data.token && data.user) {
-        authLogin(data.user, data.token); // ✅ Stocke user & token via le contexte Auth
-        navigate("/"); // ✅ Redirige après connexion
+        authLogin(data.user, data.token);
+        navigate("/");
       } else {
         setError("Réponse inattendue de l'API.");
       }

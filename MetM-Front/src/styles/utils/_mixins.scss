@@ -1,4 +1,5 @@
-@import "variables";
+@use "variables" as var;
+@use "global";
 
 // 📌 Mixins Responsivité
 @mixin responsive($breakpoint) {
@@ -16,6 +17,12 @@
     }
   }
 }
+// 📌 Mixins pour polices
+@mixin font-style($font-family, $font-weight: normal, $font-size: 16px) {
+  font-family: $font-family, sans-serif;
+  font-weight: $font-weight;
+  font-size: $font-size;
+}
 
 // 📌 Mixins pour boutons
 @mixin button-style($bg-color) {
@@ -32,10 +39,23 @@
   }
 }
 
+@mixin button-main($button-bg) {
+  background-color: $button-bg;
+  color: var.$text;
+  padding: 0 1.5rem;
+  border-radius: 10px;
+  border: solid 1px var.$text;
+  @include font-style("Gwendolyn", 400, 2.5rem);
+
+  &:hover {
+    background-color: var.$links-hover;
+  }
+}
+
 // 📌 Mixins pour cartes / blocs
 @mixin card-style {
   background: white;
-  padding: $spacing-md;
+  padding: var.$spacing-md;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }

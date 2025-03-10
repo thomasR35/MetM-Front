@@ -1,19 +1,23 @@
 // 🎨 Couleurs principales
-$primary-color: #007bff; // Bleu Bootstrap
-$secondary-color: #6c757d; // Gris Bootstrap
-$success-color: #28a745; // Vert de validation
-$danger-color: #dc3545; // Rouge pour les erreurs
-$warning-color: #ffc107; // Jaune pour les alertes
-$light-color: #f8f9fa; // Fond clair
-$dark-color: #343a40; // Fond foncé
-$light-gray: #f5f5f5; // Gris clair
+// Boostrap
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+$light-gray: #f5f5f5;
+//Main
+$main-bg: #ffe5ec;
+$navbar-bg: #ffc2d1;
+$text-bg: #ffb3c6;
+$button-bg: #fb6f92;
+$links: #395619;
+$links-hover: #ff8fab;
+$text: #0b0809;
 
 // 📏 Espacements
 $spacing-sm: 10px;
 $spacing-md: 20px;
 $spacing-lg: 30px;
-
-// 🔠 Typographie
-$font-family: "Arial", sans-serif;
-$font-size-base: 16px;
-$font-weight-bold: 700;

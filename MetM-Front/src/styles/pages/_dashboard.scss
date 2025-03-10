@@ -1,6 +1,9 @@
-@import "../utils/variables";
-@import "../utils/mixins";
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
 
+body {
+  background-color: #f8f9fa;
+}
 .d-flex {
   max-height: 100vh;
   overflow-y: hidden;
@@ -8,11 +11,11 @@
 .admin-content {
   width: calc(100% - 250px);
   min-height: 100vh;
-  padding: $spacing-md;
+  padding: var.$spacing-md;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: $light-gray;
+  background: var.$light-gray;
   margin-left: 250px;
   overflow-y: auto;
 
@@ -25,12 +28,12 @@
     text-align: center;
   }
 
-  @include responsive(tablet) {
+  @include mix.responsive(tablet) {
     width: calc(100% - 180px);
     margin-left: 180px;
   }
 
-  @include responsive(mobile) {
+  @include mix.responsive(mobile) {
     width: 100%;
     margin-left: 0;
     padding-top: 60px;
