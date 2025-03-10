@@ -199,24 +199,6 @@ form button:hover {
   background: #0062cc;
 }
 
-@media (max-width: 768px) {
-  .modal {
-    width: 90%;
-    max-width: 400px;
-    padding: 20px;
-  }
-  /* Animation pour un effet fluide */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translate(-50%, -60%);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, -50%);
-    }
-  }
-}
 .navbar {
   background-color: #ffc2d1;
   padding: 1rem 2rem;
@@ -228,12 +210,19 @@ form button:hover {
 
 .navbar-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin: 0 auto;
 }
+@media (max-width: 991px) and (min-width: 768px) {
+  .navbar-container {
+    width: 90%;
+    justify-content: space-evenly;
+  }
+}
 
+/* LOGO */
 .logo {
   font-size: 3rem;
   font-family: "Gwendolyn", sans-serif;
@@ -242,6 +231,26 @@ form button:hover {
   margin-left: 3rem;
   flex: 1;
 }
+@media (max-width: 991px) and (min-width: 768px) {
+  .logo {
+    display: flex;
+    vertical-align: middle;
+  }
+}
+@media (max-width: 767px) and (min-width: 426px) {
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@media (max-width: 425px) {
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
 
 .nav-center {
   display: flex;
@@ -249,7 +258,84 @@ form button:hover {
   gap: 1.5rem;
   flex: 1;
 }
+@media (min-width: 1400px) {
+  .nav-center {
+    transform: translate(40%);
+  }
+}
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .nav-center {
+    transform: translate(35%);
+  }
+}
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .nav-center {
+    transform: translate(30%);
+  }
+}
+@media (max-width: 1023px) and (min-width: 992px) {
+  .nav-center {
+    transform: translate(35%);
+  }
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  .nav-center {
+    display: none;
+  }
+}
+@media (max-width: 767px) and (min-width: 426px) {
+  .nav-center {
+    display: none;
+  }
+}
+@media (max-width: 425px) {
+  .nav-center {
+    display: none;
+  }
+}
 
+/* MENU BURGER */
+.burger-menu {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  .burger-menu {
+    display: block;
+    margin-left: 2rem;
+  }
+}
+@media (max-width: 767px) and (min-width: 426px) {
+  .burger-menu {
+    display: block;
+    margin-left: 1.5rem;
+  }
+}
+@media (max-width: 425px) {
+  .burger-menu {
+    display: block;
+    margin-left: 1rem;
+  }
+}
+
+/* MENU MOBILE */
+.nav-links-mobile {
+  position: absolute;
+  top: 100%;
+  left: 1%;
+  background: #ffc2d1;
+  border-radius: 10px;
+  border: 1px solid #0b0809;
+  list-style: none;
+  padding: 1rem;
+}
+.nav-links-mobile li {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+/* PANIER */
 .cart-icon {
   display: flex;
   justify-content: flex-end;
@@ -258,41 +344,27 @@ form button:hover {
   color: #0b0809;
   flex: 1;
 }
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  text-decoration: none;
+@media (max-width: 991px) and (min-width: 768px) {
+  .cart-icon {
+    margin-right: 2rem;
+  }
+}
+@media (max-width: 767px) and (min-width: 426px) {
+  .cart-icon {
+    margin-right: 1.5rem;
+  }
+}
+@media (max-width: 425px) {
+  .cart-icon {
+    margin-right: 1rem;
+  }
 }
 
-.nav-links li {
-  display: flex;
-  align-items: center;
-}
-
-.nav-links a {
-  transition: color 0.3s ease-in-out;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  font-family: "Asap", sans-serif;
-  font-size: 1.2rem;
-  align-items: center;
-  color: #0b0809;
-}
-
+/* BOUTONS */
+.btn-gallery,
 .btn-login,
 .btn-logout,
-.btn-admin,
-.btn-gallery {
+.btn-admin {
   background-color: #fb6f92;
   color: #0b0809;
   padding: 0 1.5rem;
@@ -301,12 +373,95 @@ form button:hover {
   font-family: "Gwendolyn", sans-serif;
   font-weight: 400;
   font-size: 2.5rem;
+  height: 45px;
+  min-width: 120px;
+  max-width: 150px;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+.btn-gallery:hover,
 .btn-login:hover,
 .btn-logout:hover,
-.btn-admin:hover,
-.btn-gallery:hover {
+.btn-admin:hover {
   background-color: #ff8fab;
+}
+@media (min-width: 1400px) {
+  .btn-gallery,
+  .btn-login,
+  .btn-logout,
+  .btn-admin {
+    font-size: 2.5rem;
+    min-width: 120px;
+    min-height: 50px;
+  }
+}
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .btn-gallery,
+  .btn-login,
+  .btn-logout,
+  .btn-admin {
+    font-size: 2rem;
+    min-width: 110px;
+  }
+}
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .btn-gallery,
+  .btn-login,
+  .btn-logout,
+  .btn-admin {
+    font-size: 1.8rem;
+    min-width: 100px;
+  }
+}
+@media (max-width: 1023px) and (min-width: 992px) {
+  .btn-gallery,
+  .btn-login,
+  .btn-logout,
+  .btn-admin {
+    font-size: 1.5rem;
+    min-width: 90px;
+  }
+}
+
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .logo {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+}
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .logo {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+}
+@media (max-width: 1023px) and (min-width: 992px) {
+  .logo {
+    font-size: 2rem;
+    text-align: center;
+  }
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  .logo {
+    font-size: 1.8rem;
+    transform: translate(40%);
+    text-align: center;
+  }
+}
+@media (max-width: 767px) and (min-width: 426px) {
+  .logo {
+    font-size: 1.5rem;
+    transform: translate(35%);
+    text-align: center;
+  }
+}
+@media (max-width: 425px) {
+  .logo {
+    font-size: 1.2rem;
+    text-align: center;
+  }
 }
 
 /* 🎨 Sidebar Admin */
@@ -356,24 +511,6 @@ form button:hover {
 }
 .admin-sidebar .logout-btn:hover {
   background-color: #bd2130;
-}
-@media (max-width: 768px) {
-  .admin-sidebar {
-    width: 100%;
-    height: 60px;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 10px;
-  }
-  .admin-sidebar .nav {
-    display: none;
-  }
-  .admin-sidebar .burger-menu {
-    display: block;
-    cursor: pointer;
-    font-size: 1.5rem;
-  }
 }
 
 .table-container {
@@ -461,19 +598,6 @@ body {
 .admin-content h2 {
   margin-bottom: 20px;
   text-align: center;
-}
-@media (max-width: 1024px) {
-  .admin-content {
-    width: calc(100% - 180px);
-    margin-left: 180px;
-  }
-}
-@media (max-width: 768px) {
-  .admin-content {
-    width: 100%;
-    margin-left: 0;
-    padding-top: 60px;
-  }
 }
 
 a {

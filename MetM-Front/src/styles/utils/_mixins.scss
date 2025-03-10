@@ -2,21 +2,46 @@
 @use "global";
 
 // 📌 Mixins Responsivité
+// 📌 Mixins Responsivité amélioré
 @mixin responsive($breakpoint) {
-  @if $breakpoint == mobile {
-    @media (max-width: 768px) {
+  @if $breakpoint == xl {
+    // Écrans très larges (>1400px)
+    @media (min-width: 1400px) {
       @content;
     }
-  } @else if $breakpoint == tablet {
-    @media (max-width: 1024px) {
+  } @else if $breakpoint == lg {
+    // Écrans larges (1399px - 1200px)
+    @media (max-width: 1399px) and (min-width: 1200px) {
       @content;
     }
-  } @else if $breakpoint == desktop {
-    @media (min-width: 1025px) {
+  } @else if $breakpoint == md-lg {
+    // Moyens grands (1199px - 1024px)
+    @media (max-width: 1199px) and (min-width: 1024px) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    // Moyens (1023px - 992px)
+    @media (max-width: 1023px) and (min-width: 992px) {
+      @content;
+    }
+  } @else if $breakpoint == sm-md {
+    // Petits-moyens (991px - 768px)
+    @media (max-width: 991px) and (min-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == sm {
+    // Mobiles larges (767px - 426px)
+    @media (max-width: 767px) and (min-width: 426px) {
+      @content;
+    }
+  } @else if $breakpoint == xs {
+    // Mobiles très petits (<425px)
+    @media (max-width: 425px) {
       @content;
     }
   }
 }
+
 // 📌 Mixins pour polices
 @mixin font-style($font-family, $font-weight: normal, $font-size: 16px) {
   font-family: $font-family, sans-serif;
@@ -49,6 +74,25 @@
 
   &:hover {
     background-color: var.$links-hover;
+  }
+  @include responsive(xl) {
+    font-size: 2.5rem;
+    min-width: 120px;
+    min-height: 50px;
+  }
+  @include responsive(lg) {
+    font-size: 2rem;
+    min-width: 110px;
+  }
+
+  @include responsive(md-lg) {
+    font-size: 1.8rem;
+    min-width: 100px;
+  }
+
+  @include responsive(md) {
+    font-size: 1.5rem;
+    min-width: 90px;
   }
 }
 
