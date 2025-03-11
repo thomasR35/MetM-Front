@@ -1,0 +1,76 @@
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
+
+.home-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+.home-banner {
+  text-align: center;
+  padding: 40px 0;
+  background-color: var.$text-bg;
+  border-radius: 10px;
+  border: 1px solid var.$text;
+  font-family: "Gwendolyn", sans-serif;
+  font-weight: bold;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+}
+
+/* 🔹 Conteneur principal */
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* 🔹 Slider */
+.slider-container {
+  flex: 1;
+  max-width: 60%;
+}
+
+.home-slider {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* 🔹 Conteneur du produit */
+.mockup-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 600px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Upload */
+.upload-container {
+  flex: 1;
+  max-width: 35%;
+}
+
+.dropzone {
+  padding: 20px;
+  border: 2px dashed var.$text-bg;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropzone p {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}

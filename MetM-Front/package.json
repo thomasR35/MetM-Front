@@ -15,11 +15,17 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.8.1",
     "bootstrap": "^5.3.3",
+    "fabric": "^6.6.1",
+    "glob": "^11.0.1",
+    "lru-cache": "^11.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.2.0",
-    "sass": "^1.85.1"
+    "rimraf": "^6.0.1",
+    "sass": "^1.85.1",
+    "swiper": "^11.2.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
