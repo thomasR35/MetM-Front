@@ -1,6 +1,6 @@
 import React from "react";
 
-const BASE_URL = "http://metm-back.local"; // ✅ Vérifie que c'est bien l'URL du backend
+const BASE_URL = "http://metm-back.local";
 
 const GalleryItem = ({ image }) => {
   const imageUrl = image.url.startsWith("/uploads/")
@@ -9,18 +9,18 @@ const GalleryItem = ({ image }) => {
 
   const handleDownload = async () => {
     try {
-      const response = await fetch(imageUrl, { mode: "cors" }); // ✅ Récupère l'image en mode sécurisé
+      const response = await fetch(imageUrl, { mode: "cors" });
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
 
       const link = document.createElement("a");
       link.href = blobUrl;
-      link.setAttribute("download", image.title || "image.jpg"); // ✅ Force le téléchargement
+      link.setAttribute("download", image.title || "image.jpg");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      URL.revokeObjectURL(blobUrl); // ✅ Libère la mémoire
+      URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error("❌ Erreur lors du téléchargement :", error);
     }
@@ -32,10 +32,10 @@ const GalleryItem = ({ image }) => {
         src={imageUrl}
         alt={`Image uploadée par ${image.uploaded_by}`}
         className="gallery-image"
-        crossOrigin="anonymous" // ✅ Évite les erreurs CORS
+        crossOrigin="anonymous"
         onError={(e) => {
           console.error("❌ Impossible de charger l'image :", e.target.src);
-          e.target.src = "/assets/placeholder.jpg"; // 🔥 Image par défaut
+          e.target.src = "/assets/placeholder.jpg";
         }}
       />
       <div className="gallery-info">

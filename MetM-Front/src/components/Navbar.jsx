@@ -69,7 +69,7 @@ const Navbar = ({ setShowSignup, setShowRegister }) => {
         </Link>
       </div>
 
-      {/* ✅ MENU MOBILE - S'affiche uniquement si `menuOpen` est `true` */}
+      {/* ✅ MENU MOBILE */}
       {menuOpen && (
         <ul className="nav-links-mobile">
           <li>
@@ -96,13 +96,19 @@ const Navbar = ({ setShowSignup, setShowRegister }) => {
             </li>
           ) : (
             <li>
-              <button onClick={handleLogout}>Déconnexion</button>
+              <button className="btn-logout" onClick={handleLogout}>
+                Déconnexion
+              </button>
             </li>
           )}
 
           {isAdmin && (
             <li>
-              <Link to="/admin/dashboard" onClick={() => setMenuOpen(false)}>
+              <Link
+                className="btn-admin"
+                to="/admin/dashboard"
+                onClick={() => setMenuOpen(false)}
+              >
                 Admin
               </Link>
             </li>
