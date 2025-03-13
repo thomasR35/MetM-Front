@@ -3,16 +3,9 @@ import { registerUser } from "@/api/auth";
 import "../styles/pages/_register.scss";
 
 const Register = ({ openLoginModal, closeRegisterModal }) => {
-  console.log(
-    "🔍 `openLoginModal` reçu dans Register :",
-    typeof openLoginModal
-  );
-
   useEffect(() => {
     if (!openLoginModal || typeof openLoginModal !== "function") {
-      console.warn("⏳ `openLoginModal` est encore en attente...");
-    } else {
-      console.log("✅ `openLoginModal` est bien une fonction !");
+      console.warn("⏳ `openLoginModal` n'est pas encore disponible...");
     }
   }, [openLoginModal]);
 
@@ -35,34 +28,26 @@ const Register = ({ openLoginModal, closeRegisterModal }) => {
     setError(null);
     setSuccessMessage(null);
 
-    console.log("🔹 Envoi du formulaire avec :", credentials);
-
     if (credentials.password !== credentials.confirmPassword) {
       setError("❌ Les mots de passe ne correspondent pas.");
       return;
     }
 
     setLoading(true);
-
     const response = await registerUser(
       credentials.username,
       credentials.email,
       credentials.password
     );
 
-    console.log("✅ Réponse API :", response);
-
     if (response.success) {
-      console.log("✅ Inscription réussie !");
       setSuccessMessage("🎉 Inscription réussie ! Connexion...");
 
       setTimeout(() => {
-        console.log("➡ Fermeture de `Register.jsx` après connexion");
         closeRegisterModal(); // 🔥 Ferme la modale après succès
         openLoginModal(); // 🔥 Ouvre la modale de connexion
       }, 2000);
     } else {
-      console.error("❌ Erreur API :", response.message);
       setError(response.message || "❌ Erreur inconnue.");
     }
 
@@ -71,7 +56,7 @@ const Register = ({ openLoginModal, closeRegisterModal }) => {
 
   return (
     <div className="modal-content">
-      {/* ✅ Bouton de fermeture en haut à droite */}
+      {/* ✅ Bouton de fermeture */}
       <button className="close-modal" onClick={closeRegisterModal}>
         ✖
       </button>

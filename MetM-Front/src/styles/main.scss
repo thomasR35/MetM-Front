@@ -4,7 +4,7 @@
 
 @use "components/footer";
 @use "components/forms";
-@use "components/gallery";
+@use "components/galleryItem";
 @use "components/modal";
 @use "components/navbar";
 @use "components/sidebar";
@@ -13,7 +13,7 @@
 @use "pages/admin";
 @use "pages/dashboard";
 @use "pages/home";
-@use "pages/login";
+@use "pages/gallery";
 @use "pages/register";
 
 a {

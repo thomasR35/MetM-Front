@@ -1,0 +1,55 @@
+@use "../utils/variables" as var;
+.gallery-item {
+  background: var.$light-color;
+  border-radius: 10px;
+  border: 1px solid var.$text;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  padding: 10px;
+  width: 250px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .gallery-image {
+    width: 100%;
+    min-height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid #fb6f92;
+    &:hover {
+      transform: scale(1.3);
+      transition: transform 0.3s;
+    }
+  }
+
+  .gallery-info {
+    flex-grow: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+      font-size: 1rem;
+      margin: 5px 0;
+    }
+
+    .download-btn {
+      background: #fb6f92;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: auto;
+      align-self: center;
+
+      &:hover {
+        background: #ff8fab;
+      }
+    }
+  }
+}

@@ -9,23 +9,16 @@ const MainLayout = ({ children }) => {
   const [showSignup, setShowSignup] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
-  // ✅ Fonction pour ouvrir la modale de connexion après inscription
+  // ✅ Ouvre la modale de connexion après une inscription réussie
   const openLoginModal = useCallback(() => {
-    console.log("➡ `openLoginModal` a été appelé !");
     setShowRegister(false);
     setShowSignup(true);
   }, []);
 
-  // ✅ Fonction pour fermer `Register.jsx` si la connexion est réussie
+  // ✅ Ferme la modale d'inscription après connexion
   const closeRegisterModal = () => {
-    console.log("🔴 Fermeture de `Register.jsx` après connexion");
     setShowRegister(false);
   };
-
-  console.log(
-    "📌 `openLoginModal` est bien défini dans MainLayout :",
-    typeof openLoginModal
-  );
 
   return (
     <div className="main-layout">
@@ -40,7 +33,7 @@ const MainLayout = ({ children }) => {
         </div>
       )}
 
-      {/* ✅ Modale Inscription - S'affiche en tant que modale */}
+      {/* ✅ Modale Inscription */}
       {showRegister && (
         <div className="modal-overlay">
           <Register
