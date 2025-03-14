@@ -1,0 +1,91 @@
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
+
+.image-editor-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var.$text;
+    text-align: center;
+  }
+
+  .editor-preview {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    border: 1px solid var.$text-bg;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #f8f9fa;
+    border-radius: 10px;
+  }
+
+  .image-preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .editor-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &.btn-confirm {
+      background: var.$primary-color;
+      color: white;
+
+      &:hover {
+        background: darken(var.$primary-color, 10%);
+      }
+    }
+
+    &.btn-cancel {
+      background: #ff6b6b;
+      color: white;
+
+      &:hover {
+        background: darken(#ff6b6b, 10%);
+      }
+    }
+  }
+}
+
+/* 🔹 Fond de la modale */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}

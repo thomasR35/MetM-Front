@@ -6,6 +6,7 @@ import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import MainLayout from "@/layouts/MainLayout";
 import Register from "@/pages/Register";
+import ProductPage from "@/pages/ProductPage";
 import { useAuth } from "@/hooks/useAuth.jsx";
 
 const AppRouter = () => {
@@ -47,6 +48,15 @@ const AppRouter = () => {
           ) : (
             <Navigate to="/" />
           )
+        }
+      />
+      {/* 🔥 Ajout des routes dynamiques pour les produits */}
+      <Route
+        path="/product/:productType"
+        element={
+          <MainLayout>
+            <ProductPage />
+          </MainLayout>
         }
       />
       <Route path="/admin/login" element={<AdminLogin />} />

@@ -1,0 +1,121 @@
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
+
+.product-page-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* 🔹 Bannière du produit */
+.product-banner {
+  text-align: center;
+  padding: 40px 0;
+  background-color: var.$text-bg;
+  border-radius: 10px;
+  border: 1px solid var.$text;
+  font-family: "Gwendolyn", sans-serif;
+  font-weight: bold;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+}
+
+/* 🔹 Conteneur principal */
+.product-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+/* 🔹 Slider */
+.product-slider-container {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.product-slider {
+  width: 100%;
+}
+
+/* 🔹 Zone de personnalisation */
+.customization-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid var.$text;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var.$text;
+  }
+}
+
+.option-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: var.$light-color;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &:hover {
+      background: darken(var.$light-color, 10%);
+    }
+  }
+}
+
+/* 🔹 Zone d’upload */
+.upload-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.dropzone {
+  padding: 20px;
+  border: 2px dashed var.$text-bg;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropzone p {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 🔹 Boutons d’action */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+
+  .btn-primary {
+    background: var.$light-color;
+  }
+}

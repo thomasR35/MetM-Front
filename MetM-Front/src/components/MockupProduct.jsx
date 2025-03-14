@@ -6,7 +6,7 @@ const MockupProduct = ({ product, uploadedImage }) => {
   const fabricCanvas = useRef(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || !product?.image) return;
 
     // 🔹 Initialisation du Canvas
     const canvas = new fabric.Canvas(canvasRef.current, {
@@ -32,27 +32,37 @@ const MockupProduct = ({ product, uploadedImage }) => {
     });
 
     return () => {
-      canvas.dispose(); // Nettoyage du canvas à la destruction du composant
+      canvas.dispose();
     };
   }, [product]);
 
   useEffect(() => {
     if (!uploadedImage || !fabricCanvas.current) return;
 
+    const canvas = fabricCanvas.current;
+
+    // 🔹 Supprimer toutes les images uploadées précédentes
+    canvas.getObjects().forEach((obj) => {
+      if (obj.type === "image") {
+        canvas.remove(obj);
+      }
+    });
+
     // 🔹 Ajouter l’image uploadée sur le produit
     fabric.Image.fromURL(uploadedImage, (img) => {
       img.set({
-        left: 100,
-        top: 100,
+        left: canvas.width / 4,
+        top: canvas.height / 4,
         scaleX: 0.5,
         scaleY: 0.5,
         cornerSize: 10,
         hasRotatingPoint: true,
+        selectable: true,
       });
 
-      fabricCanvas.current.add(img);
-      fabricCanvas.current.setActiveObject(img);
-      fabricCanvas.current.renderAll();
+      canvas.add(img);
+      canvas.setActiveObject(img);
+      canvas.renderAll();
     });
   }, [uploadedImage]);
 
