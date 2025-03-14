@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/pages/_Home.scss";
-import tshirt from "../assets/images/tshirt.svg";
-import mug from "../assets/images/mug.svg";
-import pins from "../assets/images/pins.svg";
+import tshirt from "../assets/images/tshirt.jpg";
+import mug from "../assets/images/mug1.jpg";
+import pins from "../assets/images/pins1.jpg";
 
 const Home = () => {
   return (
