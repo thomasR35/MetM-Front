@@ -20,58 +20,66 @@
     @include mix.button-style(var.$primary-color);
   }
 }
-
-.table-container {
+/* ✅ Gestion des mots-clés */
+.keyword-management {
   width: 100%;
-  max-width: 800px;
-  overflow-x: auto;
-}
-
-.table {
-  width: 100%;
-  display: table;
+  max-width: 600px;
+  padding: var.$spacing-md;
   background: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
 
-  th,
-  td {
-    padding: var.$spacing-sm;
-    text-align: center;
-    overflow: hidden;
-    justify-content: center;
-    align-items: center;
-    text-overflow: ellipsis;
-    max-width: 200px;
+  h2 {
+    color: var.$text;
+    margin-bottom: var.$spacing-md;
   }
 
-  th {
-    background-color: var.$primary-color;
-    color: white;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f8f9fa;
-  }
-
-  .image-thumbnail {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .table-actions {
+  /* 🔹 Formulaire d'ajout */
+  .add-keyword {
     display: flex;
-    flex-direction: column;
+    gap: var.$spacing-sm;
     justify-content: center;
-    gap: 10px;
+    margin-bottom: var.$spacing-md;
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
 
     button {
+      @include mix.button-style(var.$primary-color);
+    }
+  }
+
+  /* 🔹 Liste des mots-clés */
+  .keyword-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var.$spacing-sm;
+    justify-content: center;
+
+    li {
+      display: flex;
+      align-items: center;
+      background: var.$light-color;
+      color: var.$text;
       padding: 6px 12px;
-      font-size: 14px;
-      white-space: nowrap;
+      border-radius: 20px;
+      font-size: 0.9rem;
+
+      button {
+        margin-left: 8px;
+        background: none;
+        border: none;
+        color: red;
+        font-weight: bold;
+        cursor: pointer;
+      }
     }
   }
 }

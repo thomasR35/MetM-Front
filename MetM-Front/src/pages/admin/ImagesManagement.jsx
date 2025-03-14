@@ -17,14 +17,11 @@ const ImagesManagement = () => {
     url: "",
     keywords: "",
   });
-
   // 🔹 Charger les images et les mots-clés
   useEffect(() => {
     axios
       .get("/images")
       .then((response) => {
-        console.log("📸 Images API reçues :", response.data);
-
         // ✅ Vérification et mise à jour correcte du state
         if (response.data && Array.isArray(response.data.images)) {
           setImages(response.data.images);
@@ -49,7 +46,6 @@ const ImagesManagement = () => {
         console.error("❌ Erreur de chargement des mots-clés :", error)
       );
   }, []);
-
   // 🔹 Gérer l'upload d'une image
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -83,7 +79,6 @@ const ImagesManagement = () => {
       console.error("❌ Erreur lors du téléversement :", error.response?.data);
     }
   };
-
   // 🔹 Supprimer une image
   const handleDelete = async (id) => {
     try {
@@ -93,25 +88,6 @@ const ImagesManagement = () => {
       console.error("❌ Erreur lors de la suppression :", error.response?.data);
     }
   };
-
-  // 🔹 Ouvrir la modale d'édition
-  const openEditModal = (image) => {
-    if (!image) return;
-    setSelectedImage(image);
-    setEditData({
-      title: image.title || "",
-      url: image.url || "",
-      keywords: image.keywords || "",
-    });
-    setIsModalOpen(true);
-  };
-
-  // 🔹 Fermer la modale
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedImage(null);
-  };
-
   // 🔹 Gérer la mise à jour
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -144,6 +120,58 @@ const ImagesManagement = () => {
       console.error("❌ Erreur lors de la mise à jour :", error.response?.data);
     }
   };
+  // 🔹 Ouvrir la modale d'édition
+  const openEditModal = (image) => {
+    if (!image) return;
+    setSelectedImage(image);
+    setEditData({
+      title: image.title || "",
+      url: image.url || "",
+      keywords: image.keywords || "",
+    });
+    setIsModalOpen(true);
+  };
+
+  // 🔹 Ajouter un mot-clé
+  const handleAddKeyword = async () => {
+    if (!keywords.trim()) return; // 🔥 Empêche l'ajout d'un mot-clé vide
+
+    try {
+      const response = await axios.post("/keywords", {
+        name: keywords,
+        created_by: JSON.parse(localStorage.getItem("user"))?.id || "1",
+      });
+
+      if (response.data) {
+        setAllKeywords([...allKeywords, response.data]); // 🔥 Met à jour la liste
+        setKeywords(""); // ✅ Réinitialise le champ
+      }
+    } catch (error) {
+      console.error(
+        "❌ Erreur lors de l'ajout du mot-clé :",
+        error.response?.data
+      );
+    }
+  };
+
+  // 🔹 Supprimer un mot-clé
+  const handleDeleteKeyword = async (id) => {
+    try {
+      await axios.delete(`/keywords/${id}`);
+      setAllKeywords(allKeywords.filter((kw) => kw.id !== id)); // 🔥 Mise à jour de la liste
+    } catch (error) {
+      console.error(
+        "❌ Erreur lors de la suppression du mot-clé :",
+        error.response?.data
+      );
+    }
+  };
+
+  // 🔹 Fermer la modale
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
 
   return (
     <main>
@@ -160,15 +188,6 @@ const ImagesManagement = () => {
             required
           />
 
-          <label htmlFor="keywords">Mots-clés (séparés par des virgules)</label>
-          <input
-            id="keywords"
-            type="text"
-            placeholder="Ex : chat, nature, paysage"
-            value={keywords}
-            onChange={(e) => setKeywords(e.target.value)}
-          />
-
           <label htmlFor="file">Sélectionner une image</label>
           <input
             id="file"
@@ -178,10 +197,46 @@ const ImagesManagement = () => {
           />
 
           <button type="submit" className="btn btn-primary">
-            Téléverser
+            Uploader
           </button>
         </form>
         {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
+      </section>
+
+      {/* 🔹 Gestion des mots-clés */}
+      <h2>Gestion des mots-clés</h2>
+      <section className="keyword-management">
+        {/* ✅ Formulaire d'ajout de mot-clé */}
+        <div className="add-keyword">
+          <input
+            type="text"
+            placeholder="Nouveau mot-clé"
+            value={keywords}
+            onChange={(e) => setKeywords(e.target.value)}
+          />
+          <button className="btn btn-primary" onClick={handleAddKeyword}>
+            Ajouter
+          </button>
+        </div>
+
+        {/* 🔹 Liste des mots-clés */}
+        <ul className="keyword-list">
+          {allKeywords.length > 0 ? (
+            allKeywords.map((kw) => (
+              <li key={kw.id}>
+                {kw.name}
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleDeleteKeyword(kw.id)}
+                >
+                  ❌
+                </button>
+              </li>
+            ))
+          ) : (
+            <p>Aucun mot-clé trouvé.</p>
+          )}
+        </ul>
       </section>
 
       <section>

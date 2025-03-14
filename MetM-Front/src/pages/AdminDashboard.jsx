@@ -9,12 +9,9 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
-    console.log("📥 Contenu de localStorage.user :", userData);
-
     if (userData) {
       try {
         const user = JSON.parse(userData);
-        console.log("👤 Admin récupéré :", user);
         if (user && user.username) {
           setAdminName(user.username);
         }

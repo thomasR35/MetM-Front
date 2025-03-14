@@ -35,7 +35,7 @@ const GalleryItem = ({ image }) => {
         crossOrigin="anonymous"
         onError={(e) => {
           console.error("❌ Impossible de charger l'image :", e.target.src);
-          e.target.src = "/assets/placeholder.jpg";
+          e.target.src = "../assets/images/placeholder.jpg";
         }}
       />
       <div className="gallery-info">

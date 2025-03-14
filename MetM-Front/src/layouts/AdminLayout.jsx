@@ -10,7 +10,6 @@ const AdminLayout = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    console.log("Token récupéré dans AdminLayout :", token);
     if (!token) {
       navigate("/admin/login");
     } else {

@@ -6,7 +6,7 @@ import axios from "@/api/axiosConfig";
 const Gallery = () => {
   const [images, setImages] = useState([]);
   const [keywords, setKeywords] = useState([]);
-  const [selectedKeywords, setSelectedKeywords] = useState([]); // ✅ Liste de mots-clés sélectionnés
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [totalImages, setTotalImages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const imagesPerPage = 20;
@@ -53,11 +53,10 @@ const Gallery = () => {
 
   // 🔹 Gestion du clic sur un mot-clé (permet la sélection multiple)
   const handleKeywordClick = (keyword) => {
-    setSelectedKeywords(
-      (prevSelected) =>
-        prevSelected.includes(keyword)
-          ? prevSelected.filter((kw) => kw !== keyword) // 🔥 Désélectionner un mot-clé si déjà sélectionné
-          : [...prevSelected, keyword] // ✅ Ajouter un nouveau mot-clé sélectionné
+    setSelectedKeywords((prevSelected) =>
+      prevSelected.includes(keyword)
+        ? prevSelected.filter((kw) => kw !== keyword)
+        : [...prevSelected, keyword]
     );
     setCurrentPage(1);
   };
