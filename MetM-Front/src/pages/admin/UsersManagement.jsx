@@ -19,7 +19,6 @@ const UsersManagement = () => {
     try {
       const response = await axios.get("http://metm-back.local/api/users");
       setUsers(response.data);
-      console.log("📌 Utilisateurs mis à jour :", response.data);
     } catch (error) {
       console.error("❌ Erreur de chargement", error);
     }
@@ -33,21 +32,28 @@ const UsersManagement = () => {
   // 🔹 Gérer l'ajout d'un utilisateur
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("📤 Données envoyées :", newUser);
 
     try {
-      const response = await axios.post("/users", {
+      // ✅ Prépare les données utilisateur
+      const userData = {
         ...newUser,
-        role: newUser.role || "user", // ✅ Vérification du rôle avant l'envoi
-      });
+        role: newUser.role || "user", // S'assurer que le rôle est bien défini
+      };
 
-      if (response.data && response.data.id) {
-        console.log("✅ Nouvel utilisateur ajouté :", response.data);
+      // ✅ Envoie la requête à l'API
+      const response = await axios.post("/users", userData);
 
-        // ✅ Rafraîchir la liste depuis l'API
-        await fetchUsers();
+      // ✅ Vérifie que la réponse est bien un succès
+      if (response.data && response.data.message) {
+        console.log(
+          "✅ Utilisateur ajouté avec succès :",
+          response.data.message
+        );
 
-        // ✅ Réinitialiser le formulaire
+        // 🔄 Force le rechargement des utilisateurs depuis l'API
+        fetchUsers();
+
+        // ✅ Réinitialisation immédiate du formulaire
         resetForm();
       } else {
         console.error("❌ Réponse API invalide :", response.data);
@@ -66,7 +72,11 @@ const UsersManagement = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/users/${id}`);
-      await fetchUsers(); // ✅ Rafraîchir la liste après suppression
+
+      // ✅ Mettre à jour immédiatement la liste
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+
+      console.log(`✅ Utilisateur avec ID ${id} supprimé`);
     } catch (error) {
       console.error("❌ Erreur lors de la suppression", error);
     }
@@ -98,7 +108,14 @@ const UsersManagement = () => {
 
       if (response.data) {
         console.log("✅ Utilisateur mis à jour :", response.data);
-        await fetchUsers(); // ✅ Rafraîchir la liste après mise à jour
+
+        // ✅ Mettre à jour immédiatement la liste
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === editUser.id ? { ...user, ...response.data } : user
+          )
+        );
+
         closeModal();
       } else {
         console.error("❌ Réponse API invalide :", response.data);
