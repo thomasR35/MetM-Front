@@ -20,7 +20,6 @@
   align-items: center;
 }
 
-/* ✅ Fond assombri derrière la modale */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -101,7 +100,6 @@ form {
     max-width: 400px;
     padding: 20px;
   }
-  /* Animation pour un effet fluide */
   @keyframes fadeIn {
     from {
       opacity: 0;

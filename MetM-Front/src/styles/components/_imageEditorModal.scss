@@ -1,85 +1,6 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
-.image-editor-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 600px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-
-  h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var.$text;
-    text-align: center;
-  }
-
-  .editor-preview {
-    width: 100%;
-    max-width: 400px;
-    height: 300px;
-    border: 1px solid var.$text-bg;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background: #f8f9fa;
-    border-radius: 10px;
-  }
-
-  .image-preview {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  .editor-controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 10px;
-  }
-
-  button {
-    padding: 10px 15px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-
-    &.btn-confirm {
-      background: var.$primary-color;
-      color: white;
-
-      &:hover {
-        background: darken(var.$primary-color, 10%);
-      }
-    }
-
-    &.btn-cancel {
-      background: #ff6b6b;
-      color: white;
-
-      &:hover {
-        background: darken(#ff6b6b, 10%);
-      }
-    }
-  }
-}
-
-/* 🔹 Fond de la modale */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -87,5 +8,110 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var.$main-bg;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 1200px;
+  max-height: calc(100vh - 2rem);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.apply-btn {
+  @include mix.button-main(var.$button-bg);
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 20px;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.image-container {
+  width: 300px;
+  height: 300px;
+  margin: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crop-frame {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.draggable-image {
+  position: absolute;
+  max-width: 150%;
+  max-height: 150%;
+  user-select: none;
+  transform: translate(-50%, -50%);
+}
+
+.frame-options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.frame-options button {
+  background: var.$button-bg;
+  color: var.$text;
+  border: 1px solid var.$text;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease-in-out;
+}
+
+.frame-options button:hover {
+  background: var.$links-hover;
+  text-decoration: underline;
+}
+
+.crop-frame {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  clip-path: inset(0);
+}
+
+.crop-frame.circle {
+  clip-path: circle(50%);
+}
+
+.crop-frame.heart {
+  clip-path: path(
+    "M 160,90 A 50,50 0,0,1 260,90 Q 260,190 160,260 Q 60,190 60,90 A 50,50 0,0,1 160,90"
+  );
 }
