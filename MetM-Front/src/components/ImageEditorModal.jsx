@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "../styles/components/_imageEditorModal.scss";
-import useDragPosition from "../hooks/useDragPosition";
+import useDragPosition from "../hooks/useDragPosition.jsx";
 
 const ImageEditorModal = ({ uploadedImage, onClose, onApply }) => {
   const [scale, setScale] = useState(1);
