@@ -63,12 +63,12 @@ npm run dev
 | @fortawesome/react-fontawesome      | ^0.2.2    | Intégration des icônes FontAwesome dans React.                           |
 | axios                               | ^1.8.1    | Client HTTP pour faire des requêtes vers une API.                        |
 | bootstrap                           | ^5.3.3    | Framework CSS responsive prêt à l’emploi.                                |
-| fabric                              | ^6.6.1    | Librairie canvas pour dessin et manipulation d’images.                  |
+| fabric                              | ^6.6.1    | Librairie canvas pour dessin et manipulation d’images.                   |
 | glob                                | ^11.0.1   | Permet de trouver des fichiers via des motifs (glob patterns).           |
 | lru-cache                           | ^11.0.2   | Cache "Least Recently Used", utile pour optimiser la mémoire.            |
 | react                               | ^19.0.0   | Bibliothèque principale pour créer l’interface utilisateur.              |
 | react-dom                           | ^19.0.0   | Permet d’attacher React à l’arbre DOM.                                   |
-| react-dropzone                      | ^14.3.8   | Zone de dépôt de fichiers avec support glisser-déposer.                 |
+| react-dropzone                      | ^14.3.8   | Zone de dépôt de fichiers avec support glisser-déposer.                  |
 | react-icons                         | ^5.5.0    | Intégration simple d’icônes dans React (FA, Feather, etc.).              |
 | react-router-dom                    | ^7.2.0    | Gestion des routes côté client dans React.                               |
 | rimraf                              | ^6.0.1    | Supprime des fichiers/dossiers de façon récursive (type `rm -rf`).       |
