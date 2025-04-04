@@ -7,6 +7,7 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import MainLayout from "@/layouts/MainLayout";
 import Register from "@/pages/Register";
 import ProductPage from "@/pages/ProductPage";
+import LegalMentions from "@/pages/LegalMentions";
 import { useAuth } from "@/hooks/useAuth.jsx";
 
 const AppRouter = () => {
@@ -48,6 +49,14 @@ const AppRouter = () => {
           ) : (
             <Navigate to="/" />
           )
+        }
+      />
+      <Route
+        path="/mentions-legales"
+        element={
+          <MainLayout>
+            <LegalMentions />
+          </MainLayout>
         }
       />
       {/* 🔥 Ajout des routes dynamiques pour les produits */}
