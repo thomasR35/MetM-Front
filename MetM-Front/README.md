@@ -29,7 +29,7 @@ metm-front/
 │   ├── api/              # Fichiers API
 │   ├── assets/           # Images, polices, fichiers statiques
 │   ├── components/       # Composants réutilisables
-│   │── context/
+│   │── context/          # Contexts React pour la gestion d'états globaux
 │   ├── hooks/            # Hooks personnalisés
 │   ├── layouts/          # Layouts de pages
 │   ├── pages/            # Pages principales du site
