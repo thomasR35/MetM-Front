@@ -8,6 +8,7 @@ import MainLayout from "@/layouts/MainLayout";
 import Register from "@/pages/Register";
 import ProductPage from "@/pages/ProductPage";
 import LegalMentions from "@/pages/LegalMentions";
+import Contact from "@/pages/Contact";
 import { useAuth } from "@/hooks/useAuth.jsx";
 
 const AppRouter = () => {
@@ -56,6 +57,14 @@ const AppRouter = () => {
         element={
           <MainLayout>
             <LegalMentions />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/contact"
+        element={
+          <MainLayout>
+            <Contact />
           </MainLayout>
         }
       />

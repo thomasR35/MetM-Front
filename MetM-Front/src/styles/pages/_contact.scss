@@ -1,0 +1,46 @@
+@use "../utils/mixins" as mix;
+@use "../utils/variables" as var;
+
+.contact-page {
+  max-width: 80vw;
+  margin: 0 auto;
+}
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  margin-inline: auto;
+
+  @include mix.responsive(xl) {
+    max-width: 60vw;
+  }
+
+  @include mix.responsive(lg) {
+    max-width: 70vw;
+  }
+}
+
+.form-button {
+  width: 100%;
+  margin-inline: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  @include mix.button-main(var.$button-bg);
+
+  @include mix.responsive(xl) {
+    max-width: 60vw;
+  }
+
+  @include mix.responsive(lg) {
+    max-width: 70vw;
+  }
+}
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
