@@ -9,9 +9,10 @@ import Register from "@/pages/Register";
 import ProductPage from "@/pages/ProductPage";
 import LegalMentions from "@/pages/LegalMentions";
 import Contact from "@/pages/Contact";
+import CartPage from "@/pages/CartPage";
 import { useAuth } from "@/hooks/useAuth.jsx";
 
-const AppRouter = () => {
+const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
   const { isAuthenticated } = useAuth();
 
   return (
@@ -68,7 +69,7 @@ const AppRouter = () => {
           </MainLayout>
         }
       />
-      {/* 🔥 Ajout des routes dynamiques pour les produits */}
+
       <Route
         path="/product/:productType"
         element={
@@ -77,6 +78,18 @@ const AppRouter = () => {
           </MainLayout>
         }
       />
+      <Route
+        path="/panier"
+        element={
+          <MainLayout>
+            <CartPage
+              setShowSignup={setShowSignup}
+              setPostLoginRedirect={setPostLoginRedirect}
+            />
+          </MainLayout>
+        }
+      />
+
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
     </Routes>

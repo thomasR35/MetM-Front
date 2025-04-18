@@ -40,7 +40,7 @@ const Gallery = () => {
         );
 
         setImages(Array.isArray(data.images) ? data.images : []);
-        setTotalImages(Array.isArray(data.images) ? data.images.length : 0); // ✅ Correction ici
+        setTotalImages(Array.isArray(data.images) ? data.images.length : 0);
       } catch (error) {
         console.error("❌ Erreur lors du chargement des images :", error);
         setImages([]);

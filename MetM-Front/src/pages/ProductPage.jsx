@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -8,6 +8,8 @@ import { useDropzone } from "react-dropzone";
 import "../styles/pages/_ProductPage.scss";
 import MockupProduct from "../components/MockupProduct";
 import ImageEditorModal from "../components/ImageEditorModal";
+import { useCart } from "@/context/CartContext";
+import { Link } from "react-router-dom";
 
 import mug1 from "../assets/images/mug1.jpg";
 import mug2 from "../assets/images/mug2.jpg";
@@ -59,6 +61,16 @@ const ProductPage = () => {
     if (!imageData) return;
     setCroppedImageDetails(imageData);
   };
+
+  const { addToCart } = useCart();
+
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    if (productType) {
+      localStorage.setItem("lastProduct", productType);
+    }
+  }, [productType]);
 
   return (
     <main className="product-page">
@@ -119,6 +131,37 @@ const ProductPage = () => {
           onApply={handleApplyCroppedImage}
         />
       )}
+
+      <div className="quantity-selector">
+        <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+          −
+        </button>
+        <span>{quantity}</span>
+        <button onClick={() => setQuantity(quantity + 1)}>+</button>
+      </div>
+
+      <button
+        className="form-button"
+        onClick={() =>
+          addToCart(
+            {
+              id: productType,
+              name: product.name,
+              price: parseFloat(
+                product.price.replace(",", ".").replace("€", "")
+              ),
+              image: product.images[0],
+            },
+            croppedImageDetails,
+            quantity
+          )
+        }
+      >
+        Ajouter au panier
+      </button>
+      <Link to="/panier">
+        <button className="form-button">Accéder au panier</button>
+      </Link>
     </main>
   );
 };

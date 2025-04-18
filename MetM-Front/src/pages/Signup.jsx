@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "@/api/auth";
 import "../styles/components/_signup.scss";
 
-const Signup = ({ closeModal }) => {
+const Signup = ({ closeModal, postLoginRedirect }) => {
   const { login: authLogin } = useAuth();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -27,7 +27,7 @@ const Signup = ({ closeModal }) => {
 
       if (data.token && data.user) {
         authLogin(data.user, data.token);
-        navigate("/");
+        navigate(postLoginRedirect || "/");
         closeModal();
       } else {
         setError("Réponse inattendue de l'API.");

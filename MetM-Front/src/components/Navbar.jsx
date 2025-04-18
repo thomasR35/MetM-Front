@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useCart } from "@/context/CartContext";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import "../styles/components/_navbar.scss";
 
 const Navbar = ({ setShowSignup, setShowRegister }) => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
+  const { cartItems } = useCart();
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -64,8 +67,9 @@ const Navbar = ({ setShowSignup, setShowRegister }) => {
         </div>
 
         {/* ✅ PANIER */}
-        <Link className="cart-icon" to="/cart">
+        <Link className="cart-icon" to="/panier">
           <FaShoppingCart />
+          {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
         </Link>
       </div>
 
