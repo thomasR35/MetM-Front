@@ -3,201 +3,120 @@
 
 .navbar {
   background-color: var.$navbar-bg;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   border-bottom: 1px solid var.$text;
-}
-
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin: 0 auto;
-  @include mix.responsive(sm-md) {
-    width: 90%;
-    justify-content: space-evenly;
-  }
-}
-
-.cart-icon {
+  padding: 1rem 2rem;
   position: relative;
-  font-size: 1.6rem;
-  color: #333;
+  z-index: 100;
 
-  .cart-badge {
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    background-color: red;
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 50%;
-    font-weight: bold;
-  }
-}
-
-/* LOGO */
-.logo {
-  font-size: 3rem;
-  font-family: "Gwendolyn", sans-serif;
-  font-weight: bold;
-  color: var.$text;
-  text-decoration: none;
-  margin-left: 3rem;
-  flex: 1;
-
-  @include mix.responsive(sm-md) {
-    display: flex;
-    vertical-align: middle;
-  }
-  @include mix.responsive(sm) {
+  .navbar-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
   }
-  @include mix.responsive(xs) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
 
-.nav-center {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  flex: 1;
-  @include mix.responsive(xl) {
-    transform: translate(40%);
-  }
-  @include mix.responsive(lg) {
-    transform: translate(35%);
-  }
-  @include mix.responsive(md-lg) {
-    transform: translate(30%);
-  }
-  @include mix.responsive(md) {
-    transform: translate(35%);
-  }
-  @include mix.responsive(sm-md) {
+  .burger-menu {
     display: none;
-  }
-  @include mix.responsive(sm) {
-    display: none;
-  }
-  @include mix.responsive(xs) {
-    display: none;
-  }
-}
-
-/* MENU BURGER */
-.burger-menu {
-  display: none;
-  font-size: 2rem;
-  cursor: pointer;
-
-  @include mix.responsive(sm-md) {
-    display: block;
-    margin-left: 2rem;
-  }
-  @include mix.responsive(sm) {
-    display: block;
-    margin-left: 1.5rem;
-  }
-  @include mix.responsive(xs) {
-    display: block;
-    margin-left: 1rem;
-  }
-}
-
-/* MENU MOBILE */
-.nav-links-mobile {
-  position: absolute;
-  top: 100%;
-  left: 1%;
-  background: var.$navbar-bg;
-  border-radius: 10px;
-  border: 1px solid var.$text;
-  list-style: none;
-  padding: 1rem;
-  z-index: 1000;
-
-  li {
-    padding: 0.5rem;
-    text-align: center;
-  }
-}
-
-/* PANIER */
-.cart-icon {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 3rem;
-  font-size: 3rem;
-  color: var.$text;
-  flex: 1;
-
-  @include mix.responsive(sm-md) {
-    margin-right: 2rem;
-  }
-  @include mix.responsive(sm) {
-    margin-right: 1.5rem;
-  }
-  @include mix.responsive(xs) {
-    margin-right: 1rem;
-  }
-}
-
-/* BOUTONS */
-.btn-gallery,
-.btn-login,
-.btn-logout,
-.btn-admin,
-.btn-register {
-  @include mix.button-main(var.$button-bg);
-  height: 45px;
-  min-width: 120px;
-  max-width: 150px;
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.logo {
-  @include mix.responsive(lg) {
-    font-size: 2.5rem;
-    text-align: center;
-  }
-
-  @include mix.responsive(md-lg) {
-    font-size: 2.2rem;
-    text-align: center;
-  }
-
-  @include mix.responsive(md) {
     font-size: 2rem;
-    text-align: center;
+    cursor: pointer;
+
+    @include mix.responsive(sm-md) {
+      display: block;
+    }
   }
 
-  @include mix.responsive(sm-md) {
-    font-size: 1.8rem;
-    transform: translate(40%);
-    text-align: center;
+  .logo {
+    font-family: "Gwendolyn", sans-serif;
+    font-size: 2.5rem;
+    color: var.$text;
+    text-decoration: none;
+    margin-left: 1rem;
+    flex-shrink: 0;
+
+    @include mix.responsive(sm) {
+      font-size: 2rem;
+      margin: 0 auto;
+    }
   }
 
-  @include mix.responsive(sm) {
-    font-size: 1.5rem;
-    transform: translate(35%);
-    text-align: center;
+  .nav-center {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1;
+    justify-content: center;
+
+    @include mix.responsive(sm-md) {
+      display: none;
+    }
   }
 
-  @include mix.responsive(xs) {
-    font-size: 1.2rem;
-    text-align: center;
+  .nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  .cart-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    font-size: 3rem;
+    color: var.$text;
+    text-decoration: none;
+    position: relative;
+    margin-left: 1rem;
+    z-index: 2;
+
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background-color: red;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+  }
+
+  .nav-links-mobile {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var.$navbar-bg;
+    border-top: 1px solid var.$text;
+    padding: 1rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 99;
+
+    li {
+      margin: 0.5rem 0;
+    }
+  }
+
+  .btn-gallery,
+  .btn-login,
+  .btn-register,
+  .btn-logout,
+  .btn-admin {
+    @include mix.button-main(var.$button-bg);
+    height: 45px;
+    min-width: 120px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
   }
 }

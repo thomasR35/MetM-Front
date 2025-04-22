@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 
-const CartPage = ({ setShowSignup }) => {
+const CartPage = ({ setShowSignup, setPostLoginRedirect }) => {
   const { cartItems, removeFromCart, updateQuantity, total } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -27,12 +27,8 @@ const CartPage = ({ setShowSignup }) => {
     if (isAuthenticated) {
       navigate("/checkout");
     } else {
-      if (setShowSignup && setPostLoginRedirect) {
-        setPostLoginRedirect("/checkout");
-        setShowSignup(true);
-      } else {
-        alert("Veuillez vous connecter pour accéder au paiement.");
-      }
+      setPostLoginRedirect("/checkout");
+      setShowSignup(true);
     }
   };
 

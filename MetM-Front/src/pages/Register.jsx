@@ -2,19 +2,18 @@ import { useState, useEffect } from "react";
 import { registerUser } from "@/api/auth";
 import "../styles/pages/_register.scss";
 
-const Register = ({ openLoginModal, closeRegisterModal }) => {
-  useEffect(() => {
-    if (!openLoginModal || typeof openLoginModal !== "function") {
-      console.warn("⏳ `openLoginModal` n'est pas encore disponible...");
-    }
-  }, [openLoginModal]);
-
+const Register = ({
+  openLoginModal,
+  closeRegisterModal,
+  setPostLoginRedirect,
+}) => {
   const [credentials, setCredentials] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -34,6 +33,7 @@ const Register = ({ openLoginModal, closeRegisterModal }) => {
     }
 
     setLoading(true);
+
     const response = await registerUser(
       credentials.username,
       credentials.email,
@@ -41,12 +41,12 @@ const Register = ({ openLoginModal, closeRegisterModal }) => {
     );
 
     if (response.success) {
-      setSuccessMessage("🎉 Inscription réussie ! Connexion...");
-
+      setSuccessMessage("🎉 Inscription réussie !");
       setTimeout(() => {
-        closeRegisterModal(); // 🔥 Ferme la modale après succès
-        openLoginModal(); // 🔥 Ouvre la modale de connexion
-      }, 2000);
+        setPostLoginRedirect(null);
+        closeRegisterModal();
+        openLoginModal();
+      }, 1000);
     } else {
       setError(response.message || "❌ Erreur inconnue.");
     }
@@ -56,12 +56,12 @@ const Register = ({ openLoginModal, closeRegisterModal }) => {
 
   return (
     <div className="modal-content">
-      {/* ✅ Bouton de fermeture */}
       <button className="close-modal" onClick={closeRegisterModal}>
         ✖
       </button>
 
       <h2>Créer un compte</h2>
+
       {error && <div className="error-message">{error}</div>}
       {successMessage && (
         <div className="success-message">{successMessage}</div>

@@ -7,12 +7,15 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
+import { AuthModalProvider } from "./context/AuthModalContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
       <CartProvider>
-        <App />
+        <AuthModalProvider>
+          <App />
+        </AuthModalProvider>
       </CartProvider>
     </AuthProvider>
   </BrowserRouter>

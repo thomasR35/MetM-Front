@@ -12,7 +12,11 @@ import Contact from "@/pages/Contact";
 import CartPage from "@/pages/CartPage";
 import { useAuth } from "@/hooks/useAuth.jsx";
 
-const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
+const AppRouter = ({
+  setShowSignup,
+  setShowRegister,
+  setPostLoginRedirect,
+}) => {
   const { isAuthenticated } = useAuth();
 
   return (
@@ -20,11 +24,16 @@ const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
       <Route
         path="/"
         element={
-          <MainLayout>
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
             <Home />
           </MainLayout>
         }
       />
+
       <Route
         path="/gallery"
         element={
@@ -36,16 +45,25 @@ const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
       <Route
         path="/register"
         element={
-          <MainLayout>
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
             <Register />
           </MainLayout>
         }
       />
+
       <Route
         path="/checkout"
         element={
           isAuthenticated ? (
-            <MainLayout>
+            <MainLayout
+              setShowSignup={setShowSignup}
+              setShowRegister={setShowRegister}
+              setPostLoginRedirect={setPostLoginRedirect}
+            >
               <Checkout />
             </MainLayout>
           ) : (
@@ -56,7 +74,11 @@ const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
       <Route
         path="/mentions-legales"
         element={
-          <MainLayout>
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
             <LegalMentions />
           </MainLayout>
         }
@@ -64,7 +86,11 @@ const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
       <Route
         path="/contact"
         element={
-          <MainLayout>
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
             <Contact />
           </MainLayout>
         }
@@ -73,7 +99,11 @@ const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
       <Route
         path="/product/:productType"
         element={
-          <MainLayout>
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
             <ProductPage />
           </MainLayout>
         }
@@ -81,7 +111,11 @@ const AppRouter = ({ setShowSignup, setPostLoginRedirect }) => {
       <Route
         path="/panier"
         element={
-          <MainLayout>
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
             <CartPage
               setShowSignup={setShowSignup}
               setPostLoginRedirect={setPostLoginRedirect}

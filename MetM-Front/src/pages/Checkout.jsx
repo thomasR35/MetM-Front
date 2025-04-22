@@ -1,16 +1,42 @@
 import { useCart } from "@/context/CartContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { sendOrder } from "@/api/orders";
+import { useAuth } from "@/hooks/useAuth";
 
 const Checkout = () => {
   const { cartItems, total, clearCart } = useCart();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const handlePayment = () => {
-    const confirmed = window.confirm("Voulez-vous confirmer votre commande ?");
-    if (confirmed) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    address: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      user_id: user?.id || null,
+      customer: formData,
+      items: cartItems,
+      total,
+    };
+
+    try {
+      const result = await sendOrder(payload);
+      toast.success(result.message || "Commande validée 🎉");
       clearCart();
-      alert("🎉 Paiement confirmé ! Merci pour votre commande.");
       navigate("/");
+    } catch (error) {
+      toast.error(error.message || "Erreur lors de la commande.");
     }
   };
 
@@ -18,14 +44,13 @@ const Checkout = () => {
     return (
       <main className="checkout-page">
         <h1>Panier vide</h1>
-        <Link to="/">Retour à la boutique</Link>
       </main>
     );
   }
 
   return (
     <main className="checkout-page">
-      <h1>Récapitulatif de la commande</h1>
+      <h1>Finaliser la commande</h1>
 
       <ul className="checkout-list">
         {cartItems.map((item) => (
@@ -36,11 +61,39 @@ const Checkout = () => {
         ))}
       </ul>
 
-      <h2>Total à régler : {total.toFixed(2)} €</h2>
+      <h2>Total : {total.toFixed(2)} €</h2>
 
-      <button className="form-button" onClick={handlePayment}>
-        Payer maintenant
-      </button>
+      <form className="checkout-form" onSubmit={handleSubmit}>
+        <label>Nom</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          required
+          onChange={handleChange}
+        />
+
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          required
+          onChange={handleChange}
+        />
+
+        <label>Adresse</label>
+        <textarea
+          name="address"
+          value={formData.address}
+          required
+          onChange={handleChange}
+        />
+
+        <button type="submit" className="form-button">
+          Valider la commande
+        </button>
+      </form>
     </main>
   );
 };

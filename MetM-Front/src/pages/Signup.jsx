@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 import { login } from "@/api/auth";
+import { toast } from "react-toastify";
 import "../styles/components/_signup.scss";
 
-const Signup = ({ closeModal, postLoginRedirect }) => {
+const Signup = ({ closeModal, postLoginRedirect, setShowRegister }) => {
   const { login: authLogin } = useAuth();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -27,6 +27,7 @@ const Signup = ({ closeModal, postLoginRedirect }) => {
 
       if (data.token && data.user) {
         authLogin(data.user, data.token);
+        toast.success("Bienvenue, ${data.user.username} 👋");
         navigate(postLoginRedirect || "/");
         closeModal();
       } else {
@@ -73,11 +74,19 @@ const Signup = ({ closeModal, postLoginRedirect }) => {
           <button type="submit" className="btn-submit">
             Se connecter
           </button>
+
           <p className="signup-link">
             pas encore inscrit ?{" "}
-            <Link to="/register" onClick={closeModal}>
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => {
+                closeModal();
+                setShowRegister(true);
+              }}
+            >
               Rejoignez-nous !
-            </Link>
+            </button>
           </p>
         </form>
       </div>
