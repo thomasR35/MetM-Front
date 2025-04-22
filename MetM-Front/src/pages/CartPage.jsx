@@ -16,7 +16,10 @@ const CartPage = ({ setShowSignup, setPostLoginRedirect }) => {
     return (
       <main className="cart-page">
         <h1>Votre panier est vide.</h1>
-        <Link to={`/product/${localStorage.getItem("lastProduct") || "mug"}`}>
+        <Link
+          className="cart-back-btn"
+          to={`/product/${localStorage.getItem("lastProduct") || "mug"}`}
+        >
           Retour au produit
         </Link>
       </main>
@@ -81,7 +84,10 @@ const CartPage = ({ setShowSignup, setPostLoginRedirect }) => {
                 </button>
               </article>
 
-              <button onClick={() => removeFromCart(item.product.id)}>
+              <button
+                className="form-button"
+                onClick={() => removeFromCart(item.product.id)}
+              >
                 Supprimer
               </button>
             </div>
