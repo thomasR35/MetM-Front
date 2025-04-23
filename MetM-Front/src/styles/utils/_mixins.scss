@@ -78,26 +78,7 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
   }
-
-  @include responsive(xl) {
-    font-size: 2.5rem;
-    min-width: 120px;
-    min-height: 50px;
-  }
-  @include responsive(lg) {
-    font-size: 2rem;
-    min-width: 110px;
-  }
-  @include responsive(md-lg) {
-    font-size: 1.8rem;
-    min-width: 100px;
-  }
-  @include responsive(md) {
-    font-size: 1.5rem;
-    min-width: 90px;
-  }
 }
-
 /* ========================
    MIXIN POUR STYLE DE CARTE
 ======================== */

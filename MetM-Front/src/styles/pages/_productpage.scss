@@ -1,7 +1,9 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
-/* ========== PAGE PRINCIPALE ========== */
+/* ================== 
+   PAGE PRINCIPALE 
+================== */
 .product-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -11,7 +13,9 @@
   align-items: center;
 }
 
-/* ========== BANNIÈRE PRODUIT ========== */
+/* ================
+   BANNIÈRE PRODUIT 
+ =============== */
 .product-banner {
   width: 100%;
   text-align: center;
@@ -24,7 +28,9 @@
   font-weight: bold;
 }
 
-/* ========== PRÉSENTATION PRODUIT HORIZONTALE ========== */
+/* =============================== 
+   PRÉSENTATION PRODUIT HORIZONTALE 
+=============================== */
 .product-sections {
   display: flex;
   justify-content: center;
@@ -42,23 +48,75 @@
   max-width: 600px;
   margin: auto;
   flex: 1;
+  @include mix.responsive(lg) {
+    width: 500px;
+    height: 500px;
+  }
+
+  @include mix.responsive(md-lg) {
+    width: 400px;
+    height: 400px;
+  }
+
+  @include mix.responsive(sm) {
+    width: 300px;
+    height: 300px;
+  }
+
+  @include mix.responsive(xs) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
 }
 
-/* Utilisé pour positionner les mockups dans le Swiper */
+/* ========================
+   MOCKUP CONTAINER
+======================== */
 .mockup-container {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
+  border: 1px solid var.$text-bg;
+  border-radius: 10px;
+
+  @include mix.responsive(lg) {
+    width: 500px;
+    height: 500px;
+  }
+
+  @include mix.responsive(md-lg) {
+    width: 400px;
+    height: 400px;
+  }
+
+  @include mix.responsive(sm) {
+    width: 300px;
+    height: 300px;
+  }
+
+  @include mix.responsive(xs) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
 }
 
+/* ========================
+   IMAGE DU PRODUIT
+======================== */
 .mockup-image {
   width: 100%;
   height: auto;
+  object-fit: cover;
 }
 
+/* ========================
+   OVERLAY (image personnalisée centrée)
+======================== */
 .overlay-image {
   position: absolute;
   top: 50%;
@@ -67,9 +125,15 @@
   width: 50%;
   height: auto;
   opacity: 0.9;
+
+  @include mix.responsive(xs) {
+    width: 70%; // un peu plus large sur petit écran
+  }
 }
 
-/* ========== COLONNE DROITE : PERSO + UPLOAD ========== */
+/* ================================ 
+   COLONNE DROITE : PERSO + UPLOAD 
+================================= */
 .product-aside {
   display: flex;
   flex-direction: column;
@@ -78,10 +142,15 @@
   max-width: 600px;
   flex: 1;
   height: 100%;
-  min-height: 500px;
+  min-height: 600px;
+  @include mix.responsive(xs) {
+    min-height: auto;
+  }
 }
 
-/* ========== BLOC DE PERSONNALISATION ========== */
+/* ======================= 
+BLOC DE PERSONNALISATION 
+======================= */
 .customization-options {
   display: flex;
   flex-direction: column;
@@ -128,7 +197,9 @@
   }
 }
 
-/* ========== ZONE D’UPLOAD D’IMAGE ========== */
+/* ===================== 
+   ZONE D’UPLOAD D’IMAGE 
+===================== */
 .upload-container {
   width: 100%;
 
@@ -153,7 +224,9 @@
   }
 }
 
-/* ========== BOUTONS ========== */
+/* ========== 
+   BOUTONS 
+========== */
 .quantity-selector {
   display: flex;
   align-items: center;
@@ -178,7 +251,52 @@
   }
 }
 
-/* ========== BOUTON AJOUTER AU PANIER ========== */
+/* ==========================
+    BOUTON AJOUTER AU PANIER 
+========================== */
 .form-button {
   width: auto;
+}
+
+/* ==========================
+    BLOC DE NAVIGATION 
+========================== */
+.product-navigation {
+  text-align: center;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .product-switch-links {
+    display: flex;
+    gap: 8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    @include mix.responsive(sm) {
+      gap: 2rem;
+    }
+
+    @include mix.responsive(xs) {
+      gap: 1rem;
+    }
+  }
+
+  .product-switch-link {
+    background: var.$button-bg;
+    border: 1px solid var.$text;
+    color: var.$text;
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+
+    &:hover {
+      background: var.$links-hover;
+      text-decoration: underline;
+    }
+  }
 }

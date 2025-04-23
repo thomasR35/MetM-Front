@@ -36,7 +36,6 @@ const ProductPage = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImageDetails, setCroppedImageDetails] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tshirtColor, setTshirtColor] = useState("#ffffff");
   const [customText, setCustomText] = useState("");
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -89,8 +88,7 @@ const ProductPage = () => {
                 <MockupProduct
                   productImage={img}
                   croppedImageData={croppedImageDetails}
-                  tshirtColor={productType === "tshirt" ? tshirtColor : null}
-                  customText={productType === "tshirt" ? customText : null}
+                  customText={customText}
                 />
               </SwiperSlide>
             ))}
@@ -98,19 +96,17 @@ const ProductPage = () => {
         </section>
 
         <section className="product-aside">
-          {productType === "tshirt" && (
-            <article className="customization-options">
-              <h2>Personnalisation</h2>
-              <label htmlFor="customText">Texte personnalisé :</label>
-              <input
-                type="text"
-                id="customText"
-                placeholder="Entrez votre texte..."
-                value={customText}
-                onChange={(e) => setCustomText(e.target.value)}
-              />
-            </article>
-          )}
+          <article className="customization-options">
+            <h2>Personnalisation</h2>
+            <label htmlFor="customText">Texte personnalisé :</label>
+            <input
+              type="text"
+              id="customText"
+              placeholder="Entrez votre texte..."
+              value={customText}
+              onChange={(e) => setCustomText(e.target.value)}
+            />
+          </article>
 
           <section className="upload-container">
             <article {...getRootProps()} className="dropzone">
@@ -156,6 +152,24 @@ const ProductPage = () => {
       >
         Ajouter au panier
       </button>
+
+      <section className="product-navigation">
+        <h2>Changer de produit</h2>
+        <div className="product-switch-links">
+          {Object.keys(productData)
+            .filter((key) => key !== productType)
+            .map((key) => (
+              <Link
+                key={key}
+                to={`/product/${key}`}
+                className="product-switch-link"
+              >
+                {productData[key].name}
+              </Link>
+            ))}
+        </div>
+      </section>
+
       <Link to="/panier">
         <button className="form-button">Accéder au panier</button>
       </Link>
