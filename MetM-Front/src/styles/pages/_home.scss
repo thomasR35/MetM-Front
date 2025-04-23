@@ -5,9 +5,18 @@
    CONTENEUR GLOBAL DE LA HOME
 ======================== */
 .home-container {
-  max-width: 70vw;
+  max-width: 80vw;
   margin: auto;
-  padding: 20px;
+  padding: 1.5rem;
+  @include mix.responsive(sm-md) {
+    max-width: 85%;
+  }
+  @include mix.responsive(sm) {
+    max-width: 90%;
+  }
+  @include mix.responsive(xs) {
+    max-width: 90%;
+  }
 }
 
 /* ========================
@@ -60,6 +69,15 @@
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
   max-width: 30%;
+  width: 100%;
+
+  @include mix.responsive(md-lg) {
+    max-width: 45%;
+  }
+
+  @include mix.responsive(xs) {
+    max-width: 100%;
+  }
 
   p {
     color: var.$text;
