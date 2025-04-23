@@ -1,6 +1,9 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
+/* ========================
+   FORMULAIRE GÉNÉRIQUE
+======================== */
 .form-container {
   @include mix.card-style;
   width: 100%;
@@ -20,7 +23,10 @@
     @include mix.button-style(var.$primary-color);
   }
 }
-/* ✅ Gestion des mots-clés */
+
+/* ========================
+   GESTION DES MOTS-CLÉS
+======================== */
 .keyword-management {
   width: 100%;
   max-width: 600px;
@@ -35,7 +41,7 @@
     margin-bottom: var.$spacing-md;
   }
 
-  /* 🔹 Formulaire d'ajout */
+  /* 🔹 Formulaire d'ajout de mot-clé */
   .add-keyword {
     display: flex;
     gap: var.$spacing-sm;

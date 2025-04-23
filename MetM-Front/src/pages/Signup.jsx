@@ -79,7 +79,7 @@ const Signup = ({ closeModal, postLoginRedirect, setShowRegister }) => {
             pas encore inscrit ?{" "}
             <button
               type="button"
-              className="link-button"
+              className="form-button"
               onClick={() => {
                 closeModal();
                 setShowRegister(true);

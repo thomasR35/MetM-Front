@@ -1,17 +1,17 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
-/* 🔹 Page Produit */
+/* ========== PAGE PRINCIPALE ========== */
 .product-page {
   max-width: 1200px;
-  margin: auto;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* 🔹 Bannière du produit */
+/* ========== BANNIÈRE PRODUIT ========== */
 .product-banner {
   width: 100%;
   text-align: center;
@@ -20,20 +20,38 @@
   border-radius: 10px;
   border: 1px solid var.$text;
   font-family: "Gwendolyn", sans-serif;
+  font-size: 2.5rem;
   font-weight: bold;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
 }
+
+/* ========== PRÉSENTATION PRODUIT HORIZONTALE ========== */
+.product-sections {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* ========== SLIDER (PARTIE GAUCHE) ========== */
+.product-slider {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  flex: 1;
+}
+
+/* Utilisé pour positionner les mockups dans le Swiper */
 .mockup-container {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: "500px";
-  height: "500px";
+  width: 500px;
+  height: 500px;
 }
 
 .mockup-image {
@@ -51,41 +69,43 @@
   opacity: 0.9;
 }
 
-/* 🔹 Conteneur principal */
-.product-content {
+/* ========== COLONNE DROITE : PERSO + UPLOAD ========== */
+.product-aside {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 30px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  width: 1200px;
-}
-
-/* 🔹 Slider Produit */
-.product-slider {
-  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
   max-width: 600px;
-  margin: auto;
+  flex: 1;
+  height: 100%;
+  min-height: 500px;
 }
 
+/* ========== BLOC DE PERSONNALISATION ========== */
 .customization-options {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  width: 100%;
-  max-width: 500px;
   padding: 20px;
-  background: white;
+  background: var.$text-bg;
   border-radius: 10px;
   border: 1px solid var.$text;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
 
   h2 {
     font-size: 1.5rem;
     font-weight: bold;
     color: var.$text;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var.$text;
+    border-radius: 5px;
+    background-color: var.$main-bg;
   }
 
   .option-buttons {
@@ -102,30 +122,28 @@
       &:hover {
         background: lighten(var.$button-bg, 10%);
         text-decoration: underline;
-        text-decoration-thickness: 1px;
         text-underline-offset: 4px;
       }
     }
   }
 }
 
-/* 🔹 Zone d'upload */
+/* ========== ZONE D’UPLOAD D’IMAGE ========== */
 .upload-container {
   width: 100%;
-  max-width: 500px;
 
   .dropzone {
     display: flex;
+    align-items: center;
+    justify-content: center;
     height: 200px;
     padding: 20px;
     border: 2px dashed var.$text-bg;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 10px;
     background: white;
+    border-radius: 10px;
+    text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 
     p {
       margin: 0;
@@ -133,4 +151,34 @@
       color: #333;
     }
   }
+}
+
+/* ========== BOUTONS ========== */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  button {
+    padding: 0.25rem 0.6rem;
+    font-weight: 550;
+    background: var.$button-bg;
+    color: var.$text;
+    border: var.$text 1px solid;
+    border-radius: 5px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+  }
+
+  span {
+    min-width: 24px;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+/* ========== BOUTON AJOUTER AU PANIER ========== */
+.form-button {
+  width: auto;
 }

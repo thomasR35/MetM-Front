@@ -1,6 +1,9 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
+/* ========================
+   NAVIGATION PRINCIPALE
+======================== */
 .navbar {
   background-color: var.$navbar-bg;
   border-bottom: 1px solid var.$text;
@@ -8,6 +11,9 @@
   position: relative;
   z-index: 100;
 
+  /* ========================
+     CONTAINER CENTRAL
+  ========================= */
   .navbar-container {
     display: flex;
     align-items: center;
@@ -17,16 +23,9 @@
     width: 100%;
   }
 
-  .burger-menu {
-    display: none;
-    font-size: 2rem;
-    cursor: pointer;
-
-    @include mix.responsive(sm-md) {
-      display: block;
-    }
-  }
-
+  /* ========================
+     LOGO (gauche)
+  ========================= */
   .logo {
     font-family: "Gwendolyn", sans-serif;
     font-size: 2.5rem;
@@ -41,6 +40,10 @@
     }
   }
 
+  /* ========================
+     CENTRE DE LA NAVBAR
+     (liens visibles sur grand écran)
+  ========================= */
   .nav-center {
     display: flex;
     align-items: center;
@@ -53,6 +56,10 @@
     }
   }
 
+  /* ========================
+     DROITE DE LA NAVBAR
+     (cart, boutons login/register, etc.)
+  ========================= */
   .nav-right {
     display: flex;
     align-items: center;
@@ -60,6 +67,22 @@
     flex-shrink: 0;
   }
 
+  /* ========================
+     BOUTON BURGER (mobile only)
+  ========================= */
+  .burger-menu {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+
+    @include mix.responsive(sm-md) {
+      display: block;
+    }
+  }
+
+  /* ========================
+     ICÔNE PANIER
+  ========================= */
   .cart-icon {
     display: inline-flex;
     align-items: center;
@@ -86,6 +109,10 @@
     }
   }
 
+  /* ========================
+     NAVIGATION MOBILE
+     (affichée sous le menu)
+  ========================= */
   .nav-links-mobile {
     position: absolute;
     top: 100%;
@@ -105,6 +132,10 @@
     }
   }
 
+  /* ========================
+     BOUTONS DIVERS
+     (reutilisables)
+  ========================= */
   .btn-gallery,
   .btn-login,
   .btn-register,

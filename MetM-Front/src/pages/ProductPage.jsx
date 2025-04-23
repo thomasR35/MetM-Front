@@ -77,51 +77,48 @@ const ProductPage = () => {
       <h1 className="product-banner">Personnalisation du {product.name}</h1>
       <p className="price">Prix : {product.price}</p>
 
-      <section className="product-content">
-        <Swiper
-          navigation={true}
-          modules={[Navigation]}
-          className="product-slider"
-        >
-          {product.images.map((img, index) => (
-            <SwiperSlide key={index}>
-              <MockupProduct
-                productImage={img}
-                croppedImageData={croppedImageDetails}
-                tshirtColor={productType === "tshirt" ? tshirtColor : null}
-                customText={productType === "tshirt" ? customText : null}
+      <section className="product-sections">
+        <section className="product-slider">
+          <Swiper
+            navigation={true}
+            modules={[Navigation]}
+            className="product-slider"
+          >
+            {product.images.map((img, index) => (
+              <SwiperSlide key={index}>
+                <MockupProduct
+                  productImage={img}
+                  croppedImageData={croppedImageDetails}
+                  tshirtColor={productType === "tshirt" ? tshirtColor : null}
+                  customText={productType === "tshirt" ? customText : null}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </section>
+
+        <section className="product-aside">
+          {productType === "tshirt" && (
+            <article className="customization-options">
+              <h2>Personnalisation</h2>
+              <label htmlFor="customText">Texte personnalisé :</label>
+              <input
+                type="text"
+                id="customText"
+                placeholder="Entrez votre texte..."
+                value={customText}
+                onChange={(e) => setCustomText(e.target.value)}
               />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            </article>
+          )}
 
-        {productType === "tshirt" && (
-          <article className="customization-options">
-            <h2>Personnalisation</h2>
-            <label htmlFor="tshirtColor">Choisissez la couleur :</label>
-            <input
-              type="color"
-              id="tshirtColor"
-              value={tshirtColor}
-              onChange={(e) => setTshirtColor(e.target.value)}
-            />
-            <label htmlFor="customText">Texte personnalisé :</label>
-            <input
-              type="text"
-              id="customText"
-              placeholder="Entrez votre texte..."
-              value={customText}
-              onChange={(e) => setCustomText(e.target.value)}
-            />
-          </article>
-        )}
-      </section>
-
-      <section className="upload-container">
-        <article {...getRootProps()} className="dropzone">
-          <input {...getInputProps()} />
-          <p>Déposez une image ici ou cliquez pour importer</p>
-        </article>
+          <section className="upload-container">
+            <article {...getRootProps()} className="dropzone">
+              <input {...getInputProps()} />
+              <p>Déposez une image ici ou cliquez pour importer</p>
+            </article>
+          </section>
+        </section>
       </section>
 
       {isModalOpen && (

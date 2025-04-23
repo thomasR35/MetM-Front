@@ -1,4 +1,8 @@
 @use "../utils/variables" as var;
+
+/* ========================
+   ITEM DE GALERIE
+======================== */
 .gallery-item {
   background: var.$light-color;
   border-radius: 10px;
@@ -13,17 +17,24 @@
   flex-direction: column;
   justify-content: space-between;
 
+  /* ========================
+     IMAGE DE LA GALERIE
+  ========================= */
   .gallery-image {
     width: 100%;
     min-height: 200px;
     object-fit: cover;
     border-bottom: 2px solid #fb6f92;
+
     &:hover {
       transform: scale(1.3);
       transition: transform 0.3s;
     }
   }
 
+  /* ========================
+     INFOS SOUS L’IMAGE
+  ========================= */
   .gallery-info {
     flex-grow: 1;
     padding: 10px;

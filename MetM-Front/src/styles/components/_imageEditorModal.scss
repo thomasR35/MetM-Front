@@ -1,6 +1,9 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
+/* ========================
+   OVERLAY DE LA MODALE
+======================== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -13,6 +16,9 @@
   justify-content: center;
 }
 
+/* ========================
+   CONTENU DE LA MODALE
+======================== */
 .modal {
   position: fixed;
   top: 50%;
@@ -27,12 +33,9 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.apply-btn {
-  @include mix.button-main(var.$button-bg);
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-top: 20px;
-}
+/* ========================
+   BOUTON DE FERMETURE
+======================== */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -43,6 +46,19 @@
   cursor: pointer;
 }
 
+/* ========================
+   BOUTON APPLIQUER
+======================== */
+.apply-btn {
+  @include mix.button-main(var.$button-bg);
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 20px;
+}
+
+/* ========================
+   CONTENEUR IMAGE
+======================== */
 .image-container {
   width: 300px;
   height: 300px;
@@ -53,59 +69,23 @@
   justify-content: center;
 }
 
-.crop-frame {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  justify-content: center;
-}
-
-.draggable-image {
-  position: absolute;
-  max-width: 150%;
-  max-height: 150%;
-  user-select: none;
-  transform: translate(-50%, -50%);
-}
-
-.frame-options {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.frame-options button {
-  background: var.$button-bg;
-  color: var.$text;
-  border: 1px solid var.$text;
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background 0.2s ease-in-out;
-}
-
-.frame-options button:hover {
-  background: var.$links-hover;
-  text-decoration: underline;
-}
-
+/* ========================
+   CADRE DE CROP GÉNÉRIQUE
+======================== */
 .crop-frame {
   width: 100%;
   height: 100%;
   overflow: hidden;
   position: relative;
-  clip-path: inset(0);
+  clip-path: inset(0); // forme par défaut (rectangle)
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* ========================
+   FORMES DE CROP SPÉCIALES
+======================== */
 .crop-frame.circle {
   clip-path: circle(50%);
 }
@@ -114,4 +94,41 @@
   clip-path: path(
     "M 160,90 A 50,50 0,0,1 260,90 Q 260,190 160,260 Q 60,190 60,90 A 50,50 0,0,1 160,90"
   );
+}
+
+/* ========================
+   IMAGE DÉPLAÇABLE
+======================== */
+.draggable-image {
+  position: absolute;
+  max-width: 150%;
+  max-height: 150%;
+  user-select: none;
+  transform: translate(-50%, -50%);
+}
+
+/* ========================
+   OPTIONS DE CADRES
+======================== */
+.frame-options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  button {
+    background: var.$button-bg;
+    color: var.$text;
+    border: 1px solid var.$text;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease-in-out;
+
+    &:hover {
+      background: var.$links-hover;
+      text-decoration: underline;
+    }
+  }
 }

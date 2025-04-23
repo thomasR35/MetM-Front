@@ -1,12 +1,18 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
+/* ========================
+   CONTENEUR DU TABLEAU
+======================== */
 .table-container {
   width: 100%;
   max-width: 800px;
   overflow-x: auto;
 }
 
+/* ========================
+   TABLEAU PRINCIPAL
+======================== */
 .table {
   width: 100%;
   display: table;
@@ -26,15 +32,24 @@
     max-width: 200px;
   }
 
+  /* ========================
+     EN-TÊTE DU TABLEAU
+  ========================= */
   th {
     background-color: var.$primary-color;
     color: white;
   }
 
+  /* ========================
+     LIGNES ALTERNÉES
+  ========================= */
   tr:nth-child(even) {
     background-color: #f8f9fa;
   }
 
+  /* ========================
+     MINIATURE IMAGE
+  ========================= */
   .image-thumbnail {
     width: 80px;
     height: 80px;
@@ -45,13 +60,15 @@
 
     &:hover {
       transform: scale(2);
-      position: absolute;
       z-index: 10;
       position: relative;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
   }
 
+  /* ========================
+     ACTIONS (EDIT/SUPPRIMER)
+  ========================= */
   .table-actions {
     display: flex;
     flex-direction: column;

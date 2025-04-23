@@ -1,6 +1,51 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
+/* ========================
+   MODALE OVERLAY GÉNÉRIQUE
+======================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* ========================
+   CONTENU DE LA MODALE
+======================== */
+.modal-content {
+  background: var.$main-bg;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+/* ========================
+   BOUTON FERMETURE MODALE
+======================== */
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* ========================
+   CONTAINER FORMULAIRE D’INSCRIPTION
+======================== */
 .register-container {
   max-width: 400px;
   margin: 2rem auto;
@@ -14,6 +59,9 @@
     margin-bottom: 1rem;
   }
 
+  /* ========================
+     GROUPE D’INPUTS
+  ========================= */
   .input-group {
     margin-bottom: 1rem;
     text-align: left;
@@ -31,6 +79,9 @@
     }
   }
 
+  /* ========================
+     BOUTON ENVOI
+  ========================= */
   .btn-submit {
     background: var.$button-bg;
     color: var.$text;
@@ -46,41 +97,13 @@
     }
   }
 }
+
+/* ========================
+   MESSAGE DE SUCCÈS
+======================== */
 .success-message {
   color: var.$links;
   font-weight: bold;
   text-align: center;
   margin-top: 1rem;
-}
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: var.$main-bg;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  text-align: center;
-  position: relative;
-}
-
-.close-modal {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
 }

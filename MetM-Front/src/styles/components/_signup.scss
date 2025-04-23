@@ -1,7 +1,9 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
-/* ✅ Overlay semi-transparent */
+/* ========================
+   OVERLAY SEMI-TRANSPARENT
+======================== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -15,7 +17,9 @@
   z-index: 1000;
 }
 
-/* ✅ Contenu de la modale */
+/* ========================
+   CONTENU DE LA MODALE
+======================== */
 .modal-content {
   background: var.$navbar-bg;
   padding: 2rem;
@@ -27,7 +31,9 @@
   width: 90%;
 }
 
-/* ✅ Bouton de fermeture */
+/* ========================
+   BOUTON DE FERMETURE
+======================== */
 .close-modal {
   position: absolute;
   top: 10px;
@@ -39,13 +45,17 @@
   color: var.$text;
 }
 
-/* ✅ Titre */
+/* ========================
+   TITRE DE LA MODALE
+======================== */
 .modal-title {
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
-/* ✅ Gestion des inputs */
+/* ========================
+   CHAMPS DE FORMULAIRE
+======================== */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -64,7 +74,9 @@
   }
 }
 
-/* ✅ Bouton de connexion */
+/* ========================
+   BOUTON DE SOUMISSION
+======================== */
 .btn-submit {
   background: var.$button-bg;
   color: var.$text;
@@ -81,6 +93,9 @@
   }
 }
 
+/* ========================
+   LIEN VERS L’INSCRIPTION/CONNEXION
+======================== */
 .signup-link {
   text-align: center;
   margin-top: 1rem;

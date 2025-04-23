@@ -1,13 +1,25 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
+/* ========================
+   BACKGROUND GÉNÉRAL
+======================== */
 body {
   background-color: #f8f9fa;
 }
+
+/* ========================
+   WRAPPER FLEX DU DASHBOARD
+   (Sidebar + Contenu)
+======================== */
 .d-flex {
   max-height: 100vh;
   overflow-y: hidden;
 }
+
+/* ========================
+   CONTENU PRINCIPAL ADMIN
+======================== */
 .admin-content {
   width: calc(100% - 250px);
   min-height: 100vh;
@@ -19,6 +31,9 @@ body {
   margin-left: 250px;
   overflow-y: auto;
 
+  /* ========================
+     SECTIONS INTERNES
+  ========================= */
   section {
     margin-bottom: 20px;
   }
@@ -28,11 +43,17 @@ body {
     text-align: center;
   }
 
+  /* ========================
+     RESPONSIVE : TABLETTE
+  ========================= */
   @include mix.responsive(tablet) {
     width: calc(100% - 180px);
     margin-left: 180px;
   }
 
+  /* ========================
+     RESPONSIVE : MOBILE
+  ========================= */
   @include mix.responsive(mobile) {
     width: 100%;
     margin-left: 0;

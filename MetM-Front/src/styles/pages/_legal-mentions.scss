@@ -1,14 +1,20 @@
+/* ========================
+   MENTIONS LÉGALES
+======================== */
 .legal-mentions {
   padding: 2rem;
   margin: 0 auto;
   max-width: 70vw;
   line-height: 1.5;
 
+  /* ========================
+     TITRES DE SECTIONS
+  ========================= */
   h1,
   h2,
   h3 {
-    margin-bottom: 1rem;
     margin-top: 2rem;
+    margin-bottom: 1rem;
     font-weight: bold;
   }
 }
