@@ -8,10 +8,10 @@ const LegalMentions = () => {
       <section>
         <h2>Éditeur du site</h2>
         <p>
-          Ce site est édité par : <strong>Marcelle & Maurice Shop</strong>
+          Ce site est édité par : <strong>Sronnok</strong>
           <br />
-          Propriétaire : [Nom à insérer] <br />
-          Adresse : [Adresse complète] <br />
+          Propriétaire : John Doe <br />
+          Adresse : 13 Wisteria Lane <br />
           Email : contact@marcelleetmauriceshop.fr
         </p>
       </section>
@@ -19,9 +19,10 @@ const LegalMentions = () => {
       <section>
         <h2>Hébergement</h2>
         <p>
-          Hébergeur : [Nom de l’hébergeur] <br />
-          Adresse : [Adresse de l’hébergeur] <br />
-          Téléphone : [Téléphone de l’hébergeur]
+          Hébergeur : L'hébergeur <br />
+          Adresse : cloud:somewhere//over.the.rainbow <br />
+          Téléphone : 06 00 00 00 00 <br />
+          Email : lhebergeur@cloud.com
         </p>
       </section>
 

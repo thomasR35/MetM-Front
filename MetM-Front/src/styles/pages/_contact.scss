@@ -7,6 +7,12 @@
 .contact-page {
   max-width: 80vw;
   margin: 0 auto;
+  @include mix.responsive(xl) {
+    max-width: 40%;
+  }
+  @include mix.responsive(lg) {
+    max-width: 50%;
+  }
 }
 
 /* ========================
