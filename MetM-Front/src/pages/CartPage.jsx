@@ -1,16 +1,27 @@
 import { useCart } from "@/context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { useAuthModal } from "@/context/AuthModalContext";
 
-const CartPage = ({ setShowSignup, setPostLoginRedirect }) => {
+const CartPage = () => {
   const { cartItems, removeFromCart, updateQuantity, total } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleCheckoutClick = () => {
+    if (isAuthenticated) {
+      navigate("/checkout");
+    } else {
+      setPostLoginRedirect("/checkout");
+      setShowSignup(true);
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -26,15 +37,6 @@ const CartPage = ({ setShowSignup, setPostLoginRedirect }) => {
     );
   }
 
-  const handleCheckoutClick = () => {
-    if (isAuthenticated) {
-      navigate("/checkout");
-    } else {
-      setPostLoginRedirect("/checkout");
-      setShowSignup(true);
-    }
-  };
-
   return (
     <main className="cart-page">
       <h1>Votre panier</h1>
@@ -42,18 +44,11 @@ const CartPage = ({ setShowSignup, setPostLoginRedirect }) => {
       <section className="cart-items">
         {cartItems.map((item) => (
           <article key={item.product.id} className="cart-item">
-            <img src={item.product.image} alt={item.product.name} width="100" />
+            <img src={item.product.image} alt={item.product.name} />
             <div className="cart-info">
               <h2>{item.product.name}</h2>
               <p>{item.product.price.toFixed(2)} €</p>
-              <input
-                type="number"
-                min="1"
-                value={item.quantity}
-                onChange={(e) =>
-                  updateQuantity(item.product.id, parseInt(e.target.value, 10))
-                }
-              />
+
               <article className="quantity-control">
                 <button
                   className="minus"

@@ -48,11 +48,18 @@
     max-width: 800px;
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
     gap: 1rem;
 
+    .cart-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
     .cart-item {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
       padding: 1rem;
       border: 1px solid var.$text;
@@ -105,5 +112,22 @@
     min-width: 24px;
     text-align: center;
     font-weight: bold;
+  }
+}
+.cart-total {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 550;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+
+  h2 {
+    text-align: center;
+  }
+  .form-button {
+    max-width: 800px;
   }
 }
