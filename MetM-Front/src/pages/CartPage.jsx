@@ -1,9 +1,10 @@
+// src/pages/CartPage.jsx
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useAuthModal } from "@/context/AuthModalContext";
-import MockupProduct from "@/components/MockupProduct"; // <-- import
+import MockupProduct from "@/components/MockupProduct";
 
 const CartPage = () => {
   const { cartItems, removeFromCart, updateQuantity, total } = useCart();
@@ -11,21 +12,28 @@ const CartPage = () => {
   const navigate = useNavigate();
   const { setShowSignup, setPostLoginRedirect } = useAuthModal();
 
-  useEffect(() => window.scrollTo(0, 0), []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-  if (cartItems.length === 0)
+  if (cartItems.length === 0) {
     return (
       <main className="cart-page">
         <h1>Votre panier est vide.</h1>
-        <Link to={`/product/${localStorage.getItem("lastProduct") || "mug"}`}>
+        <Link
+          to={`/product/${localStorage.getItem("lastProduct") || "mug"}`}
+          className="form-button"
+        >
           Retour au produit
         </Link>
       </main>
     );
+  }
 
   const handleCheckoutClick = () => {
-    if (isAuthenticated) navigate("/checkout");
-    else {
+    if (isAuthenticated) {
+      navigate("/checkout");
+    } else {
       setPostLoginRedirect("/checkout");
       setShowSignup(true);
     }
@@ -37,7 +45,6 @@ const CartPage = () => {
 
       <section className="cart-items">
         {cartItems.map((item, idx) => {
-          // clé unique React
           const key = `${item.product.id}__${
             item.customImage?.dataUrl || "std"
           }__${idx}`;
@@ -62,18 +69,26 @@ const CartPage = () => {
 
                 <div className="quantity-control">
                   <button
-                    onClick={() =>
-                      item.quantity > 1
-                        ? updateQuantity(
-                            item.product.id,
-                            item.customImage?.dataUrl,
-                            item.quantity - 1
-                          )
-                        : removeFromCart(
-                            item.product.id,
-                            item.customImage?.dataUrl
-                          )
-                    }
+                    onClick={() => {
+                      if (item.quantity > 1) {
+                        // on décrémente simplement
+                        updateQuantity(
+                          item.product.id,
+                          item.customImage?.dataUrl,
+                          item.quantity - 1
+                        );
+                      } else {
+                        // confirmation avant suppression
+                        const ok = window.confirm(
+                          "Êtes-vous sûr·e de vouloir supprimer cet article du panier ?"
+                        );
+                        if (!ok) return;
+                        removeFromCart(
+                          item.product.id,
+                          item.customImage?.dataUrl
+                        );
+                      }
+                    }}
                   >
                     −
                   </button>
@@ -93,9 +108,13 @@ const CartPage = () => {
 
                 <button
                   className="form-button"
-                  onClick={() =>
-                    removeFromCart(item.product.id, item.customImage?.dataUrl)
-                  }
+                  onClick={() => {
+                    const ok = window.confirm(
+                      "Êtes-vous sûr·e de vouloir supprimer cet article du panier ?"
+                    );
+                    if (!ok) return;
+                    removeFromCart(item.product.id, item.customImage?.dataUrl);
+                  }}
                 >
                   Supprimer
                 </button>

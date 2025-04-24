@@ -1,3 +1,4 @@
+// src/pages/ProductPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,9 +8,10 @@ import { Navigation } from "swiper/modules";
 import { useDropzone } from "react-dropzone";
 
 import "../styles/pages/_ProductPage.scss";
-import MockupProduct from "../components/MockupProduct";
-import ImageEditorModal from "../components/ImageEditorModal";
+import MockupProduct from "@/components/MockupProduct";
+import ImageEditorModal from "@/components/ImageEditorModal";
 import { useCart } from "@/context/CartContext";
+import { CompositeImage } from "@/services/composite/CompositeImage";
 
 import mug1 from "../assets/images/mug1.jpg";
 import mug2 from "../assets/images/mug2.jpg";
@@ -42,13 +44,34 @@ const cropZones = {
 const ProductPage = () => {
   const { productType } = useParams();
   const product = productData[productType] || productData.mug;
+
+  // Slide actif dans le Swiper
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Upload + crop
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImageData, setCroppedImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [customText, setCustomText] = useState("");
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
 
+  // Texte personnalisé
+  const [customText, setCustomText] = useState("");
+  const [textOptions, setTextOptions] = useState({
+    fontFamily: "sans-serif",
+    fontSize: 24,
+    color: "#000000",
+    position: { x: 0.5, y: 0.8 },
+  });
+
+  // Quantité + panier
+  const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
+
+  // Sauvegarde du dernier produit visité
+  useEffect(() => {
+    if (productType) localStorage.setItem("lastProduct", productType);
+  }, [productType]);
+
+  // Dropzone pour importer l'image
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/png": [".png"],
@@ -67,18 +90,66 @@ const ProductPage = () => {
     },
   });
 
-  const handleApplyCroppedImage = ({ dataUrl, width, height }) => {
-    setCroppedImageData({ dataUrl, width, height });
+  // Callback après crop dans la modale
+  const handleApplyCroppedImage = (data) => {
+    setCroppedImageData(data);
+    setIsModalOpen(false);
   };
 
-  useEffect(() => {
-    if (productType) localStorage.setItem("lastProduct", productType);
-  }, [productType]);
+  // Fonction pour générer l'image composite et l'ajouter au panier
+  const handleAddToCart = async () => {
+    try {
+      const prixFloat = parseFloat(
+        product.price.replace(",", ".").replace("€", "")
+      );
+
+      // Si pas de crop, on ajoute directement sans composite
+      if (!croppedImageData) {
+        return addToCart(
+          {
+            id: productType,
+            name: product.name,
+            price: prixFloat,
+            image: product.images[currentSlide],
+          },
+          null,
+          quantity
+        );
+      }
+
+      // Génère l'image composite (mockup + crop + texte)
+      const composite = await CompositeImage.create({
+        productImageUrl: product.images[currentSlide],
+        croppedData: croppedImageData,
+        customText,
+        textOptions,
+        cropArea: cropZones[productType][currentSlide],
+      });
+
+      addToCart(
+        {
+          id: productType,
+          name: product.name,
+          price: prixFloat,
+          image: composite.dataUrl,
+        },
+        {
+          dataUrl: composite.dataUrl,
+          width: composite.width,
+          height: composite.height,
+        },
+        quantity
+      );
+    } catch (err) {
+      console.error("Erreur lors de l'ajout au panier :", err);
+      alert("Impossible d'ajouter ce produit au panier.");
+    }
+  };
 
   return (
     <main className="product-page">
       <h1 className="product-banner">Personnalisation du {product.name}</h1>
-      <p className="price">{product.price}</p>
+      <p className="price">Prix : {product.price}</p>
 
       <section className="product-sections">
         <section className="product-slider">
@@ -88,6 +159,7 @@ const ProductPage = () => {
             slidesPerView={1}
             centeredSlides
             centeredSlidesBounds
+            onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
           >
             {product.images.map((img, idx) => (
               <SwiperSlide key={idx}>
@@ -95,6 +167,7 @@ const ProductPage = () => {
                   productImage={img}
                   croppedImageData={croppedImageData}
                   customText={customText}
+                  textOptions={textOptions}
                   cropArea={cropZones[productType][idx]}
                 />
               </SwiperSlide>
@@ -105,6 +178,7 @@ const ProductPage = () => {
         <aside className="product-aside">
           <article className="customization-options">
             <h2>Personnalisation</h2>
+
             <label htmlFor="customText">Texte personnalisé :</label>
             <input
               id="customText"
@@ -113,12 +187,65 @@ const ProductPage = () => {
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
             />
+
+            <label>Taille : {textOptions.fontSize}px</label>
+            <input
+              type="range"
+              min={12}
+              max={72}
+              step={2}
+              value={textOptions.fontSize}
+              onChange={(e) =>
+                setTextOptions((o) => ({ ...o, fontSize: +e.target.value }))
+              }
+            />
+
+            <label>
+              Position Y : {(textOptions.position.y * 100).toFixed(0)}%
+            </label>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={textOptions.position.y}
+              onChange={(e) =>
+                setTextOptions((o) => ({
+                  ...o,
+                  position: { ...o.position, y: +e.target.value },
+                }))
+              }
+            />
+
+            <label htmlFor="fontFamily">Police :</label>
+            <select
+              id="fontFamily"
+              value={textOptions.fontFamily}
+              onChange={(e) =>
+                setTextOptions((o) => ({ ...o, fontFamily: e.target.value }))
+              }
+            >
+              <option value="sans-serif">Sans-serif</option>
+              <option value="serif">Serif</option>
+              <option value="cursive">Cursive</option>
+              <option value="monospace">Monospace</option>
+            </select>
+
+            <label htmlFor="fontColor">Couleur :</label>
+            <input
+              id="fontColor"
+              type="color"
+              value={textOptions.color}
+              onChange={(e) =>
+                setTextOptions((o) => ({ ...o, color: e.target.value }))
+              }
+            />
           </article>
 
           <section className="upload-container">
             <article {...getRootProps()} className="dropzone">
               <input {...getInputProps()} />
-              <p>Déposez une image ici ou cliquez pour importer</p>
+              <p>Déposez votre image ou cliquez pour importer</p>
             </article>
           </section>
         </aside>
@@ -140,23 +267,7 @@ const ProductPage = () => {
         <button onClick={() => setQuantity((q) => q + 1)}>+</button>
       </div>
 
-      <button
-        className="form-button"
-        onClick={() =>
-          addToCart(
-            {
-              id: productType,
-              name: product.name,
-              price: parseFloat(
-                product.price.replace(",", ".").replace("€", "")
-              ),
-              image: product.images[0],
-            },
-            croppedImageData,
-            quantity
-          )
-        }
-      >
+      <button className="form-button" onClick={handleAddToCart}>
         Ajouter au panier
       </button>
 
