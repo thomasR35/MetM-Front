@@ -1,4 +1,3 @@
-// src/pages/CartPage.jsx
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -11,10 +10,6 @@ const CartPage = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { setShowSignup, setPostLoginRedirect } = useAuthModal();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   if (cartItems.length === 0) {
     return (
@@ -71,14 +66,12 @@ const CartPage = () => {
                   <button
                     onClick={() => {
                       if (item.quantity > 1) {
-                        // on décrémente simplement
                         updateQuantity(
                           item.product.id,
                           item.customImage?.dataUrl,
                           item.quantity - 1
                         );
                       } else {
-                        // confirmation avant suppression
                         const ok = window.confirm(
                           "Êtes-vous sûr·e de vouloir supprimer cet article du panier ?"
                         );

@@ -10,10 +10,20 @@ export const CartProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem("metm-cart", JSON.stringify(cartItems));
+    try {
+      localStorage.setItem("metm-cart", JSON.stringify(cartItems));
+    } catch (e) {
+      if (e.name === "QuotaExceededError") {
+        console.warn(
+          "LocalStorage plein, impossible de persister le panier :",
+          e
+        );
+      } else {
+        console.error("Erreur lors de la sauvegarde du panier :", e);
+      }
+    }
   }, [cartItems]);
 
-  // ADD
   const addToCart = (product, customImage = null, quantity = 1) => {
     setCartItems((prev) => {
       const idx = prev.findIndex(
@@ -30,7 +40,6 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // REMOVE
   const removeFromCart = (productId, customImageDataUrl = null) => {
     setCartItems((prev) =>
       prev.filter(
@@ -43,7 +52,6 @@ export const CartProvider = ({ children }) => {
     );
   };
 
-  // UPDATE
   const updateQuantity = (productId, customImageDataUrl = null, quantity) => {
     setCartItems((prev) =>
       prev.map((item) => {

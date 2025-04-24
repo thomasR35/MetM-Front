@@ -11,7 +11,9 @@ import "../styles/pages/_ProductPage.scss";
 import MockupProduct from "@/components/MockupProduct";
 import ImageEditorModal from "@/components/ImageEditorModal";
 import { useCart } from "@/context/CartContext";
+import { uploadImage } from "@/api/images";
 import { CompositeImage } from "@/services/composite/CompositeImage";
+import { toast } from "react-toastify";
 
 import mug1 from "../assets/images/mug1.jpg";
 import mug2 from "../assets/images/mug2.jpg";
@@ -45,15 +47,11 @@ const ProductPage = () => {
   const { productType } = useParams();
   const product = productData[productType] || productData.mug;
 
-  // Slide actif dans le Swiper
+  //États pour le slider et la modale
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Upload + crop
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImageData, setCroppedImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Texte personnalisé
   const [customText, setCustomText] = useState("");
   const [textOptions, setTextOptions] = useState({
     fontFamily: "sans-serif",
@@ -62,13 +60,18 @@ const ProductPage = () => {
     position: { x: 0.5, y: 0.8 },
   });
 
-  // Quantité + panier
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
   // Sauvegarde du dernier produit visité
   useEffect(() => {
-    if (productType) localStorage.setItem("lastProduct", productType);
+    if (productType) {
+      try {
+        localStorage.setItem("lastProduct", productType);
+      } catch (e) {
+        console.warn("Impossible de persister lastProduct :", e);
+      }
+    }
   }, [productType]);
 
   // Dropzone pour importer l'image
@@ -103,9 +106,9 @@ const ProductPage = () => {
         product.price.replace(",", ".").replace("€", "")
       );
 
-      // Si pas de crop, on ajoute directement sans composite
+      // Cas sans cropping
       if (!croppedImageData) {
-        return addToCart(
+        addToCart(
           {
             id: productType,
             name: product.name,
@@ -115,9 +118,11 @@ const ProductPage = () => {
           null,
           quantity
         );
+        toast.success("Cet item a bien été ajouté au panier !");
+        return;
       }
 
-      // Génère l'image composite (mockup + crop + texte)
+      // Génération du composite
       const composite = await CompositeImage.create({
         productImageUrl: product.images[currentSlide],
         croppedData: croppedImageData,
@@ -126,23 +131,51 @@ const ProductPage = () => {
         cropArea: cropZones[productType][currentSlide],
       });
 
+      // Préparation du blob pour l'upload
+      const blob = await (await fetch(composite.dataUrl)).blob();
+
+      // Upload via votre service
+      const uploadResult = await uploadImage(
+        blob,
+        `${productType}-${Date.now()}`,
+        "",
+        "user123"
+      );
+
+      let finalImageUrl = composite.dataUrl;
+      let finalCustomData = {
+        dataUrl: composite.dataUrl,
+        width: composite.width,
+        height: composite.height,
+      };
+
+      if (uploadResult) {
+        finalImageUrl = uploadResult.url;
+        finalCustomData = {
+          id: uploadResult.id,
+          dataUrl: uploadResult.url,
+          width: composite.width,
+          height: composite.height,
+        };
+      } else {
+        toast.warn("Échec de l’upload, l’image sera stockée localement.");
+      }
+
+      // Ajout au panier
       addToCart(
         {
           id: productType,
           name: product.name,
           price: prixFloat,
-          image: composite.dataUrl,
+          image: finalImageUrl,
         },
-        {
-          dataUrl: composite.dataUrl,
-          width: composite.width,
-          height: composite.height,
-        },
+        finalCustomData,
         quantity
       );
+      toast.success("Cet item a bien été ajouté au panier !");
     } catch (err) {
       console.error("Erreur lors de l'ajout au panier :", err);
-      alert("Impossible d'ajouter ce produit au panier.");
+      toast.error("Impossible d’ajouter ce produit au panier.");
     }
   };
 
