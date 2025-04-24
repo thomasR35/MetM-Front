@@ -25,7 +25,6 @@ const productData = {
   pins: { name: "Pin’s", price: "9,99€", images: [pins1, pins2, pins3] },
 };
 
-// On ne définit plus x/y, juste la taille du crop à centrer
 const cropZones = {
   mug: [
     { width: 260, height: 220 },
@@ -43,7 +42,6 @@ const cropZones = {
 const ProductPage = () => {
   const { productType } = useParams();
   const product = productData[productType] || productData.mug;
-
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImageData, setCroppedImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -80,7 +78,7 @@ const ProductPage = () => {
   return (
     <main className="product-page">
       <h1 className="product-banner">Personnalisation du {product.name}</h1>
-      <p className="price">Prix : {product.price}</p>
+      <p className="price">{product.price}</p>
 
       <section className="product-sections">
         <section className="product-slider">

@@ -72,10 +72,16 @@
       border-radius: 5px;
       background-color: var.$text-bg;
 
-      img {
+      .cart-mockup {
         width: 200px;
         height: auto;
+        border: 1px solid var.$text;
         border-radius: 10px;
+        canvas {
+          width: 200px;
+          height: auto;
+          border-radius: 10px;
+        }
       }
 
       .cart-info {
@@ -85,14 +91,13 @@
         justify-content: center;
 
         h2 {
-          font-size: 1.5rem;
+          font-size: 2rem;
           margin-bottom: 0.5rem;
         }
 
         p {
-          font-size: 1rem;
+          font-size: 1.5rem;
           color: var.$text;
-          font-family: "Gwendolyn", sans-serif;
           font-weight: 550;
         }
 

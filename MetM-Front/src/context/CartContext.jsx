@@ -14,28 +14,44 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product, customImage = null, quantity = 1) => {
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+      // on cherche un item avec même produit ET même image custom
+      const idx = prev.findIndex(
+        (item) =>
+          item.product.id === product.id &&
+          item.customImage?.dataUrl === customImage?.dataUrl
+      );
+
+      if (idx !== -1) {
+        // si déjà présent, on incrémente seulement la quantité
+        const next = [...prev];
+        next[idx].quantity += quantity;
+        return next;
       }
-      return [...prev, { product, quantity, customImage }];
+
+      // sinon on l'ajoute comme nouvelle ligne
+      return [...prev, { product, customImage, quantity }];
     });
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (productId, customImageDataUrl = null) => {
     setCartItems((prev) =>
-      prev.filter((item) => item.product.id !== productId)
+      prev.filter(
+        (item) =>
+          !(
+            item.product.id === productId &&
+            item.customImage?.dataUrl === customImageDataUrl
+          )
+      )
     );
   };
 
-  const updateQuantity = (productId, quantity) => {
+  const updateQuantity = (productId, customImageDataUrl = null, quantity) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
+        item.product.id === productId &&
+        item.customImage?.dataUrl === customImageDataUrl
+          ? { ...item, quantity }
+          : item
       )
     );
   };

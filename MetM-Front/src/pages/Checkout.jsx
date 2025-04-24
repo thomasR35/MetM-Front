@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { sendOrder } from "@/api/orders";
 import { useAuth } from "@/hooks/useAuth";
+import "../styles/pages/_checkout.scss";
 
 const Checkout = () => {
   const { cartItems, total, clearCart } = useCart();
