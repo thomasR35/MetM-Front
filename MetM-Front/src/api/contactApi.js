@@ -1,6 +1,6 @@
 export const sendContactForm = async (formData) => {
   try {
-    const response = await fetch("http://metm-back.local/api/contact", {
+    const response = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

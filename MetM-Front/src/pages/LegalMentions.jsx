@@ -1,4 +1,3 @@
-// src/pages/LegalMentions.jsx
 import React from "react";
 
 const LegalMentions = () => {
