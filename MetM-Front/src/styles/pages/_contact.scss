@@ -7,85 +7,93 @@
 .contact-page {
   max-width: 80vw;
   margin: 0 auto;
+
   @include mix.responsive(xl) {
     max-width: 40%;
   }
   @include mix.responsive(lg) {
     max-width: 50%;
   }
-}
 
-/* ========================
-   TITRE DE LA PAGE
-======================== */
-h1 {
-  text-align: center;
-  font-size: 3rem;
-  font-weight: 700;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 2rem 0;
+  }
 }
 
 /* ========================
    FORMULAIRE DE CONTACT
 ======================== */
 .contact-form {
-  label {
+  fieldset {
+    border: 1px solid var.$text;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+
+    legend {
+      font-weight: 600;
+      padding: 0 0.5rem;
+    }
+  }
+
+  .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+
+    label {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    label span[aria-hidden="true"] {
+      color: var.$text;
+      margin-left: 0.25rem;
+    }
+
+    input,
+    textarea {
+      padding: 0.8rem;
+      border: 1px solid var.$text;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+  }
+
+  .form-button {
     width: 100%;
-    margin-inline: auto;
+    margin: 2rem auto;
+    @include mix.button-main(var.$button-bg);
 
     @include mix.responsive(xl) {
       max-width: 60vw;
     }
-
     @include mix.responsive(lg) {
       max-width: 70vw;
     }
   }
 
-  textarea {
-    resize: vertical;
-    min-height: 150px;
-    padding: 0.8rem;
-    border-radius: 5px;
-    border: 1px solid var.$text;
+  .form-status {
+    text-align: center;
+    margin-top: 1rem;
+
+    .success-message {
+      color: green;
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: red;
+      font-weight: bold;
+    }
   }
-}
-
-/* ========================
-   BOUTON DE SOUMISSION
-======================== */
-.form-button {
-  width: 100%;
-  margin-inline: auto;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  @include mix.button-main(var.$button-bg);
-
-  @include mix.responsive(xl) {
-    max-width: 60vw;
-  }
-
-  @include mix.responsive(lg) {
-    max-width: 70vw;
-  }
-}
-
-/* ========================
-   MESSAGES DE STATUT
-======================== */
-.success-message {
-  color: green;
-  text-align: center;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  text-align: center;
-  font-weight: bold;
 }

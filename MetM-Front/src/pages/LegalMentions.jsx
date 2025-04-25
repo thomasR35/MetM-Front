@@ -1,52 +1,66 @@
+// src/pages/LegalMentions.jsx
 import React from "react";
 
 const LegalMentions = () => {
   return (
-    <main className="legal-mentions">
-      <h1>Mentions légales</h1>
+    <main className="legal-mentions" role="main" aria-labelledby="legal-title">
+      <h1 id="legal-title">Mentions légales</h1>
 
-      <section>
-        <h2>Éditeur du site</h2>
-        <p>
-          Ce site est édité par : <strong>Sronnok</strong>
-          <br />
-          Propriétaire : John Doe <br />
-          Adresse : 13 Wisteria Lane <br />
-          Email : contact@marcelleetmauriceshop.fr
-        </p>
+      <section aria-labelledby="editor-title">
+        <h2 id="editor-title">Éditeur du site</h2>
+        <address>
+          <p>
+            <strong>Sronnok</strong>
+            <br />
+            Propriétaire : John&nbsp;Doe
+            <br />
+            Adresse&nbsp;: 13 Wisteria Lane
+            <br />
+            Email&nbsp;:{" "}
+            <a href="mailto:contact@marcelleetmauriceshop.fr">
+              contact@marcelleetmauriceshop.fr
+            </a>
+          </p>
+        </address>
       </section>
 
-      <section>
-        <h2>Hébergement</h2>
-        <p>
-          Hébergeur : L'hébergeur <br />
-          Adresse : cloud:somewhere//over.the.rainbow <br />
-          Téléphone : 06 00 00 00 00 <br />
-          Email : lhebergeur@cloud.com
-        </p>
+      <section aria-labelledby="hosting-title">
+        <h2 id="hosting-title">Hébergement</h2>
+        <address>
+          <p>
+            Hébergeur : L’hébergeur
+            <br />
+            Adresse : cloud:somewhere//over.the.rainbow
+            <br />
+            Téléphone : <a href="tel:+33600000000">06 00 00 00 00</a>
+            <br />
+            Email :{" "}
+            <a href="mailto:lhebergeur@cloud.com">lhebergeur@cloud.com</a>
+          </p>
+        </address>
       </section>
 
-      <section>
-        <h2>Propriété intellectuelle</h2>
+      <section aria-labelledby="ip-title">
+        <h2 id="ip-title">Propriété intellectuelle</h2>
         <p>
           Le contenu du site (textes, images, logos, etc.) est la propriété
-          exclusive de Marcelle & Maurice Shop, sauf mention contraire. Toute
-          reproduction ou utilisation sans autorisation est interdite.
+          exclusive de Marcelle &amp; Maurice Shop, sauf mention contraire.
+          Toute reproduction ou utilisation sans autorisation est interdite.
         </p>
       </section>
 
-      <section>
-        <h2>Protection des données personnelles</h2>
+      <section aria-labelledby="dataprotection-title">
+        <h2 id="dataprotection-title">Protection des données personnelles</h2>
         <p>
           Conformément au RGPD, les utilisateurs disposent d’un droit d’accès,
           de rectification et de suppression de leurs données personnelles. Pour
-          toute demande, veuillez nous contacter à l’adresse email indiquée
+          exercer ces droits, veuillez nous contacter à l’adresse email indiquée
           ci-dessus.
         </p>
       </section>
 
-      <section>
-        <h2>Cookies</h2>
+      <section aria-labelledby="cookies-title">
+        <h2 id="cookies-title">Cookies</h2>
         <p>
           Ce site utilise des cookies pour améliorer l’expérience utilisateur.
           Vous pouvez configurer vos préférences via la bannière de
