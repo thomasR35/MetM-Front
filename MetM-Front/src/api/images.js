@@ -25,7 +25,7 @@ export const fetchImages = async (keywords = [], page = 1, limit = 20) => {
 
 /**
  * Récupère tous les mots‐clés (tags) existants
- * pour ton UI de filtrage
+ * pour l'UI de filtrage
  */
 export const fetchKeywords = async () => {
   try {
