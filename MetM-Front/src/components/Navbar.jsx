@@ -26,7 +26,6 @@ const Navbar = () => {
 
   const handleLoginClick = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setPostLoginRedirect(null);
     setShowSignup(true);
     setMenuOpen(false);
@@ -34,24 +33,41 @@ const Navbar = () => {
 
   const handleRegisterClick = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setPostLoginRedirect(null);
     setShowRegister(true);
     setMenuOpen(false);
   };
 
   return (
-    <nav className="navbar">
+    <nav
+      className="navbar"
+      role="navigation"
+      aria-label="Navigation principale"
+    >
       <div className="navbar-container">
-        <div className="burger-menu" onClick={() => setMenuOpen(!menuOpen)}>
+        {/* BOUTON BURGER accessible */}
+        <button
+          className="burger-menu"
+          type="button"
+          aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-controls="nav-center"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
           {menuOpen ? <FaTimes /> : <FaBars />}
-        </div>
+        </button>
 
-        <Link className="logo" to="/">
-          Marcelle & Maurice Shop
+        {/* LOGO */}
+        <Link
+          className="logo"
+          to="/"
+          aria-label="Accueil Marcelle & Maurice Shop"
+        >
+          Marcelle &amp; Maurice Shop
         </Link>
 
-        <div className={`nav-center ${menuOpen ? "open" : ""}`}>
+        {/* LIENS CENTRAUX */}
+        <div id="nav-center" className={`nav-center ${menuOpen ? "open" : ""}`}>
           <Link className="btn-gallery" to="/gallery">
             Galerie
           </Link>
@@ -78,18 +94,31 @@ const Navbar = () => {
           )}
         </div>
 
+        {/* ICÔNE PANIER */}
         <div className="nav-right">
-          <Link className="cart-icon" to="/panier">
+          <Link
+            className="cart-icon"
+            to="/panier"
+            aria-label={`Panier (${totalItems} article${
+              totalItems > 1 ? "s" : ""
+            })`}
+          >
             <FaShoppingCart />
-            {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+            {totalItems > 0 && (
+              <span className="cart-badge" aria-live="polite">
+                {totalItems}
+              </span>
+            )}
           </Link>
         </div>
       </div>
 
+      {/* ANCIEN MENU MOBILE (si jamais tu le conserves) */}
       {menuOpen && (
-        <ul className="nav-links-mobile">
-          <li>
+        <ul className="nav-links-mobile" role="menu">
+          <li role="none">
             <Link
+              role="menuitem"
               className="btn-gallery"
               to="/gallery"
               onClick={() => setMenuOpen(false)}
@@ -100,28 +129,41 @@ const Navbar = () => {
 
           {!isAuthenticated ? (
             <>
-              <li>
-                <button className="btn-login" onClick={handleLoginClick}>
+              <li role="none">
+                <button
+                  role="menuitem"
+                  className="btn-login"
+                  onClick={handleLoginClick}
+                >
                   Connexion
                 </button>
               </li>
-              <li>
-                <button className="btn-register" onClick={handleRegisterClick}>
+              <li role="none">
+                <button
+                  role="menuitem"
+                  className="btn-register"
+                  onClick={handleRegisterClick}
+                >
                   Inscription
                 </button>
               </li>
             </>
           ) : (
-            <li>
-              <button className="btn-logout" onClick={handleLogout}>
+            <li role="none">
+              <button
+                role="menuitem"
+                className="btn-logout"
+                onClick={handleLogout}
+              >
                 Déconnexion
               </button>
             </li>
           )}
 
           {isAdmin && (
-            <li>
+            <li role="none">
               <Link
+                role="menuitem"
                 className="btn-admin"
                 to="/admin/dashboard"
                 onClick={() => setMenuOpen(false)}

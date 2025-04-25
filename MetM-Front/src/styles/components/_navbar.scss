@@ -31,6 +31,7 @@
     font-size: 2.5rem;
     color: var.$text;
     text-decoration: none;
+    text-align: center;
     margin-left: 1rem;
     flex-shrink: 1;
 
@@ -97,17 +98,27 @@
     display: none;
     font-size: 2rem;
     cursor: pointer;
+    margin-right: 1rem;
+    background-color: var.$navbar-bg;
+    border: none;
+    box-shadow: none;
+    padding: 0.5rem;
+    color: var.$text;
 
     @include mix.responsive(sm-md) {
       display: block;
     }
-
     @include mix.responsive(sm) {
       display: block;
     }
-
     @include mix.responsive(xs) {
       display: block;
+    }
+
+    &:focus,
+    &:active {
+      background-color: var.$navbar-bg;
+      outline: none;
     }
   }
 
