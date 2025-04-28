@@ -17,7 +17,7 @@ const CartPage = () => {
         <h1>Votre panier est vide.</h1>
         <Link
           to={`/product/${localStorage.getItem("lastProduct") || "mug"}`}
-          className="form-button"
+          className="generic-button"
         >
           Retour au produit
         </Link>
@@ -100,7 +100,7 @@ const CartPage = () => {
                 </div>
 
                 <button
-                  className="form-button"
+                  className="generic-button"
                   onClick={() => {
                     const ok = window.confirm(
                       "Êtes-vous sûr·e de vouloir supprimer cet article du panier ?"
@@ -120,12 +120,12 @@ const CartPage = () => {
       <div className="cart-total">
         <h2>Total : {total.toFixed(2)} €</h2>
 
-        <button className="form-button" onClick={handleCheckoutClick}>
+        <button className="generic-button" onClick={handleCheckoutClick}>
           Procéder au paiement
         </button>
 
         <button
-          className="form-button"
+          className="generic-button"
           onClick={() =>
             navigate(`/product/${localStorage.getItem("lastProduct") || "mug"}`)
           }

@@ -66,7 +66,7 @@
    MIXIN BOUTON PRINCIPAL (typé Gwendolyn)
 ======================== */
 @mixin button-main($button-bg) {
-  background-color: $button-bg;
+  background-color: var.$button-bg;
   color: var.$text;
   padding: 0 1.5rem;
   border-radius: 10px;

@@ -286,8 +286,11 @@ BLOC DE PERSONNALISATION
 /* ==========================
     BOUTON AJOUTER AU PANIER 
 ========================== */
-.form-button {
-  width: auto;
+
+.generic-button {
+  @include mix.button-main(var.$button-bg);
+  margin: 2rem 0;
+  text-align: center;
 }
 
 /* ==========================

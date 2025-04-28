@@ -4,6 +4,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { sendOrder } from "@/api/orders";
 import { useAuth } from "@/hooks/useAuth";
+import { PaymentProvider } from "@/context/PaymentContext";
+import CheckoutForm from "@/components/CheckoutForm";
 import "../styles/pages/_checkout.scss";
 
 const Checkout = () => {
@@ -90,11 +92,24 @@ const Checkout = () => {
           required
           onChange={handleChange}
         />
-
-        <button type="submit" className="form-button">
-          Valider la commande
-        </button>
       </form>
+      <PaymentProvider>
+        <CheckoutForm />
+        <p className="checkout-terms">
+          En validant, vous acceptez nos{" "}
+          <a href="/terms" target="_blank" rel="noopener noreferrer">
+            conditions générales de vente
+          </a>
+          .
+        </p>
+        <p className="checkout-privacy">
+          Vos données personnelles sont traitées conformément à notre{" "}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer">
+            politique de confidentialité
+          </a>
+          .
+        </p>
+      </PaymentProvider>
     </main>
   );
 };

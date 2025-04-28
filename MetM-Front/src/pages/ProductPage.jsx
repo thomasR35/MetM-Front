@@ -300,7 +300,7 @@ const ProductPage = () => {
         <button onClick={() => setQuantity((q) => q + 1)}>+</button>
       </div>
 
-      <button className="form-button" onClick={handleAddToCart}>
+      <button className="generic-button" onClick={handleAddToCart}>
         Ajouter au panier
       </button>
 
@@ -322,7 +322,7 @@ const ProductPage = () => {
       </section>
 
       <Link to="/panier">
-        <button className="form-button">Accéder au panier</button>
+        <button className="generic-button">Accéder au panier</button>
       </Link>
     </main>
   );
