@@ -78,26 +78,42 @@ const Home = () => {
           <li className="product-info__item" role="listitem">
             <h3>Mugs en céramique de haute qualité</h3>
             <p>
-              Fabriqués en faïence française, ils sont robustes et durables.
-              Nous collaborons avec la Faïencerie de Gien, fondée en 1821, pour
-              garantir une finition irréprochable.
+              Nos mugs sont fabriqués en faïence française, une céramique
+              réputée pour sa robustesse et son esthétisme garantissant une
+              finition soignée et une durabilité appréciable. Nous collaborons
+              avec des manufactures françaises renommées, telles que la
+              Faïencerie de Gien, fondée en 1821 et située dans le Loiret, qui
+              perpétue un savoir-faire d'exception dans la production de faïence
+              fine. Leur expertise garantit des produits à la fois esthétiques
+              et résistants, adaptés à un usage quotidien.
             </p>
           </li>
 
           <li className="product-info__item" role="listitem">
             <h3>T-shirts en coton biologique français</h3>
             <p>
-              Confectionnés en France à partir de coton bio certifié, ils
-              offrent douceur et résistance tout en limitant l’empreinte
-              carbone.
+              Nos t-shirts sont confectionnés à partir de coton biologique
+              cultivé en France, assurant une empreinte écologique réduite et
+              une traçabilité complète. Nous collaborons avec des marques
+              engagées dans le développement durable, telles que 1083, qui
+              propose des t-shirts en coton bio certifié, fabriqués
+              intégralement en France. Cette démarche garantit des textiles de
+              qualité supérieure, doux au toucher et résistants au temps.
             </p>
           </li>
 
           <li className="product-info__item" role="listitem">
             <h3>Pins en aluminium recyclé</h3>
             <p>
-              Nos pins recyclés soutiennent l’économie circulaire française et
-              garantissent une qualité et une finition irréprochables.
+              Nos pins sont fabriqués à partir d'aluminium recyclé, provenant de
+              circuits de recyclage français. Cette approche permet de réduire
+              l'impact environnemental tout en assurant une qualité et une
+              finition irréprochables. Nous veillons à ce que chaque étape de
+              production respecte des normes strictes, garantissant des produits
+              durables et esthétiques.​ En choisissant nos produits, vous
+              soutenez l'artisanat français et optez pour des articles
+              écoresponsables, alliant qualité, durabilité et respect de
+              l'environnement.​
             </p>
           </li>
         </ul>
