@@ -10,6 +10,8 @@ import ProductPage from "@/pages/ProductPage";
 import LegalMentions from "@/pages/LegalMentions";
 import Contact from "@/pages/Contact";
 import CartPage from "@/pages/CartPage";
+import Terms from "@/pages/static/Terms";
+import Privacy from "@/pages/static/Privacy";
 import { useAuth } from "@/hooks/useAuth.jsx";
 
 const AppRouter = ({
@@ -123,6 +125,8 @@ const AppRouter = ({
           </MainLayout>
         }
       />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} />
 
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/dashboard/*" element={<AdminDashboard />} />

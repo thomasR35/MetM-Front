@@ -1,0 +1,19 @@
+.static-page {
+  max-width: 60ch;
+  margin: 0 auto;
+  padding: 2rem;
+  h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  section {
+    margin-bottom: 1.5rem;
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      line-height: 1.6;
+    }
+  }
+}
