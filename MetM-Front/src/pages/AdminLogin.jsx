@@ -66,6 +66,9 @@ const AdminLogin = () => {
           <button type="submit" className="btn btn-primary w-100">
             Se connecter
           </button>
+          <button className="generic-button" onClick={() => navigate("/")}>
+            Retour à l’accueil
+          </button>
         </form>
       </div>
     </div>

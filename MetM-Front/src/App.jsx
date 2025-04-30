@@ -1,4 +1,5 @@
 import React from "react";
+import PageMeta from "@/components/PageMeta";
 import AppRouter from "./router/AppRouter";
 import Signup from "./pages/Signup";
 import Register from "./pages/Register";
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <>
+      <PageMeta />
       <AppRouter />
 
       {showSignup && (
