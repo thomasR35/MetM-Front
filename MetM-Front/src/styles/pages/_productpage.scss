@@ -5,7 +5,7 @@
    PAGE PRINCIPALE 
 ================== */
 .product-page {
-  max-width: 1200px;
+  max-width: 90vw;
   margin: 0 auto;
   padding: 2rem;
   display: flex;
@@ -22,7 +22,7 @@
    BANNIÈRE PRODUIT 
  =============== */
 .product-banner {
-  width: 100%;
+  width: 60%;
   text-align: center;
   padding: 40px 20px;
   background-color: var.$text-bg;
@@ -52,7 +52,7 @@ SLIDER (PARTIE GAUCHE)
 =================== */
 .product-slider {
   width: 100%;
-  max-width: 600px;
+  max-width: 45vw;
   margin: auto;
   flex: 1;
   @include mix.responsive(lg) {
@@ -176,7 +176,6 @@ SLIDER (PARTIE GAUCHE)
   max-width: 600px;
   flex: 1;
   height: 100%;
-  min-height: 552px;
   @include mix.responsive(md-lg) {
     min-height: 464px;
   }
