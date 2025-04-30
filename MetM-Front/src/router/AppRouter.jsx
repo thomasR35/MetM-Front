@@ -7,11 +7,14 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import MainLayout from "@/layouts/MainLayout";
 import Register from "@/pages/Register";
 import ProductPage from "@/pages/ProductPage";
-import LegalMentions from "@/pages/LegalMentions";
+import LegalMentions from "@/pages/static/LegalMentions";
 import Contact from "@/pages/Contact";
 import CartPage from "@/pages/CartPage";
 import Terms from "@/pages/static/Terms";
 import Privacy from "@/pages/static/Privacy";
+import NotFoundPage from "@/pages/static/NotFoundPage";
+import SuccessPage from "@/pages/static/SuccessPage";
+import CancelPage from "@/pages/static/CancelPage";
 import { useAuth } from "@/hooks/useAuth.jsx";
 
 const AppRouter = ({
@@ -125,6 +128,9 @@ const AppRouter = ({
           </MainLayout>
         }
       />
+      <Route path="/success" element={<SuccessPage />} />
+      <Route path="/cancel" element={<CancelPage />} />
+      <Route path="*" element={<NotFoundPage />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
 

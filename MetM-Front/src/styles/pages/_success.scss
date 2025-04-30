@@ -1,0 +1,29 @@
+@use "../utils/variables" as var;
+
+.static-page.success-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 2rem;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+  p {
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  code {
+    color: var.$text;
+    background: #f4f4f4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+  }
+  .generic-button {
+    margin-top: 2rem;
+    padding: 0.75rem 1.5rem;
+  }
+}
