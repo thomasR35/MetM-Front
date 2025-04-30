@@ -71,8 +71,8 @@
    BOUTON DE MOT-CLÉ
 ======================== */
 .keyword-btn {
-  background-color: #ff8fab;
-  color: white;
+  background-color: var.$button-bg;
+  color: var.$text;
   border: 1px solid var.$text;
   padding: 8px 12px;
   border-radius: 20px;

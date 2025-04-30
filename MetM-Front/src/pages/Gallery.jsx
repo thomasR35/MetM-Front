@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import GalleryItem from "@/components/GalleryItem";
 import { fetchImages } from "@/api/images";
 import axios from "@/api/axiosConfig";
+import "../styles/pages/_gallery.scss";
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
@@ -52,7 +53,6 @@ export default function Gallery() {
 
   const totalPages =
     totalImages > 0 ? Math.ceil(totalImages / imagesPerPage) : 1;
-
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -66,29 +66,31 @@ export default function Gallery() {
       className="gallery-container"
       aria-labelledby="gallery-title"
     >
+      {/* Ton `<h2>` d’origine devient `<h1>` pour le main */}
       <h1 id="gallery-title">Galerie d’images</h1>
 
       {/* Nuage de mots-clés */}
-      <section
+      <div
+        className="keyword-cloud"
         role="region"
         aria-labelledby="keywords-title"
-        className="keyword-cloud"
       >
         <h2 id="keywords-title" className="sr-only">
           Filtrer par mot‐clé
         </h2>
+
         {keywords.length > 0 ? (
-          keywords.map((kw) => (
+          keywords.map((keyword) => (
             <button
-              key={kw.id}
+              key={keyword.id}
               type="button"
               className={`keyword-btn ${
-                selectedKeywords.includes(kw.name) ? "selected" : ""
+                selectedKeywords.includes(keyword.name) ? "selected" : ""
               }`}
-              aria-pressed={selectedKeywords.includes(kw.name)}
-              onClick={() => handleKeywordClick(kw.name)}
+              aria-pressed={selectedKeywords.includes(keyword.name)}
+              onClick={() => handleKeywordClick(keyword.name)}
             >
-              {kw.name}
+              {keyword.name}
             </button>
           ))
         ) : (
@@ -96,46 +98,33 @@ export default function Gallery() {
             Chargement des mots‐clés…
           </p>
         )}
-      </section>
+      </div>
 
       {/* Indicateur du nombre d’images */}
-      <div role="status" aria-live="polite" className="gallery-count">
+      <p className="gallery-count" role="status" aria-live="polite">
         {totalImages > 0
           ? `${totalImages} image${totalImages > 1 ? "s" : ""} trouvée${
               totalImages > 1 ? "s" : ""
             }`
           : "Aucune image trouvée"}
-      </div>
+      </p>
 
       {/* Grille d’images */}
-      <section
-        role="region"
-        aria-labelledby="grid-title"
-        className="gallery-grid"
-      >
+      <div className="gallery-grid" role="region" aria-labelledby="grid-title">
         <h2 id="grid-title" className="sr-only">
           Résultats de la galerie
         </h2>
+
         {images.length > 0 ? (
-          <ul role="list" className="gallery-list">
-            {images.map((image) => (
-              <li key={image.id} role="listitem" className="gallery-item">
-                <GalleryItem image={image} />
-              </li>
-            ))}
-          </ul>
+          images.map((image) => <GalleryItem key={image.id} image={image} />)
         ) : (
           <p role="alert">Aucune image disponible.</p>
         )}
-      </section>
+      </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <nav
-          role="navigation"
-          aria-label="Pagination de la galerie"
-          className="pagination"
-        >
+        <div className="pagination" role="navigation" aria-label="Pagination">
           <button
             type="button"
             onClick={() => handlePageChange(currentPage - 1)}
@@ -155,7 +144,7 @@ export default function Gallery() {
           >
             Suivant ➡️
           </button>
-        </nav>
+        </div>
       )}
     </main>
   );

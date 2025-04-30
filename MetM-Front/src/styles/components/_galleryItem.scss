@@ -49,7 +49,8 @@
 
     .download-btn {
       background: #fb6f92;
-      color: white;
+      color: var.$text;
+      border: 1px solid var.$text;
       border: none;
       padding: 8px 15px;
       border-radius: 5px;
