@@ -1,9 +1,10 @@
+// src/pages/Gallery.jsx
 import React, { useState, useEffect } from "react";
 import GalleryItem from "@/components/GalleryItem";
 import { fetchImages } from "@/api/images";
 import axios from "@/api/axiosConfig";
 
-const Gallery = () => {
+export default function Gallery() {
   const [images, setImages] = useState([]);
   const [keywords, setKeywords] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
@@ -11,128 +12,151 @@ const Gallery = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const imagesPerPage = 20;
 
-  // 🔹 Charger les mots-clés au montage
+  // Charger les mots-clés
   useEffect(() => {
-    const loadKeywords = async () => {
+    (async () => {
       try {
-        const keywordResponse = await axios.get("/keywords");
-        if (Array.isArray(keywordResponse.data)) {
-          setKeywords(
-            keywordResponse.data.filter((kw) => kw.name.trim() !== "")
-          );
-        }
-      } catch (error) {
-        console.error("❌ Erreur lors du chargement des mots-clés :", error);
+        const { data } = await axios.get("/keywords");
+        setKeywords(data.filter((kw) => kw.name.trim() !== ""));
+      } catch (err) {
+        console.error("Erreur mots-clés :", err);
       }
-    };
-
-    loadKeywords();
+    })();
   }, []);
 
-  // 🔹 Charger les images au changement de mot-clé ou de page
+  // Charger les images
   useEffect(() => {
-    const loadImages = async () => {
+    (async () => {
       try {
-        const data = await fetchImages(
+        const { images: imgs } = await fetchImages(
           selectedKeywords,
           currentPage,
           imagesPerPage
         );
-
-        setImages(Array.isArray(data.images) ? data.images : []);
-        setTotalImages(Array.isArray(data.images) ? data.images.length : 0);
-      } catch (error) {
-        console.error("❌ Erreur lors du chargement des images :", error);
+        setImages(Array.isArray(imgs) ? imgs : []);
+        setTotalImages(Array.isArray(imgs) ? imgs.length : 0);
+      } catch (err) {
+        console.error("Erreur images :", err);
         setImages([]);
         setTotalImages(0);
       }
-    };
-
-    loadImages();
+    })();
   }, [selectedKeywords, currentPage]);
 
-  // 🔹 Gestion du clic sur un mot-clé (permet la sélection multiple)
-  const handleKeywordClick = (keyword) => {
-    setSelectedKeywords((prevSelected) =>
-      prevSelected.includes(keyword)
-        ? prevSelected.filter((kw) => kw !== keyword)
-        : [...prevSelected, keyword]
+  const handleKeywordClick = (kw) => {
+    setSelectedKeywords((prev) =>
+      prev.includes(kw) ? prev.filter((k) => k !== kw) : [...prev, kw]
     );
     setCurrentPage(1);
   };
 
-  // 🔹 Gestion de la pagination
   const totalPages =
     totalImages > 0 ? Math.ceil(totalImages / imagesPerPage) : 1;
+
   const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
+    if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
   return (
-    <div className="gallery-container">
-      <h2>Galerie d'images</h2>
+    <main
+      id="main-content"
+      role="main"
+      className="gallery-container"
+      aria-labelledby="gallery-title"
+    >
+      <h1 id="gallery-title">Galerie d’images</h1>
 
-      {/* ☁️ Nuage de mots-clés */}
-      <div className="keyword-cloud">
+      {/* Nuage de mots-clés */}
+      <section
+        role="region"
+        aria-labelledby="keywords-title"
+        className="keyword-cloud"
+      >
+        <h2 id="keywords-title" className="sr-only">
+          Filtrer par mot‐clé
+        </h2>
         {keywords.length > 0 ? (
-          keywords.map((keyword) => (
+          keywords.map((kw) => (
             <button
-              key={keyword.id}
+              key={kw.id}
+              type="button"
               className={`keyword-btn ${
-                selectedKeywords.includes(keyword.name) ? "selected" : ""
+                selectedKeywords.includes(kw.name) ? "selected" : ""
               }`}
-              onClick={() => handleKeywordClick(keyword.name)}
+              aria-pressed={selectedKeywords.includes(kw.name)}
+              onClick={() => handleKeywordClick(kw.name)}
             >
-              {keyword.name}
+              {kw.name}
             </button>
           ))
         ) : (
-          <p>Chargement des mots-clés...</p>
+          <p role="status" aria-live="polite">
+            Chargement des mots‐clés…
+          </p>
         )}
-      </div>
+      </section>
 
-      {/* 🔢 Affichage du nombre total d'images */}
-      <p>
+      {/* Indicateur du nombre d’images */}
+      <div role="status" aria-live="polite" className="gallery-count">
         {totalImages > 0
           ? `${totalImages} image${totalImages > 1 ? "s" : ""} trouvée${
               totalImages > 1 ? "s" : ""
             }`
           : "Aucune image trouvée"}
-      </p>
-
-      {/* 🖼️ Affichage des images */}
-      <div className="gallery-grid">
-        {images.length > 0 ? (
-          images.map((image) => <GalleryItem key={image.id} image={image} />)
-        ) : (
-          <p>Aucune image disponible.</p>
-        )}
       </div>
 
-      {/* ⬅️➡️ Pagination */}
+      {/* Grille d’images */}
+      <section
+        role="region"
+        aria-labelledby="grid-title"
+        className="gallery-grid"
+      >
+        <h2 id="grid-title" className="sr-only">
+          Résultats de la galerie
+        </h2>
+        {images.length > 0 ? (
+          <ul role="list" className="gallery-list">
+            {images.map((image) => (
+              <li key={image.id} role="listitem" className="gallery-item">
+                <GalleryItem image={image} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p role="alert">Aucune image disponible.</p>
+        )}
+      </section>
+
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="pagination">
+        <nav
+          role="navigation"
+          aria-label="Pagination de la galerie"
+          className="pagination"
+        >
           <button
+            type="button"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
+            aria-label="Page précédente"
           >
             ⬅️ Précédent
           </button>
-          <span>
+          <span aria-live="polite" aria-atomic="true">
             Page {currentPage} / {totalPages}
           </span>
           <button
+            type="button"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
+            aria-label="Page suivante"
           >
             Suivant ➡️
           </button>
-        </div>
+        </nav>
       )}
-    </div>
+    </main>
   );
-};
-
-export default Gallery;
+}

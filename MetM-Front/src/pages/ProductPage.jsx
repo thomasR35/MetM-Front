@@ -1,7 +1,6 @@
 // src/pages/ProductPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -44,11 +43,10 @@ const cropZones = {
   ],
 };
 
-const ProductPage = () => {
+function ProductPage() {
   const { productType } = useParams();
   const product = productData[productType] || productData.mug;
 
-  //États pour le slider et la modale
   const [currentSlide, setCurrentSlide] = useState(0);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImageData, setCroppedImageData] = useState(null);
@@ -60,22 +58,17 @@ const ProductPage = () => {
     color: "#000000",
     position: { x: 0.5, y: 0.8 },
   });
-
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
-  // Sauvegarde du dernier produit visité
+  // Persistance du dernier produit visité
   useEffect(() => {
     if (productType) {
-      try {
-        localStorage.setItem("lastProduct", productType);
-      } catch (e) {
-        console.warn("Impossible de persister lastProduct :", e);
-      }
+      localStorage.setItem("lastProduct", productType);
     }
   }, [productType]);
 
-  // Dropzone pour importer l'image
+  // Configuration de la dropzone
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/png": [".png"],
@@ -94,36 +87,32 @@ const ProductPage = () => {
     },
   });
 
-  // Callback après crop dans la modale
   const handleApplyCroppedImage = (data) => {
     setCroppedImageData(data);
     setIsModalOpen(false);
   };
 
-  // Fonction pour générer l'image composite et l'ajouter au panier
   const handleAddToCart = async () => {
-    try {
-      const prixFloat = parseFloat(
-        product.price.replace(",", ".").replace("€", "")
+    const prixFloat = parseFloat(
+      product.price.replace(",", ".").replace("€", "")
+    );
+    // Sans custom image
+    if (!croppedImageData) {
+      addToCart(
+        {
+          id: productType,
+          name: product.name,
+          price: prixFloat,
+          image: product.images[currentSlide],
+        },
+        null,
+        quantity
       );
-
-      // Cas sans cropping
-      if (!croppedImageData) {
-        addToCart(
-          {
-            id: productType,
-            name: product.name,
-            price: prixFloat,
-            image: product.images[currentSlide],
-          },
-          null,
-          quantity
-        );
-        toast.success("Cet item a bien été ajouté au panier !");
-        return;
-      }
-
-      // Génération du composite
+      toast.success("Article ajouté au panier !");
+      return;
+    }
+    // Avec custom image
+    try {
       const composite = await CompositeImage.create({
         productImageUrl: product.images[currentSlide],
         croppedData: croppedImageData,
@@ -131,38 +120,27 @@ const ProductPage = () => {
         textOptions,
         cropArea: cropZones[productType][currentSlide],
       });
-
-      // Préparation du blob pour l'upload
       const blob = await (await fetch(composite.dataUrl)).blob();
-
-      // Upload via votre service
       const uploadResult = await uploadImage(
         blob,
         `${productType}-${Date.now()}`,
         "",
         "user123"
       );
+      const finalImageUrl = uploadResult?.url || composite.dataUrl;
+      const finalCustomData = uploadResult
+        ? {
+            id: uploadResult.id,
+            dataUrl: uploadResult.url,
+            width: composite.width,
+            height: composite.height,
+          }
+        : {
+            dataUrl: composite.dataUrl,
+            width: composite.width,
+            height: composite.height,
+          };
 
-      let finalImageUrl = composite.dataUrl;
-      let finalCustomData = {
-        dataUrl: composite.dataUrl,
-        width: composite.width,
-        height: composite.height,
-      };
-
-      if (uploadResult) {
-        finalImageUrl = uploadResult.url;
-        finalCustomData = {
-          id: uploadResult.id,
-          dataUrl: uploadResult.url,
-          width: composite.width,
-          height: composite.height,
-        };
-      } else {
-        toast.warn("Échec de l’upload, l’image sera stockée localement.");
-      }
-
-      // Ajout au panier
       addToCart(
         {
           id: productType,
@@ -173,30 +151,62 @@ const ProductPage = () => {
         finalCustomData,
         quantity
       );
-      toast.success("Cet item a bien été ajouté au panier !");
+      toast.success("Article ajouté au panier !");
     } catch (err) {
-      console.error("Erreur lors de l'ajout au panier :", err);
-      toast.error("Impossible d’ajouter ce produit au panier.");
+      console.error(err);
+      toast.error("Échec de l'ajout au panier.");
     }
   };
 
   return (
-    <main className="product-page">
-      <h1 className="product-banner">Personnalisation du {product.name}</h1>
-      <p className="price">Prix : {product.price}</p>
+    <main
+      id="main-content"
+      role="main"
+      aria-labelledby="product-title"
+      className="product-page"
+    >
+      <h1 id="product-title" className="product-banner">
+        Personnalisation du {product.name}
+      </h1>
 
-      <section className="product-sections">
-        <section className="product-slider">
+      <p className="price" aria-label={`Prix : ${product.price}`}>
+        Prix : {product.price}
+      </p>
+
+      {/* ↕ Le wrapper d’origine pour aligner slider + aside */}
+      <section
+        className="product-sections"
+        role="region"
+        aria-labelledby="customization-section"
+      >
+        <h2 id="customization-section" className="sr-only">
+          Personnalisation et aperçu
+        </h2>
+
+        {/* Slider */}
+        <section
+          className="product-slider"
+          role="region"
+          aria-labelledby="slider-title"
+        >
+          <h3 id="slider-title" className="sr-only">
+            Galerie d’images {product.name}
+          </h3>
           <Swiper
-            navigation
             modules={[Navigation]}
+            navigation
             slidesPerView={1}
             centeredSlides
-            centeredSlidesBounds
-            onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
+            onSlideChange={(s) => setCurrentSlide(s.activeIndex)}
+            aria-live="polite"
+            aria-roledescription="carousel"
           >
             {product.images.map((img, idx) => (
-              <SwiperSlide key={idx}>
+              <SwiperSlide
+                key={idx}
+                aria-roledescription="slide"
+                aria-label={`${product.name}, vue ${idx + 1}`}
+              >
                 <MockupProduct
                   productImage={img}
                   croppedImageData={croppedImageData}
@@ -209,82 +219,130 @@ const ProductPage = () => {
           </Swiper>
         </section>
 
-        <aside className="product-aside">
-          <article className="customization-options">
-            <h2>Personnalisation</h2>
+        {/* Options de personnalisation */}
+        <aside
+          className="product-aside"
+          role="region"
+          aria-labelledby="options-title"
+        >
+          <h3 id="options-title" className="sr-only">
+            Options de personnalisation
+          </h3>
 
-            <label htmlFor="customText">Texte personnalisé :</label>
-            <input
-              id="customText"
-              type="text"
-              placeholder="Entrez votre texte…"
-              value={customText}
-              onChange={(e) => setCustomText(e.target.value)}
-            />
+          <form
+            className="customization-options"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <fieldset>
+              <legend>Texte personnalisé</legend>
+              <label htmlFor="customText">Texte :</label>
+              <input
+                id="customText"
+                type="text"
+                placeholder="Entrez votre texte…"
+                value={customText}
+                onChange={(e) => setCustomText(e.target.value)}
+              />
+            </fieldset>
 
-            <label>Taille : {textOptions.fontSize}px</label>
-            <input
-              type="range"
-              min={12}
-              max={72}
-              step={2}
-              value={textOptions.fontSize}
-              onChange={(e) =>
-                setTextOptions((o) => ({ ...o, fontSize: +e.target.value }))
-              }
-            />
+            <fieldset>
+              <legend>Taille du texte</legend>
+              <label htmlFor="fontSizeRange">
+                Taille : {textOptions.fontSize}px
+              </label>
+              <input
+                id="fontSizeRange"
+                type="range"
+                min={12}
+                max={72}
+                step={2}
+                value={textOptions.fontSize}
+                onChange={(e) =>
+                  setTextOptions((o) => ({ ...o, fontSize: +e.target.value }))
+                }
+              />
+            </fieldset>
 
-            <label>
-              Position Y : {(textOptions.position.y * 100).toFixed(0)}%
-            </label>
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              value={textOptions.position.y}
-              onChange={(e) =>
-                setTextOptions((o) => ({
-                  ...o,
-                  position: { ...o.position, y: +e.target.value },
-                }))
-              }
-            />
+            <fieldset>
+              <legend>Position verticale</legend>
+              <label htmlFor="positionRange">
+                Position Y : {Math.round(textOptions.position.y * 100)}%
+              </label>
+              <input
+                id="positionRange"
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={textOptions.position.y}
+                onChange={(e) =>
+                  setTextOptions((o) => ({
+                    ...o,
+                    position: { ...o.position, y: +e.target.value },
+                  }))
+                }
+              />
+            </fieldset>
 
-            <label htmlFor="fontFamily">Police :</label>
-            <select
-              id="fontFamily"
-              value={textOptions.fontFamily}
-              onChange={(e) =>
-                setTextOptions((o) => ({ ...o, fontFamily: e.target.value }))
-              }
+            <fieldset>
+              <legend>Police</legend>
+              <label htmlFor="fontFamily">Police :</label>
+              <select
+                id="fontFamily"
+                value={textOptions.fontFamily}
+                onChange={(e) =>
+                  setTextOptions((o) => ({ ...o, fontFamily: e.target.value }))
+                }
+              >
+                <option value="sans-serif">Sans-serif</option>
+                <option value="serif">Serif</option>
+                <option value="cursive">Cursive</option>
+                <option value="monospace">Monospace</option>
+              </select>
+            </fieldset>
+
+            <fieldset>
+              <legend>Couleur du texte</legend>
+              <label htmlFor="fontColor">Couleur :</label>
+              <input
+                id="fontColor"
+                type="color"
+                value={textOptions.color}
+                onChange={(e) =>
+                  setTextOptions((o) => ({ ...o, color: e.target.value }))
+                }
+              />
+            </fieldset>
+          </form>
+
+          {/* Import d’image */}
+          <section
+            className="upload-container"
+            role="region"
+            aria-labelledby="upload-title"
+          >
+            <h3 id="upload-title" className="sr-only">
+              Importer une image
+            </h3>
+            <div
+              {...getRootProps()}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ")
+                  getRootProps().onClick(e);
+              }}
+              aria-label="Importer une image pour personnaliser le produit"
+              className="dropzone"
             >
-              <option value="sans-serif">Sans-serif</option>
-              <option value="serif">Serif</option>
-              <option value="cursive">Cursive</option>
-              <option value="monospace">Monospace</option>
-            </select>
-
-            <label htmlFor="fontColor">Couleur :</label>
-            <input
-              id="fontColor"
-              type="color"
-              value={textOptions.color}
-              onChange={(e) =>
-                setTextOptions((o) => ({ ...o, color: e.target.value }))
-              }
-            />
-          </article>
-
-          <section className="upload-container">
-            <article {...getRootProps()} className="dropzone">
               <input {...getInputProps()} />
               <p>Déposez votre image ou cliquez pour importer</p>
-            </article>
+            </div>
           </section>
         </aside>
       </section>
 
+      {/* Modal de recadrage */}
       {isModalOpen && (
         <ImageEditorModal
           uploadedImage={uploadedImage}
@@ -293,20 +351,45 @@ const ProductPage = () => {
         />
       )}
 
-      <div className="quantity-selector">
-        <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+      {/* Quantité */}
+      <section
+        role="group"
+        aria-label="Choix de la quantité"
+        className="quantity-selector"
+      >
+        <button
+          aria-label={`Réduire la quantité (actuellement ${quantity})`}
+          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+        >
           −
         </button>
-        <span>{quantity}</span>
-        <button onClick={() => setQuantity((q) => q + 1)}>+</button>
-      </div>
+        <span aria-live="polite" aria-atomic="true">
+          {quantity}
+        </span>
+        <button
+          aria-label={`Augmenter la quantité (actuellement ${quantity})`}
+          onClick={() => setQuantity((q) => q + 1)}
+        >
+          +
+        </button>
+      </section>
 
-      <button className="generic-button" onClick={handleAddToCart}>
+      {/* Ajouter au panier */}
+      <button
+        className="generic-button"
+        onClick={handleAddToCart}
+        aria-label={`Ajouter ${quantity} ${product.name} au panier`}
+      >
         Ajouter au panier
       </button>
 
-      <section className="product-navigation">
-        <h2>Changer de produit</h2>
+      {/* Changer de produit */}
+      <nav
+        role="navigation"
+        aria-labelledby="switch-product-title"
+        className="product-navigation"
+      >
+        <h2 id="switch-product-title">Changer de produit</h2>
         <div className="product-switch-links">
           {Object.keys(productData)
             .filter((key) => key !== productType)
@@ -320,13 +403,16 @@ const ProductPage = () => {
               </Link>
             ))}
         </div>
-      </section>
+      </nav>
 
+      {/* Lien vers le panier */}
       <Link to="/panier">
-        <button className="generic-button">Accéder au panier</button>
+        <button className="generic-button" aria-label="Accéder au panier">
+          Accéder au panier
+        </button>
       </Link>
     </main>
   );
-};
+}
 
 export default ProductPage;

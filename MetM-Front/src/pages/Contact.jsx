@@ -1,14 +1,16 @@
+// src/pages/Contact.jsx
 import React, { useState } from "react";
 import { sendContactForm } from "@/api/contactApi";
 
-const Contact = () => {
+export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   });
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(null); // null | "loading" | "success" | "error"
+  const [error, setError] = useState(""); // message d’erreur général
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,26 +20,54 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
-    const result = await sendContactForm(formData);
-    if (result.success) {
-      setStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } else {
+    setError("");
+    try {
+      const result = await sendContactForm(formData);
+      if (result.success) {
+        setStatus("success");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        throw new Error(result.message || "Erreur serveur");
+      }
+    } catch (err) {
       setStatus("error");
-      console.error(result.message);
+      setError(err.message);
+      console.error("Contact form error:", err);
     }
   };
 
   return (
-    <main className="contact-page" role="main" aria-labelledby="contact-title">
+    <main
+      id="main-content"
+      role="main"
+      className="contact-page"
+      aria-labelledby="contact-title"
+    >
       <h1 id="contact-title">Contactez-nous</h1>
+
+      {/* zone de notification de statut */}
+      <div id="form-status" role="status" aria-live="polite" aria-atomic="true">
+        {status === "success" && (
+          <p className="success-message">
+            👍 Votre message a bien été envoyé !
+          </p>
+        )}
+        {status === "error" && (
+          <p className="error-message">⚠️ Une erreur est survenue : {error}</p>
+        )}
+      </div>
 
       <form
         className="contact-form"
         onSubmit={handleSubmit}
+        aria-labelledby="contact-form-title"
         aria-describedby="form-status"
         noValidate
       >
+        <h2 id="contact-form-title" className="sr-only">
+          Formulaire de contact
+        </h2>
+
         <fieldset>
           <legend>Vos coordonnées</legend>
 
@@ -49,9 +79,11 @@ const Contact = () => {
               type="text"
               id="contact-name"
               name="name"
-              required
               value={formData.name}
               onChange={handleChange}
+              required
+              aria-required="true"
+              aria-invalid={status === "error" && !formData.name}
             />
           </div>
 
@@ -63,9 +95,11 @@ const Contact = () => {
               type="email"
               id="contact-email"
               name="email"
-              required
               value={formData.email}
               onChange={handleChange}
+              required
+              aria-required="true"
+              aria-invalid={status === "error" && !formData.email}
             />
           </div>
         </fieldset>
@@ -81,9 +115,11 @@ const Contact = () => {
               type="text"
               id="contact-subject"
               name="subject"
-              required
               value={formData.subject}
               onChange={handleChange}
+              required
+              aria-required="true"
+              aria-invalid={status === "error" && !formData.subject}
             />
           </div>
 
@@ -94,10 +130,12 @@ const Contact = () => {
             <textarea
               id="contact-message"
               name="message"
-              required
               rows={6}
               value={formData.message}
               onChange={handleChange}
+              required
+              aria-required="true"
+              aria-invalid={status === "error" && !formData.message}
             />
           </div>
         </fieldset>
@@ -109,25 +147,7 @@ const Contact = () => {
         >
           {status === "loading" ? "Envoi en cours…" : "Envoyer"}
         </button>
-
-        <div
-          id="form-status"
-          role="status"
-          aria-live="polite"
-          className="form-status"
-        >
-          {status === "success" && (
-            <p className="success-message">Votre message a bien été envoyé !</p>
-          )}
-          {status === "error" && (
-            <p className="error-message">
-              Une erreur est survenue lors de l’envoi. Merci de réessayer.
-            </p>
-          )}
-        </div>
       </form>
     </main>
   );
-};
-
-export default Contact;
+}
