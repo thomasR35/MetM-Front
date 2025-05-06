@@ -26,7 +26,7 @@
     width: 100%;
     min-height: 200px;
     object-fit: cover;
-    border-bottom: 2px solid #fb6f92;
+    border-bottom: 2px solid var.$button-bg;
 
     &:hover {
       transform: scale(1.3);
@@ -50,10 +50,9 @@
     }
 
     .download-btn {
-      background: #fb6f92;
+      background: var.$button-bg;
       color: var.$text;
       border: 1px solid var.$text;
-      border: none;
       padding: 8px 15px;
       border-radius: 5px;
       cursor: pointer;
@@ -62,7 +61,8 @@
       align-self: center;
 
       &:hover {
-        background: #ff8fab;
+        background: var.$links-hover;
+        border: 2px solid var.$links-hover;
       }
     }
   }
