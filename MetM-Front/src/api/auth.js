@@ -1,48 +1,37 @@
 // src/api/auth.js
 import axios from "axios";
 
-const API_URL = "http://metm-back.local/api/auth/login";
+const api = axios.create({
+  baseURL: "http://metm-back.local/api",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
 
-export const login = async (username, password) => {
-  try {
-    const response = await axios.post(
-      API_URL,
-      { username, password },
-      { withCredentials: true }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      "❌ Erreur lors de la connexion :",
-      error.response?.data || error
-    );
-    throw error;
-  }
-};
+/**
+ * POST /api/auth/login
+ * @throws AxiosError
+ * @returns {{user: object, token: string}}
+ */
+export async function login(username, password) {
+  const res = await api.post("/auth/login", { username, password });
+  // on attend que l'API renvoie { user: {...}, token: "..." }
+  return res.data;
+}
 
-export const registerUser = async (username, email, password) => {
-  try {
-    const response = await fetch("http://metm-back.local/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password, role: "user" }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      return { success: true, data };
-    } else {
-      return {
-        success: false,
-        message: data.error || "❌ Erreur d'inscription",
-      };
-    }
-  } catch (error) {
-    console.error("❌ Erreur lors de l'inscription :", error);
-    return {
-      success: false,
-      message: "❌ Impossible de contacter le serveur.",
-    };
-  }
-};
+/**
+ * POST /api/users
+ * @throws AxiosError
+ * @returns {object}
+ */
+export async function registerUser(username, email, password) {
+  const res = await api.post("/users", {
+    username,
+    email,
+    password,
+    role: "user",
+  });
+  return res.data;
+}

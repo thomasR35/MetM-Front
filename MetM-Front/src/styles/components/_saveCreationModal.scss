@@ -2,3 +2,7 @@
 // ========================
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
+
+.modal {
+  height: min-content;
+}
