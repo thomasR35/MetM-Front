@@ -7,10 +7,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { useDropzone } from "react-dropzone";
+import { useAuth } from "@/context/AuthContext";
+import { useAuthModal } from "@/context/AuthModalContext";
 
 import "../styles/pages/_ProductPage.scss";
 import MockupProduct from "@/components/MockupProduct";
 import ImageEditorModal from "@/components/ImageEditorModal";
+import SaveCreationModal from "@/components/SaveCreationModal";
 import { useCart } from "@/context/CartContext";
 import { uploadImage } from "@/api/images";
 import { CompositeImage } from "@/services/composite/CompositeImage";
@@ -45,6 +48,7 @@ const cropZones = {
 };
 
 function ProductPage() {
+  const { user } = useAuth();
   const { productType } = useParams();
   const product = productData[productType] || productData.mug;
 
@@ -52,6 +56,7 @@ function ProductPage() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [croppedImageData, setCroppedImageData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
   const [customText, setCustomText] = useState("");
   const [textOptions, setTextOptions] = useState({
     fontFamily: "sans-serif",
@@ -61,6 +66,7 @@ function ProductPage() {
   });
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
   // Persistance du dernier produit visité
   useEffect(() => {
@@ -87,6 +93,21 @@ function ProductPage() {
       reader.readAsDataURL(file);
     },
   });
+
+  const handleSaveClick = () => {
+    // si aucune modif (ni image custom, ni texte)
+    if (!croppedImageData && !customText.trim()) {
+      toast.info("Aucune modification détectée.");
+      return;
+    }
+
+    if (!user) {
+      setPostLoginRedirect(window.location.pathname);
+      setShowSignup(true);
+    } else {
+      setIsSaveModalOpen(true);
+    }
+  };
 
   const handleApplyCroppedImage = (data) => {
     setCroppedImageData(data);
@@ -352,6 +373,21 @@ function ProductPage() {
         />
       )}
 
+      {/* Modale d’enregistrement */}
+      {isSaveModalOpen && (
+        <SaveCreationModal
+          isOpen={isSaveModalOpen}
+          onClose={() => setIsSaveModalOpen(false)}
+          productType={productType}
+          productImages={product.images}
+          currentSlide={currentSlide}
+          croppedImageData={croppedImageData}
+          customText={customText}
+          textOptions={textOptions}
+          cropArea={cropZones[productType][currentSlide]}
+        />
+      )}
+
       {/* Quantité */}
       <section
         role="group"
@@ -412,6 +448,14 @@ function ProductPage() {
           Accéder au panier
         </button>
       </Link>
+
+      <button
+        className="generic-button"
+        onClick={handleSaveClick}
+        aria-label="Enregistrer la création"
+      >
+        Enregistrer la création
+      </button>
     </main>
   );
 }

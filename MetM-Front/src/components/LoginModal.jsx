@@ -1,18 +1,22 @@
-// src/components/Signup.jsx
-// ========================
-import { useState } from "react";
+// src/components/LoginModal.jsx
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import { login } from "@/api/auth";
+import { useAuth } from "@/context/AuthContext";
+import { useAuthModal } from "@/context/AuthModalContext";
+import { login as apiLogin } from "@/api/auth";
 import { toast } from "react-toastify";
-import "../styles/components/_signup.scss";
+import "../styles/components/_signup.scss"; // ou _authModal.scss
 
-export default function Signup({
-  closeModal,
-  postLoginRedirect,
-  setShowRegister,
-}) {
+export default function LoginModal() {
   const { login: authLogin } = useAuth();
+  const {
+    showSignup,
+    setShowSignup,
+    showRegister,
+    setShowRegister,
+    postLoginRedirect,
+    setPostLoginRedirect,
+  } = useAuthModal();
   const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState({
@@ -22,9 +26,24 @@ export default function Signup({
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setCredentials((c) => ({ ...c, [e.target.name]: e.target.value }));
+  const closeModal = () => {
+    setShowSignup(false);
+    setShowRegister(false);
+    setPostLoginRedirect(null);
   };
+
+  const switchToRegister = () => {
+    setShowSignup(false);
+    setShowRegister(true);
+  };
+
+  const switchToLogin = () => {
+    setShowRegister(false);
+    setShowSignup(true);
+  };
+
+  const handleChange = (e) =>
+    setCredentials((c) => ({ ...c, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,32 +51,45 @@ export default function Signup({
     setLoading(true);
 
     try {
-      const data = await login(credentials.username, credentials.password);
-      if (data.token && data.user) {
-        authLogin(data.user, data.token);
-        toast.success(`Bienvenue, ${data.user.username} 👋`);
-        navigate(postLoginRedirect || "/");
-        closeModal();
-      } else {
-        setError("Réponse inattendue de l’API.");
-      }
+      const { user, token } = await apiLogin(
+        credentials.username,
+        credentials.password
+      );
+      // 1) on met à jour le contexte
+      authLogin(user, token);
+      toast.success(`Bienvenue, ${user.username} !`);
+      // 2) on ferme la modale
+      closeModal();
+      // 3) redirection
+      navigate(postLoginRedirect || "/");
     } catch (err) {
       setError(err.response?.data?.message || "Connexion échouée.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
+  // Si ni login ni register ne doivent s'afficher
+  if (!showSignup && !showRegister) return null;
+
+  // Modal d'inscription
+  if (showRegister) {
+    return (
+      <RegisterModal closeModal={closeModal} switchToLogin={switchToLogin} />
+    );
+  }
+
+  // Modal de connexion
   return (
     <div className="modal-overlay" role="presentation">
       <div
-        className="modal-content"
+        className="modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="login-title"
       >
         <button
-          className="close-modal"
+          className="close-btn"
           onClick={closeModal}
           aria-label="Fermer la fenêtre de connexion"
         >
@@ -104,7 +136,7 @@ export default function Signup({
 
           <button
             type="submit"
-            className="btn-submit"
+            className="apply-btn"
             disabled={loading}
             aria-busy={loading}
           >
@@ -116,10 +148,7 @@ export default function Signup({
             <button
               type="button"
               className="generic-button"
-              onClick={() => {
-                closeModal();
-                setShowRegister(true);
-              }}
+              onClick={switchToRegister}
             >
               Rejoignez-nous !
             </button>

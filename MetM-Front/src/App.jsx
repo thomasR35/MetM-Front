@@ -1,8 +1,8 @@
 import React from "react";
 import PageMeta from "@/components/PageMeta";
 import AppRouter from "./router/AppRouter";
-import Signup from "./pages/Signup";
-import Register from "./pages/Register";
+import Signup from "./components/LoginModal";
+import Register from "./components/RegisterModal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthModal } from "@/context/AuthModalContext";

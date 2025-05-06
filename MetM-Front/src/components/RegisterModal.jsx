@@ -1,4 +1,4 @@
-// src/pages/Register.jsx
+// src/components/RegisterModal.jsx
 // ========================
 import { useState } from "react";
 import { registerUser } from "@/api/auth";

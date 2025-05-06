@@ -2,7 +2,7 @@
 // ========================
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";

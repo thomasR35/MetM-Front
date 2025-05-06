@@ -3,7 +3,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import MockupProduct from "@/components/MockupProduct";
 

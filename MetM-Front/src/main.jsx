@@ -1,3 +1,4 @@
+// src/index.jsx
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/main.scss";
 
@@ -5,18 +6,19 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./hooks/useAuth.jsx";
-import { CartProvider } from "./context/CartContext.jsx";
-import { AuthModalProvider } from "./context/AuthModalContext.jsx";
+
+import { AuthProvider } from "@/context/AuthContext";
+import { AuthModalProvider } from "@/context/AuthModalContext";
+import { CartProvider } from "@/context/CartContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
-      <CartProvider>
-        <AuthModalProvider>
+      <AuthModalProvider>
+        <CartProvider>
           <App />
-        </AuthModalProvider>
-      </CartProvider>
+        </CartProvider>
+      </AuthModalProvider>
     </AuthProvider>
   </BrowserRouter>
 );

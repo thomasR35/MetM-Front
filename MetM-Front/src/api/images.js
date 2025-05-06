@@ -4,104 +4,65 @@ import axios from "axios";
 const BASE_URL = "http://metm-back.local/api";
 
 /**
- * Récupère la liste des images
- * @param {string[]} keywords
- * @param {number}   page
- * @param {number}   limit
- * @returns {Promise<{ images: any[], total: number}>}
+ * Téléverse une image (création par l’utilisateur)
+ * @param {File}     file         File ou Blob issu du canvas
+ * @param {string}   title        Titre/qualiﬁant de l’image
+ * @param {number}   uploaded_by  ID de l’utilisateur
+ * @param {string[]} keywords     Liste de mots‐clés à rattacher
  */
-export const fetchImages = async (keywords = [], page = 1, limit = 20) => {
+export const uploadImage = async (
+  file,
+  title = "",
+  uploaded_by = null,
+  keywords = []
+) => {
   try {
-    const keywordParam = keywords.length ? keywords.join(",") : "";
-    const response = await axios.get(`${BASE_URL}/images`, {
-      params: { keywords: keywordParam, page, limit },
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("title", title);
+    if (uploaded_by != null) {
+      formData.append("uploaded_by", uploaded_by);
+    }
+    if (keywords.length) {
+      formData.append("keywords", keywords.join(","));
+    }
+
+    const res = await axios.post(`${BASE_URL}/images`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
-    return response.data; // { images: […], total: N }
-  } catch (error) {
-    console.error("❌ Erreur API fetchImages :", error.response?.data || error);
-    return { images: [], total: 0 };
+
+    // Votre ImageController::store() renvoie déjà un JSON { id, url, … }
+    return res.data;
+  } catch (err) {
+    console.error("❌ Erreur API uploadImage :", err.response?.data || err);
+    return null;
   }
 };
 
 /**
- * Récupère tous les mots‐clés (tags) existants
- * pour l'UI de filtrage
+ * Récupère tous les mots‐clés
  */
 export const fetchKeywords = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/keywords`);
-    return response.data;
-  } catch (error) {
-    console.error("❌ Erreur API fetchKeywords :", error);
+    const res = await axios.get(`${BASE_URL}/keywords`);
+    return res.data; // doit être un tableau
+  } catch (err) {
+    console.error("❌ Erreur API fetchKeywords :", err.response?.data || err);
     return [];
   }
 };
 
 /**
- * Téléverse une image (création par l’utilisateur)
- * @param {File}   file        Blob ou File issu du canvas
- * @param {string} title       stocké dans la colonne `title`
- * @param {number} uploaded_by ID de l’utilisateur
- * @returns {Promise<{id:number, url:string}>|null}
+ * Récupère la liste des images
  */
-export const uploadImage = async (file, title = "", uploaded_by = null) => {
+export const fetchImages = async (keywords = [], page = 1, limit = 20) => {
   try {
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("title", title);
-    if (uploaded_by !== null) {
-      formData.append("uploaded_by", uploaded_by);
-    }
-
-    const response = await axios.post(`${BASE_URL}/images`, formData, {
-      // axios mettra le bon Content-Type automatiquement
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-      },
-    });
-
-    // selon ta réponse : peut-être response.data.data ou response.data
-    const payload = response.data.data || response.data;
-    return { id: payload.id, url: payload.url };
-  } catch (error) {
-    console.error("❌ Erreur API uploadImage :", error.response?.data || error);
-    return null;
-  }
-};
-
-/**
- * Met à jour le titre et/ou l’URL d’une image existante
- * (utile côté admin)
- * @param {number} id
- * @param {string} title
- * @param {string} url
- */
-export const updateImage = async (id, title, url) => {
-  try {
-    const response = await axios.put(`${BASE_URL}/images/${id}`, {
-      title,
-      url,
-    });
-    console.log("✅ Image mise à jour :", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("❌ Erreur API updateImage :", error.response?.data || error);
-    return null;
-  }
-};
-
-/**
- * Supprime une image
- * @param {number} id
- */
-export const deleteImage = async (id) => {
-  try {
-    const response = await axios.delete(`${BASE_URL}/images/${id}`);
-    console.log("✅ Image supprimée :", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("❌ Erreur API deleteImage :", error.response?.data || error);
-    return null;
+    const params = { page, limit };
+    if (keywords.length) params.keywords = keywords.join(",");
+    const res = await axios.get(`${BASE_URL}/images`, { params });
+    return res.data; // { images: […], total: N }
+  } catch (err) {
+    console.error("❌ Erreur API fetchImages :", err.response?.data || err);
+    return { images: [], total: 0 };
   }
 };

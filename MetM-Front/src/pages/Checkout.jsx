@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/AuthContext";
 import CheckoutButton from "@/components/CheckoutButton";
 import "../styles/pages/_checkout.scss";
 

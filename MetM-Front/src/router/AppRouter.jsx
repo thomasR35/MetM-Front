@@ -7,7 +7,7 @@ import Checkout from "@/pages/Checkout";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminDashboard from "@/pages/AdminDashboard";
 import MainLayout from "@/layouts/MainLayout";
-import Register from "@/pages/Register";
+import Register from "@/components/RegisterModal";
 import ProductPage from "@/pages/ProductPage";
 import LegalMentions from "@/pages/static/LegalMentions";
 import Contact from "@/pages/Contact";
@@ -17,7 +17,7 @@ import Privacy from "@/pages/static/Privacy";
 import NotFoundPage from "@/pages/static/NotFoundPage";
 import SuccessPage from "@/pages/static/SuccessPage";
 import CancelPage from "@/pages/static/CancelPage";
-import { useAuth } from "@/hooks/useAuth.jsx";
+import { useAuth } from "@/context/AuthContext";
 
 const AppRouter = ({
   setShowSignup,
