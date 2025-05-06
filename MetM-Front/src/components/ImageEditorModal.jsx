@@ -1,3 +1,5 @@
+// src/components/ImageEditorModal.jsx
+// ========================
 import React, { useState, useRef, useLayoutEffect } from "react";
 import "../styles/components/_imageEditorModal.scss";
 import useDragPosition from "../hooks/useDragPosition.jsx";

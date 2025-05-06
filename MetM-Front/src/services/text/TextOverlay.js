@@ -1,3 +1,5 @@
+// src/services/text/TextOverlay.js
+// ========================
 export class TextOverlay {
   static draw(ctx, text, { fontFamily, fontSize, color, position }) {
     if (!text) return;

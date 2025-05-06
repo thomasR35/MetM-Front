@@ -1,3 +1,4 @@
+// src/api/checkout.js
 import axios from "axios";
 
 export async function createCheckoutSession(line_items) {

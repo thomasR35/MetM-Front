@@ -1,3 +1,5 @@
+// src/pages/admin/ImagesManagement.jsx
+// ========================
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import axios from "@/api/axiosConfig";
@@ -22,7 +24,6 @@ const ImagesManagement = () => {
     axios
       .get("/images")
       .then((response) => {
-        // ✅ Vérification et mise à jour correcte du state
         if (response.data && Array.isArray(response.data.images)) {
           setImages(response.data.images);
         } else {
@@ -46,7 +47,7 @@ const ImagesManagement = () => {
         console.error("❌ Erreur de chargement des mots-clés :", error)
       );
   }, []);
-  // 🔹 Gérer l'upload d'une image
+
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!file || !title) {
@@ -79,7 +80,7 @@ const ImagesManagement = () => {
       console.error("❌ Erreur lors du téléversement :", error.response?.data);
     }
   };
-  // 🔹 Supprimer une image
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/images/${id}`);
@@ -88,7 +89,7 @@ const ImagesManagement = () => {
       console.error("❌ Erreur lors de la suppression :", error.response?.data);
     }
   };
-  // 🔹 Gérer la mise à jour
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!selectedImage) return;
@@ -120,7 +121,7 @@ const ImagesManagement = () => {
       console.error("❌ Erreur lors de la mise à jour :", error.response?.data);
     }
   };
-  // 🔹 Ouvrir la modale d'édition
+
   const openEditModal = (image) => {
     if (!image) return;
     setSelectedImage(image);
@@ -132,9 +133,8 @@ const ImagesManagement = () => {
     setIsModalOpen(true);
   };
 
-  // 🔹 Ajouter un mot-clé
   const handleAddKeyword = async () => {
-    if (!keywords.trim()) return; // 🔥 Empêche l'ajout d'un mot-clé vide
+    if (!keywords.trim()) return;
 
     try {
       const response = await axios.post("/keywords", {
@@ -143,8 +143,8 @@ const ImagesManagement = () => {
       });
 
       if (response.data) {
-        setAllKeywords([...allKeywords, response.data]); // 🔥 Met à jour la liste
-        setKeywords(""); // ✅ Réinitialise le champ
+        setAllKeywords([...allKeywords, response.data]);
+        setKeywords("");
       }
     } catch (error) {
       console.error(
@@ -154,11 +154,11 @@ const ImagesManagement = () => {
     }
   };
 
-  // 🔹 Supprimer un mot-clé
   const handleDeleteKeyword = async (id) => {
     try {
       await axios.delete(`/keywords/${id}`);
-      setAllKeywords(allKeywords.filter((kw) => kw.id !== id)); // 🔥 Mise à jour de la liste
+      setAllKeywords(allKeywords.filter((kw) => kw.id !== id));
+      e;
     } catch (error) {
       console.error(
         "❌ Erreur lors de la suppression du mot-clé :",
@@ -167,7 +167,6 @@ const ImagesManagement = () => {
     }
   };
 
-  // 🔹 Fermer la modale
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
@@ -203,10 +202,8 @@ const ImagesManagement = () => {
         {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
       </section>
 
-      {/* 🔹 Gestion des mots-clés */}
       <h2>Gestion des mots-clés</h2>
       <section className="keyword-management">
-        {/* ✅ Formulaire d'ajout de mot-clé */}
         <div className="add-keyword">
           <input
             type="text"
@@ -219,7 +216,6 @@ const ImagesManagement = () => {
           </button>
         </div>
 
-        {/* 🔹 Liste des mots-clés */}
         <ul className="keyword-list">
           {allKeywords.length > 0 ? (
             allKeywords.map((kw) => (
@@ -296,7 +292,7 @@ const ImagesManagement = () => {
           </tbody>
         </table>
       </section>
-      {/* ✅ Modale d'édition avec mots-clés */}
+
       {isModalOpen &&
         selectedImage &&
         createPortal(
@@ -318,7 +314,6 @@ const ImagesManagement = () => {
                   required
                 />
 
-                {/* ✅ Input pour modifier les mots-clés */}
                 <label>Mots-clés (séparés par des virgules)</label>
                 <input
                   type="text"
@@ -329,7 +324,6 @@ const ImagesManagement = () => {
                   placeholder="Ex : chat, nature, paysage"
                 />
 
-                {/* ✅ Sélecteur de mots-clés existants */}
                 <label>Ajouter un mot-clé existant</label>
                 <select
                   onChange={(e) =>

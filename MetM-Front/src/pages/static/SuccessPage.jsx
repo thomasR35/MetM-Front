@@ -1,4 +1,5 @@
-// src/pages/SuccessPage.jsx
+// src/pages/static/SuccessPage.jsx
+// ========================
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";

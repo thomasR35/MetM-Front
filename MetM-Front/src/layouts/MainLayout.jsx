@@ -1,3 +1,5 @@
+// src/layouts/MainLayout.jsx
+// ========================
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "../styles/utils/_global.scss";

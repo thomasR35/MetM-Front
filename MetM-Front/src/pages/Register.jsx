@@ -1,4 +1,5 @@
 // src/pages/Register.jsx
+// ========================
 import { useState } from "react";
 import { registerUser } from "@/api/auth";
 import "../styles/pages/_register.scss";

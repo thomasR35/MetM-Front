@@ -1,3 +1,4 @@
+// src/api/auth.js
 import axios from "axios";
 
 const API_URL = "http://metm-back.local/api/auth/login";

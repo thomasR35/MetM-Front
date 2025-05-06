@@ -1,4 +1,5 @@
-// chaque stratégie implémente clip(ctx, width, height)
+// src/services/cropping/Clips.js
+// ========================
 export const clipStrategies = {
   square: {
     clip(ctx, w, h) {

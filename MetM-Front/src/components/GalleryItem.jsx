@@ -1,3 +1,5 @@
+// src/components/GalleryItem.jsx
+// ========================
 import React from "react";
 
 const BASE_URL = "http://metm-back.local";

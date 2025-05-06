@@ -1,3 +1,5 @@
+// src/components/AdminSidebar.jsx
+// ========================
 import { Link } from "react-router-dom";
 
 const AdminSidebar = () => {

@@ -1,3 +1,4 @@
+// src/api/orders.js
 export const sendOrder = async ({ user_id, customer, items, total }) => {
   try {
     const response = await fetch("http://metm-back.local/api/orders", {

@@ -1,3 +1,5 @@
+// src/services/composite/CompositeImage.js
+// ========================
 import { TextOverlay } from "../text/TextOverlay";
 
 /**

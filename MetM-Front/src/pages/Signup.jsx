@@ -1,4 +1,5 @@
 // src/components/Signup.jsx
+// ========================
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -114,7 +115,7 @@ export default function Signup({
             Pas encore inscrit&nbsp;?{" "}
             <button
               type="button"
-              className="form-button"
+              className="generic-button"
               onClick={() => {
                 closeModal();
                 setShowRegister(true);

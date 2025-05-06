@@ -1,4 +1,5 @@
 // src/pages/Gallery.jsx
+// ========================
 import React, { useState, useEffect } from "react";
 import GalleryItem from "@/components/GalleryItem";
 import { fetchImages } from "@/api/images";

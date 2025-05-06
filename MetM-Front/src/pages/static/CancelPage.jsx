@@ -1,3 +1,5 @@
+// src/pages/static/CancelPage.jsx
+// ========================
 import { useNavigate } from "react-router-dom";
 
 export default function CancelPage() {

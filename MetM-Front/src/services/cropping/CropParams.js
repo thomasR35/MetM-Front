@@ -1,4 +1,5 @@
-// calcule les paramètres de découpe en pixel natifs
+// src/services/cropping/CropParams.js
+// ========================
 export class CropParams {
   constructor(imgRect, maskRect, imgNaturalSize) {
     this.imgRect = imgRect;

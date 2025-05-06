@@ -1,3 +1,5 @@
+// src/pages/static/LegalMentions.jsx
+// ========================
 import React from "react";
 
 const LegalMentions = () => {

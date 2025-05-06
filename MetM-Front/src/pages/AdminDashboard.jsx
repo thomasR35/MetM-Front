@@ -1,3 +1,5 @@
+// src/pages/AdminDashboard.jsx
+// ========================
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AdminLayout from "@/layouts/AdminLayout";

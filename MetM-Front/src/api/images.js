@@ -4,7 +4,7 @@ import axios from "axios";
 const BASE_URL = "http://metm-back.local/api";
 
 /**
- * Récupère la liste des images (pour ta galerie)
+ * Récupère la liste des images
  * @param {string[]} keywords
  * @param {number}   page
  * @param {number}   limit
@@ -40,7 +40,7 @@ export const fetchKeywords = async () => {
 /**
  * Téléverse une image (création par l’utilisateur)
  * @param {File}   file        Blob ou File issu du canvas
- * @param {string} title       (optionnel) stocké dans la colonne `title`
+ * @param {string} title       stocké dans la colonne `title`
  * @param {number} uploaded_by ID de l’utilisateur
  * @returns {Promise<{id:number, url:string}>|null}
  */

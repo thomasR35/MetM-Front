@@ -1,3 +1,5 @@
+//src/styles/components/_navbar.scss
+// ========================
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
@@ -115,10 +117,10 @@
       display: block;
     }
 
-    &:focus,
-    &:active {
-      background-color: var.$navbar-bg;
+    &:focus &:active {
       outline: none;
+      border-color: var.$links-hover;
+      box-shadow: 0 0 0.5rem var.$links-hover;
     }
   }
 

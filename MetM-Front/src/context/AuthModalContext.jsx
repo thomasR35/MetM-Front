@@ -1,3 +1,5 @@
+// src/context/AuthModalContext.jsx
+// ========================
 import { createContext, useContext, useState } from "react";
 
 const AuthModalContext = createContext();

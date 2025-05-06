@@ -1,7 +1,9 @@
+// src/layouts/AdminLayout.jsx
+// ========================
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css"; // ✅ Assurer le bon fonctionnement de Bootstrap
+import "bootstrap/dist/css/bootstrap.min.css";
 import "@/styles/pages/_dashboard.scss";
 
 const AdminLayout = () => {
@@ -23,7 +25,6 @@ const AdminLayout = () => {
 
   return (
     <div className="d-flex">
-      {/* ✅ Sidebar */}
       <nav className="admin-sidebar bg-dark text-white d-flex flex-column">
         <h2 className="text-center py-3 border-bottom">Admin Panel</h2>
         <ul className="nav flex-column px-2">
@@ -58,7 +59,6 @@ const AdminLayout = () => {
         </div>
       </nav>
 
-      {/* ✅ Contenu principal */}
       <div className="admin-content p-4 flex-grow-1">
         <Outlet />
       </div>

@@ -1,3 +1,5 @@
+// src/components/MockupProduct.jsx
+// ========================
 import React, { useEffect, useRef } from "react";
 import { TextOverlay } from "@/services/text/TextOverlay";
 

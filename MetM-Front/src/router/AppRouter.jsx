@@ -1,3 +1,5 @@
+// src/router/AppRouter.jsx
+// ========================
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "@/pages/Home";
 import Gallery from "@/pages/Gallery";

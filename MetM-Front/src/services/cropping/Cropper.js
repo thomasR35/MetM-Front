@@ -1,3 +1,5 @@
+// src/services/cropping/Cropper.js
+// ========================
 import { CropParams } from "./CropParams";
 import { clipStrategies } from "./Clips";
 

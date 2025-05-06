@@ -1,3 +1,5 @@
+// src/components/CheckoutButton.jsx
+// ========================
 import { useState } from "react";
 import { stripePromise } from "../services/stripe/stripe";
 import { createCheckoutSession } from "../api/checkout";
