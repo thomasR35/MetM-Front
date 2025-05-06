@@ -14,7 +14,7 @@ la partie Back Office, FontAwesome, et une communication fluide avec l’API via
 - 🎨 Bootstrap 5
 - 🎯 FontAwesome (React)
 - 📦 Axios
-- 🖼️ Fabric.js
+- 🖼️ CanvaJS
 - 🧱 Swiper.js
 - 🗃️ ESLint (avec plugins React)
 - 📂 Gestion d’images : Dropzone
