@@ -1,37 +1,46 @@
 // src/api/auth.js
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://metm-back.local/api",
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-});
+const API_BASE = "http://metm-back.local/api";
 
 /**
  * POST /api/auth/login
- * @throws AxiosError
- * @returns {{user: object, token: string}}
+ * @returns {Promise<{user:object, token:string}>}
  */
-export async function login(username, password) {
-  const res = await api.post("/auth/login", { username, password });
-  // on attend que l'API renvoie { user: {...}, token: "..." }
-  return res.data;
+export function login(username, password) {
+  return fetch(`${API_BASE}/auth/login`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  }).then(async (res) => {
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || data.message || "Connexion échouée");
+    }
+    return data;
+  });
 }
 
 /**
  * POST /api/users
- * @throws AxiosError
- * @returns {object}
+ * @returns {Promise<object>}
  */
-export async function registerUser(username, email, password) {
-  const res = await api.post("/users", {
-    username,
-    email,
-    password,
-    role: "user",
+export function registerUser(username, email, password) {
+  return fetch(`${API_BASE}/users`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ username, email, password, role: "user" }),
+  }).then(async (res) => {
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || data.message || "Inscription échouée");
+    }
+    return data;
   });
-  return res.data;
 }

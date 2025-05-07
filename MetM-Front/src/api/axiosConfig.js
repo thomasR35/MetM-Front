@@ -1,11 +1,8 @@
-// src/api/axiosConfig.js
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://metm-back.local/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: "/api",
+  withCredentials: true,
 });
 
 export default api;
