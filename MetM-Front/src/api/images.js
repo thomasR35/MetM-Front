@@ -40,7 +40,7 @@ export async function fetchImages(keywords = [], page = 1, limit = 20) {
  * @param {string} title
  * @param {number|null} uploaded_by
  * @param {string[]} keywords
- * @returns {Promise<object>} l’objet image créé
+ * @returns {Promise<object>}
  */
 export async function uploadImage(
   file,
