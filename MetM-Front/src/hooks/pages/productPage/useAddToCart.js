@@ -1,4 +1,5 @@
-// src/hooks/productPage/useAddToCart.js
+// src/hooks/pages/productPage/useAddToCart.js
+// ======================================
 import { useAuthModal } from "@/context/AuthModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -11,27 +12,32 @@ export function useAddToCart({
   product,
   currentSlide,
   cropZones,
-  customization,
+  customization: { customText, textOptions, croppedImageData },
 }) {
   const { user } = useAuth();
   const { addToCart } = useCart();
   const { setPostLoginRedirect, setShowSignup } = useAuthModal();
-  const { croppedImageData, customText, textOptions } = customization;
 
   async function handleAddToCart(quantity) {
-    const price =
-      typeof product.price === "string"
-        ? parseFloat(product.price.replace(",", "."))
-        : product.price;
+    // 1) Calculer le prix en float, que product.price soit string ou number
+    let prixFloat;
+    if (typeof product.price === "number") {
+      prixFloat = product.price;
+    } else {
+      // ex: "14,99€"
+      prixFloat = parseFloat(
+        product.price.toString().replace(",", ".").replace("€", "")
+      );
+      if (isNaN(prixFloat)) prixFloat = 0;
+    }
 
-    // 1) Cas « sans custom » : on ajoute directement
-    const noCustom = !croppedImageData && !customText.trim();
-    if (noCustom) {
+    // 2) Si pas de customisation => article standard
+    if (!croppedImageData && !customText.trim()) {
       addToCart(
         {
           id: productType,
           name: product.name,
-          price,
+          price: prixFloat,
           image: product.images[currentSlide],
         },
         null,
@@ -41,15 +47,15 @@ export function useAddToCart({
       return;
     }
 
-    // 2) Si pas loggé, on redirige vers l’inscription
+    // 3) Si pas connecté => ouvrir modal d'auth
     if (!user) {
       setPostLoginRedirect(window.location.pathname);
       setShowSignup(true);
       return;
     }
 
+    // 4) Sinon, on crée le composite et on téléverse
     try {
-      // 3) Génération de l’image composite en local
       const composite = await CompositeImage.create({
         productImageUrl: product.images[currentSlide],
         croppedData: croppedImageData,
@@ -58,42 +64,36 @@ export function useAddToCart({
         cropArea: cropZones[productType][currentSlide],
       });
 
-      // 4) Transformation du dataUrl en Blob
+      // récupérer le blob depuis le dataURL
       const blob = await (await fetch(composite.dataUrl)).blob();
 
-      // 5) Upload vers le serveur (on ne passe plus uploaded_by)
+      // téléversement
+      // uploadImage(file, title, uploaded_by, keywordsArray)
       const uploadResult = await uploadImage(
         blob,
         `${productType}-${Date.now()}`,
         user.id,
-        []
+        [] // ou un tableau de mots-clés si tu en as
       );
 
-      // 6) Détermination de l’URL finale
-      const finalUrl = (uploadResult && uploadResult.url) || composite.dataUrl;
+      // déterminer l'URL finale
+      const finalImageUrl = uploadResult.url || composite.dataUrl;
 
-      // 7) Préparation des données « custom » pour le panier
-      const customData =
-        uploadResult && uploadResult.id
-          ? {
-              id: uploadResult.id,
-              dataUrl: finalUrl,
-              width: composite.width,
-              height: composite.height,
-            }
-          : {
-              dataUrl: finalUrl,
-              width: composite.width,
-              height: composite.height,
-            };
+      // données custom pour le panier
+      const customData = {
+        id: uploadResult.id,
+        dataUrl: finalImageUrl,
+        width: composite.width,
+        height: composite.height,
+      };
 
-      // 8) On ajoute au panier
+      // ajout au panier
       addToCart(
         {
           id: productType,
           name: product.name,
-          price,
-          image: finalUrl,
+          price: prixFloat,
+          image: finalImageUrl,
         },
         customData,
         quantity
@@ -102,7 +102,7 @@ export function useAddToCart({
       toast.success("Article ajouté au panier !");
     } catch (err) {
       console.error("Erreur handleAddToCart :", err);
-      toast.error("Échec de l'ajout au panier.");
+      toast.error(err.message || "Échec de l'ajout au panier.");
     }
   }
 

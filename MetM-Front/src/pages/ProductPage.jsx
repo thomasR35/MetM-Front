@@ -1,11 +1,13 @@
 // src/pages/ProductPage.jsx
-//=====================================
+// ========================
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { toast } from "react-toastify";
+
 import {
   productData,
   cropZones,
@@ -15,8 +17,9 @@ import { useImageUpload } from "@/hooks/pages/productPage/useImageUpload";
 import { useCustomization } from "@/hooks/pages/productPage/useCustomization";
 import { useQuantity } from "@/hooks/pages/productPage/useQuantity";
 import { useAddToCart } from "@/hooks/pages/productPage/useAddToCart";
-import { useSaveCreation } from "@/hooks/pages/productPage/useSaveCreation";
-import { toast } from "react-toastify";
+
+import { useAuth } from "@/context/AuthContext";
+import { useAuthModal } from "@/context/AuthModalContext";
 
 import MockupProduct from "@/components/MockupProduct";
 import ImageEditorModal from "@/components/ImageEditorModal";
@@ -26,13 +29,13 @@ export default function ProductPage() {
   const { productType } = useParams();
   const product = productData[productType] || productData.mug;
 
-  // Garder en mémoire le dernier produit visité
+  // Mémoriser le dernier produit visité
   useLastVisitedProduct(productType);
 
-  // État pour le slide actif
+  // Slide actif du Swiper
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Gestion du drag & drop et de la modale d'édition
+  // Drag & drop + édition d’image
   const {
     uploadedImage,
     isModalOpen,
@@ -42,7 +45,7 @@ export default function ProductPage() {
     closeModal,
   } = useImageUpload();
 
-  // États de personnalisation (texte, options, image recadrée)
+  // Texte personnalisé & image recadrée
   const {
     customText,
     setCustomText,
@@ -64,20 +67,32 @@ export default function ProductPage() {
     customization: { customText, textOptions, croppedImageData },
   });
 
-  // Sauvegarde de la création
-  const { handleSaveClick, isSaveModalOpen, closeSaveModal } =
-    useSaveCreation();
+  // Auth & modal signup pour la sauvegarde
+  const { user } = useAuth();
+  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
 
-  // Wrapper pour la sauvegarde (toast si aucune modif)
-  const handleSave = () => {
-    const hasModification = !!croppedImageData || !!customText.trim();
-    const ok = handleSaveClick({ hasModification });
-    if (!ok) {
+  // État local de la modale « Enregistrer la création »
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+
+  // Ouvre la modale de sauvegarde
+  const handleSaveClick = () => {
+    // 1) pas de modif ?
+    if (!croppedImageData && !customText.trim()) {
       toast.info("Aucune modification détectée.");
+      return;
     }
+    // 2) pas connecté ?
+    if (!user) {
+      setPostLoginRedirect(window.location.pathname);
+      setShowSignup(true);
+      return;
+    }
+    // 3) sinon on ouvre la modale Save
+    setIsSaveModalOpen(true);
   };
+  const closeSaveModal = () => setIsSaveModalOpen(false);
 
-  // Appliquer l'image recadrée
+  // Applique l’image recadrée dans le service
   const handleApplyCroppedImage = (data) => {
     const result = onImageApply(data);
     setCroppedImageData(result);
@@ -94,10 +109,11 @@ export default function ProductPage() {
         Personnalisation du {product.name}
       </h1>
 
-      <p className="price" aria-label={`Prix : ${product.price.toFixed(2)}€`}>
-        Prix : {product.price.toFixed(2)}€
+      <p className="price" aria-label={`Prix : ${product.price}`}>
+        Prix : {product.price}
       </p>
 
+      {/* Slider + Aperçu */}
       <section
         className="product-sections"
         role="region"
@@ -142,6 +158,7 @@ export default function ProductPage() {
           </Swiper>
         </section>
 
+        {/* Options de personnalisation */}
         <aside
           className="product-aside"
           role="region"
@@ -150,11 +167,11 @@ export default function ProductPage() {
           <h3 id="options-title" className="sr-only">
             Options de personnalisation
           </h3>
-
           <form
             className="customization-options"
             onSubmit={(e) => e.preventDefault()}
           >
+            {/* Texte */}
             <fieldset>
               <legend>Texte personnalisé</legend>
               <label htmlFor="customText">Texte :</label>
@@ -167,6 +184,7 @@ export default function ProductPage() {
               />
             </fieldset>
 
+            {/* Taille */}
             <fieldset>
               <legend>Taille du texte</legend>
               <label htmlFor="fontSizeRange">
@@ -185,6 +203,7 @@ export default function ProductPage() {
               />
             </fieldset>
 
+            {/* Position Y */}
             <fieldset>
               <legend>Position verticale</legend>
               <label htmlFor="positionRange">
@@ -206,6 +225,7 @@ export default function ProductPage() {
               />
             </fieldset>
 
+            {/* Police */}
             <fieldset>
               <legend>Police</legend>
               <label htmlFor="fontFamily">Police :</label>
@@ -223,6 +243,7 @@ export default function ProductPage() {
               </select>
             </fieldset>
 
+            {/* Couleur */}
             <fieldset>
               <legend>Couleur du texte</legend>
               <label htmlFor="fontColor">Couleur :</label>
@@ -237,6 +258,7 @@ export default function ProductPage() {
             </fieldset>
           </form>
 
+          {/* Dropzone */}
           <section
             className="upload-container"
             role="region"
@@ -263,6 +285,7 @@ export default function ProductPage() {
         </aside>
       </section>
 
+      {/* Modale de recadrage */}
       {isModalOpen && (
         <ImageEditorModal
           uploadedImage={uploadedImage}
@@ -271,6 +294,7 @@ export default function ProductPage() {
         />
       )}
 
+      {/* Modale d’enregistrement */}
       {isSaveModalOpen && (
         <SaveCreationModal
           isOpen={isSaveModalOpen}
@@ -285,28 +309,24 @@ export default function ProductPage() {
         />
       )}
 
+      {/* Sélecteur de quantité */}
       <section
         role="group"
         aria-label="Choix de la quantité"
         className="quantity-selector"
       >
-        <button
-          onClick={decrement}
-          aria-label={`Réduire la quantité (actuellement ${quantity})`}
-        >
+        <button onClick={decrement} aria-label="Réduire la quantité">
           −
         </button>
         <span aria-live="polite" aria-atomic="true">
           {quantity}
         </span>
-        <button
-          onClick={increment}
-          aria-label={`Augmenter la quantité (actuellement ${quantity})`}
-        >
+        <button onClick={increment} aria-label="Augmenter la quantité">
           +
         </button>
       </section>
 
+      {/* Ajouter au panier */}
       <button
         className="generic-button"
         onClick={() => handleAddToCart(quantity)}
@@ -315,6 +335,16 @@ export default function ProductPage() {
         Ajouter au panier
       </button>
 
+      {/* Bouton enregistrer */}
+      <button
+        className="generic-button"
+        onClick={handleSaveClick}
+        aria-label="Enregistrer la création"
+      >
+        Enregistrer la création
+      </button>
+
+      {/* Navigation produit */}
       <nav
         role="navigation"
         aria-labelledby="switch-product-title"
@@ -341,14 +371,6 @@ export default function ProductPage() {
           Accéder au panier
         </button>
       </Link>
-
-      <button
-        className="generic-button"
-        onClick={handleSave}
-        aria-label="Enregistrer la création"
-      >
-        Enregistrer la création
-      </button>
     </main>
   );
 }

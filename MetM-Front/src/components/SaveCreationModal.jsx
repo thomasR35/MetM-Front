@@ -4,6 +4,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import "@/styles/components/_saveCreationModal.scss";
 import { useSaveCreation } from "@/hooks/components/saveCreationModal/useSaveCreation";
+import MockupProduct from "@/components/MockupProduct";
 
 export default function SaveCreationModal(props) {
   const {
@@ -18,17 +19,17 @@ export default function SaveCreationModal(props) {
     handleAuthClick,
     user,
     onClose,
+    saving,
   } = useSaveCreation(props);
 
-  // Cas modal fermée
   if (!props.isOpen) return null;
 
-  // Si pas connecté, on propose la connexion
+  // Si non connecté
   if (!user) {
     return createPortal(
       <div className="modal-overlay" role="dialog" aria-modal="true">
         <div className="modal">
-          <button className="close-btn" onClick={onClose} aria-label="Fermer">
+          <button className="close-btn" onClick={onClose}>
             ×
           </button>
           <h2>Connexion requise</h2>
@@ -42,7 +43,7 @@ export default function SaveCreationModal(props) {
     );
   }
 
-  // Modal d'enregistrement
+  // Modale d’enregistrement
   return createPortal(
     <div
       className="modal-overlay"
@@ -51,17 +52,19 @@ export default function SaveCreationModal(props) {
       aria-labelledby="save-modal-title"
     >
       <div className="modal">
-        <button className="close-btn" onClick={onClose} aria-label="Fermer">
+        <button className="close-btn" onClick={onClose}>
           ×
         </button>
         <h2 id="save-modal-title">Enregistrer la création</h2>
 
         <div className="preview">
-          {previewUrl ? (
-            <img src={previewUrl} alt="Aperçu de la création" />
-          ) : (
-            <p>Aucun aperçu disponible</p>
-          )}
+          <MockupProduct
+            productImage={props.productImages[props.currentSlide]}
+            croppedImageData={props.croppedImageData}
+            customText={props.customText}
+            textOptions={props.textOptions}
+            cropArea={props.cropArea}
+          />
         </div>
 
         <div className="keyword-input">
@@ -77,7 +80,7 @@ export default function SaveCreationModal(props) {
               <option key={kw.id} value={kw.name} />
             ))}
           </datalist>
-          <button type="button" onClick={addKeyword} className="generic-button">
+          <button type="button" className="generic-button" onClick={addKeyword}>
             Ajouter
           </button>
         </div>
@@ -85,11 +88,11 @@ export default function SaveCreationModal(props) {
         <ul className="keywords-list">
           {selectedKeywords.map((kw) => (
             <li key={kw}>
-              {kw}{" "}
+              {kw}
               <button
-                onClick={() => removeKeyword(kw)}
                 className="close-btn"
                 aria-label={`Supprimer ${kw}`}
+                onClick={() => removeKeyword(kw)}
               >
                 ×
               </button>
@@ -97,8 +100,13 @@ export default function SaveCreationModal(props) {
           ))}
         </ul>
 
-        <button type="button" onClick={handleSave} className="generic-button">
-          Sauvegarder
+        <button
+          type="button"
+          className="generic-button"
+          onClick={handleSave}
+          disabled={saving}
+        >
+          {saving ? "Enregistrement…" : "Sauvegarder"}
         </button>
       </div>
     </div>,
