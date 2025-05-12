@@ -9,10 +9,10 @@ import "../styles/pages/_checkout.scss";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { cartItems, total, processOrder } = useOrder();
+  const { cartItems, total, loading, processOrder } = useOrder();
   const { formData, handleChange } = useCheckoutForm();
 
-  // Si panier vide, on propose un retour
+  // Si panier vide
   if (cartItems.length === 0) {
     return (
       <main
@@ -24,7 +24,9 @@ export default function CheckoutPage() {
         <h1 id="empty-cart-title">Panier vide</h1>
         <button
           className="generic-button"
-          onClick={() => navigate("/product/mug")}
+          onClick={() =>
+            navigate(`/product/${localStorage.getItem("lastProduct") || "mug"}`)
+          }
         >
           Retour aux produits
         </button>
@@ -57,7 +59,7 @@ export default function CheckoutPage() {
               role="group"
               aria-label={`${item.quantity} × ${item.product.name}, ${(
                 item.product.price * item.quantity
-              ).toFixed(2)} euros`}
+              ).toFixed(2)} €`}
             >
               {item.quantity} × {item.product.name} —{" "}
               {(item.product.price * item.quantity).toFixed(2)} €
@@ -80,10 +82,8 @@ export default function CheckoutPage() {
         <h2 id="form-title" className="sr-only">
           Vos coordonnées
         </h2>
-
         <fieldset>
           <legend>Coordonnées</legend>
-
           <div className="form-group">
             <label htmlFor="checkout-name">Nom et prénom</label>
             <input
@@ -95,7 +95,6 @@ export default function CheckoutPage() {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="checkout-email">Email</label>
             <input
@@ -107,7 +106,6 @@ export default function CheckoutPage() {
               required
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="checkout-address">Adresse de livraison</label>
             <textarea
@@ -131,13 +129,11 @@ export default function CheckoutPage() {
         <h2 id="payment-section-title" className="sr-only">
           Paiement
         </h2>
-        {/* 
-          On déclenche la création de session Stripe via processOrder.
-          CheckoutButton peut appeler processOrder(formData) au click.
-        */}
         <CheckoutButton
           className="checkout-button"
           onClick={() => processOrder(formData)}
+          disabled={cartItems.length === 0}
+          loading={loading}
           aria-label={`Payer ${total.toFixed(2)} € via Stripe`}
         >
           Payer {total.toFixed(2)} €

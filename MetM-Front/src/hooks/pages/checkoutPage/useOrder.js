@@ -1,31 +1,67 @@
 // src/hooks/useOrder.js
 //=====================================
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { createCheckoutSession } from "@/services/checkoutService/checkoutService";
+import { useAuthModal } from "@/context/AuthModalContext";
+import { stripePromise } from "@/services/stripe/stripe";
+import { createCheckoutSession } from "@/api/checkout";
 
 export function useOrder() {
   const { cartItems, total, clearCart } = useCart();
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
+  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
 
   const processOrder = useCallback(
-    async (customerData) => {
-      // On ajoute l'ID utilisateur si connecté
-      const payload = { ...customerData, userId: user?.id };
+    async (formData) => {
+      // 1) si panier vide → redirection
+      if (cartItems.length === 0) {
+        navigate(`/product/${localStorage.getItem("lastProduct") || "mug"}`);
+        return;
+      }
+      // 2) si pas connecté → modale login
+      if (!isAuthenticated) {
+        setPostLoginRedirect(location.pathname + location.search);
+        setShowSignup(true);
+        return;
+      }
+
+      // 3) sinon on lance Stripe
+      setLoading(true);
       try {
-        const { url } = await createCheckoutSession(cartItems, total, payload);
-        // on vide le panier puis on redirige vers Stripe
+        const payload = cartItems.map((i) => ({
+          product_name: i.product.name,
+          unit_amount: Math.round(i.product.price * 100),
+          quantity: i.quantity,
+        }));
+
+        const sessionId = await createCheckoutSession(payload);
+        const stripe = await stripePromise;
+        await stripe.redirectToCheckout({ sessionId });
+
+        // 4) clearCart après redirection (dans ton success page ou ici)
         clearCart();
-        window.location.href = url;
       } catch (err) {
-        console.error("Échec de la création de session de paiement :", err);
+        console.error("Erreur processOrder:", err);
+      } finally {
+        setLoading(false);
       }
     },
-    [cartItems, total, user, clearCart]
+    [
+      cartItems,
+      isAuthenticated,
+      setPostLoginRedirect,
+      setShowSignup,
+      navigate,
+      location.pathname,
+      location.search,
+      clearCart,
+    ]
   );
 
-  return { cartItems, total, processOrder };
+  return { cartItems, total, loading, processOrder };
 }

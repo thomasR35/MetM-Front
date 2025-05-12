@@ -5,7 +5,7 @@
 
 /* ========================
    PAGE PANIER PRINCIPALE
-======================== */
+   ======================== */
 .cart-page {
   padding: 2rem;
   background: var.$navbar-bg;
@@ -21,7 +21,7 @@
 
   /* ========================
      TITRE DE PAGE
-  ========================= */
+     ======================== */
   h1 {
     font-size: 3rem;
     font-weight: 550;
@@ -32,7 +32,7 @@
 
   /* ========================
      BOUTON RETOUR PRODUIT
-  ========================= */
+     ======================== */
   .cart-back-btn {
     display: flex;
     justify-content: center;
@@ -56,20 +56,20 @@
 
   /* ========================
      LISTE DES ARTICLES
-  ========================= */
+     ======================== */
   .cart-items {
     width: 100%;
     max-width: 800px;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    gap: 1rem;
 
     .cart-item {
       display: flex;
       justify-content: space-around;
       align-items: center;
       padding: 1rem;
+      margin-top: 1rem;
       border: 1px solid var.$text;
       border-radius: 5px;
       background-color: var.$text-bg;
@@ -77,11 +77,16 @@
       .cart-mockup {
         width: 200px;
         height: auto;
+        overflow: hidden;
         border: 1px solid var.$text;
         border-radius: 10px;
-        canvas {
-          width: 200px;
-          height: auto;
+
+        canvas,
+        img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: cover;
           border-radius: 10px;
         }
       }
@@ -107,60 +112,60 @@
           margin-top: 1rem;
         }
       }
+    } // fin .cart-item
+
+    /* ========================
+       CONTRÔLE QUANTITÉ
+       ======================== */
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 1rem 0;
+
+      button {
+        padding: 0.25rem 0.6rem;
+        font-weight: 550;
+        background: var.$button-bg;
+        color: var.$text;
+        border: 1px solid var.$text;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      span {
+        min-width: 24px;
+        text-align: center;
+        font-weight: bold;
+      }
     }
-  }
-}
+  } // fin .cart-items
 
-/* ========================
-   CONTRÔLE QUANTITÉ
-======================== */
-.quantity-control {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-
-  button {
-    padding: 0.25rem 0.6rem;
+  /* ========================
+     RÉCAPITULATIF TOTAL
+     ======================== */
+  .cart-total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
     font-weight: 550;
-    background: var.$button-bg;
-    color: var.$text;
-    border: 1px solid var.$text;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+    margin: 2rem 0;
 
-  span {
-    min-width: 24px;
-    text-align: center;
-    font-weight: bold;
-  }
-}
+    h2 {
+      text-align: center;
+    }
 
-/* ========================
-   RÉCAPITULATIF TOTAL
-======================== */
-.cart-total {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: 550;
-  margin: 2rem 0;
+    .generic-button {
+      width: max-content;
+      margin-top: 1rem;
+    }
 
-  h2 {
-    text-align: center;
-  }
-
-  .form-button {
-    max-width: 800px;
-    margin-top: 1rem;
-  }
-
-  .checkout-hint {
-    margin-top: 1rem;
-    font-size: 1rem;
-    color: var.$text;
+    .checkout-hint {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: var.$text;
+    }
   }
 }

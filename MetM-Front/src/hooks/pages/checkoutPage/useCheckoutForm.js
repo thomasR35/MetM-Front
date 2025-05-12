@@ -2,19 +2,17 @@
 //=====================================
 import { useState, useCallback } from "react";
 
-const INITIAL = { name: "", email: "", address: "" };
-
 export function useCheckoutForm() {
-  const [formData, setFormData] = useState(INITIAL);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    address: "",
+  });
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData((f) => ({ ...f, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const resetForm = useCallback(() => {
-    setFormData(INITIAL);
-  }, []);
-
-  return { formData, handleChange, resetForm };
+  return { formData, handleChange };
 }

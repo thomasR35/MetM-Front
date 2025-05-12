@@ -1,5 +1,7 @@
 // src/api/images.js
-import api from "./axiosConfig"; // ← on importe api, pas axios
+import api from "./axiosConfig";
+
+const API_BASE = import.meta.env.VITE_API_URL.replace(/\/api\/?$/, "");
 
 /**
  * Récupère tous les mots‐clés
@@ -25,9 +27,11 @@ export async function fetchKeywords() {
 export async function fetchImages(keywords = [], page = 1, limit = 20) {
   try {
     const params = { page, limit };
-    if (keywords.length) params.keywords = keywords.join(",");
+    if (Array.isArray(keywords) && keywords.length) {
+      params.keywords = keywords.join(",");
+    }
     const { data } = await api.get("/images", { params });
-    return data; // data = { images: […], total: N }
+    return data; // { images: […], total: N }
   } catch (err) {
     console.error("❌ Erreur API fetchImages :", err.response?.data || err);
     throw new Error("Erreur récupération images");
@@ -38,8 +42,8 @@ export async function fetchImages(keywords = [], page = 1, limit = 20) {
  * Upload d’une image (FormData multipart)
  * @param {File|Blob} file
  * @param {string} title
- * @param {number|null} uploaded_by
- * @param {string[]} keywords
+ * @param {number|null} uploaded_by  — l’ID Numéro d’utilisateur (obligatoire pour ton API)
+ * @param {string[]|string} keywords
  * @returns {Promise<object>}
  */
 export async function uploadImage(
@@ -49,18 +53,42 @@ export async function uploadImage(
   keywords = []
 ) {
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append("image", file, title);
   formData.append("title", title);
-  if (uploaded_by != null) formData.append("uploaded_by", uploaded_by);
-  if (keywords.length) formData.append("keywords", keywords.join(","));
+
+  if (uploaded_by != null) {
+    formData.append("uploaded_by", uploaded_by);
+  }
+
+  // normalisation keywords en tableau…
+  const kwList = Array.isArray(keywords)
+    ? keywords
+    : typeof keywords === "string"
+    ? keywords
+        .split(",")
+        .map((k) => k.trim())
+        .filter(Boolean)
+    : [];
+
+  kwList.forEach((kw) => formData.append("keywords[]", kw));
 
   try {
-    const { data } = await api.post("/images", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return data;
+    // Ne PAS forcer Content-Type : boundary généré automatiquement
+    const { data } = await api.post("/images", formData);
+
+    // Si le back renvoie data.url = "/uploads/xxx", on le complète :
+    let absoluteUrl = data.url;
+    if (absoluteUrl && absoluteUrl.startsWith("/")) {
+      absoluteUrl = `${API_BASE}${absoluteUrl}`;
+    }
+
+    return { ...data, url: absoluteUrl };
   } catch (err) {
     console.error("❌ Erreur API uploadImage :", err.response?.data || err);
-    throw new Error("Erreur upload image");
+    throw new Error(
+      err.response?.data?.error ||
+        err.response?.data?.message ||
+        "Erreur upload image"
+    );
   }
 }
