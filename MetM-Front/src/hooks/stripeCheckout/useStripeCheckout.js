@@ -1,3 +1,5 @@
+// src/hooks/stripeCheckout/useStripeCheckout.js
+// ========================
 import { useState, useCallback } from "react";
 import { stripePromise } from "@/services/stripe/stripe";
 import { createCheckoutSession } from "@/api/checkout";

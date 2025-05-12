@@ -1,3 +1,5 @@
+// src/hooks/mockupProduct/useMockupProduct.js
+// =========================================
 import { useEffect, useRef } from "react";
 import { TextOverlay } from "@/services/text/TextOverlay";
 

@@ -1,3 +1,5 @@
+//src/hooks/galleryItem/useGalleryItem.js
+//=========================================
 import { useCallback, useMemo } from "react";
 
 // On part de VITE_API_URL = "http://metm-back.local/api"

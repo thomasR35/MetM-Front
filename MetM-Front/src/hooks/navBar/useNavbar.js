@@ -1,3 +1,5 @@
+// src/hooks/navBar/useNavbar.js
+//=========================================
 import { useState, useCallback, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";

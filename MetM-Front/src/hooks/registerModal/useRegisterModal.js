@@ -1,3 +1,5 @@
+// src/hooks/registerModal/useRegisterModal.js
+//============================================
 import { useState, useCallback } from "react";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { registerUser } from "@/api/auth";

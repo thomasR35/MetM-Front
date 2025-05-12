@@ -1,3 +1,5 @@
+// src/hooks/loginModal/useLoginModal.js
+//=====================================================
 import { useState, useEffect, useCallback } from "react";
 import { CompositeImage } from "@/services/composite/CompositeImage";
 import { uploadImage, fetchKeywords } from "@/api/images";
