@@ -2,7 +2,7 @@
 // ========================
 import React, { useState, useRef, useLayoutEffect } from "react";
 import "../styles/components/_imageEditorModal.scss";
-import useDragPosition from "../hooks/useDragPosition.js";
+import useDragPosition from "../hooks/imageEditorModal/useDragPosition.js";
 import { Cropper } from "../services/cropping/Cropper";
 
 const ImageEditorModal = ({ uploadedImage, onClose, onApply }) => {
