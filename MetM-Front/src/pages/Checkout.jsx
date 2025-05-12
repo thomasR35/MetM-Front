@@ -1,28 +1,17 @@
 // src/pages/Checkout.jsx
-// ========================
-import React, { useState } from "react";
-import { useCart } from "@/context/CartContext";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
 import CheckoutButton from "@/components/CheckoutButton";
+import { useOrder } from "@/hooks/checkoutPage/useOrder";
+import { useCheckoutForm } from "@/hooks/checkoutPage/useCheckoutForm";
 import "../styles/pages/_checkout.scss";
 
 export default function CheckoutPage() {
-  const { cartItems, total, clearCart } = useCart();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { cartItems, total, processOrder } = useOrder();
+  const { formData, handleChange } = useCheckoutForm();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    address: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  // Note : ici on ne soumet pas la form classique, le paiement se fait via Stripe
+  // Si panier vide, on propose un retour
   if (cartItems.length === 0) {
     return (
       <main
@@ -36,7 +25,7 @@ export default function CheckoutPage() {
           className="generic-button"
           onClick={() => navigate("/product/mug")}
         >
-          Retour au produit
+          Retour aux produits
         </button>
       </main>
     );
@@ -141,15 +130,20 @@ export default function CheckoutPage() {
         <h2 id="payment-section-title" className="sr-only">
           Paiement
         </h2>
+        {/* 
+          On déclenche la création de session Stripe via processOrder.
+          CheckoutButton peut appeler processOrder(formData) au click.
+        */}
         <CheckoutButton
-          aria-label={`Payer ${total.toFixed(2)} euros via Stripe`}
           className="checkout-button"
-          items={cartItems}
-          total={total}
-        />
+          onClick={() => processOrder(formData)}
+          aria-label={`Payer ${total.toFixed(2)} € via Stripe`}
+        >
+          Payer {total.toFixed(2)} €
+        </CheckoutButton>
       </section>
 
-      {/* Info légales */}
+      {/* Infos légales */}
       <section
         className="checkout-info"
         role="note"
