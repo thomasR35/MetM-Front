@@ -1,3 +1,5 @@
+// src/pages/Gallery.jsx
+//=====================================
 import React, { useState } from "react";
 import GalleryItem from "@/components/GalleryItem";
 import { useKeywords } from "@/hooks/galleryPage/useKeywords";

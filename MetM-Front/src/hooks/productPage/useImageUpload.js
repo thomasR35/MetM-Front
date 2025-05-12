@@ -1,3 +1,5 @@
+// src/hooks/productPage/useImageUpload.js
+//=====================================
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 

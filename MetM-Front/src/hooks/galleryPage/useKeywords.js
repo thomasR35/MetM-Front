@@ -1,3 +1,5 @@
+// src/hooks/galleryPage/useKeywords.js
+//=====================================
 import { useState, useEffect } from "react";
 import { fetchKeywords } from "@/services/galleryService/galleryService";
 

@@ -1,4 +1,5 @@
-// src/hooks/useAdminUser.js
+// src/hooks/adminDashboardPage/useAdminUser.js
+//=====================================
 import { useState, useEffect } from "react";
 import { getStoredUser } from "@/services/userService/userService";
 

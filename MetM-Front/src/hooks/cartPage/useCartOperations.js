@@ -1,4 +1,5 @@
-// src/hooks/useCartOperations.js
+// src/hooks/cartPage/useCartOperations.js
+//=====================================
 import { useCallback } from "react";
 import { useCart } from "@/context/CartContext";
 

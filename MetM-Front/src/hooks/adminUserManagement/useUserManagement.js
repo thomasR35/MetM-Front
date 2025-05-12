@@ -1,4 +1,5 @@
-// src/hooks/useUserManagement.js
+// src/hooks/adminUserManagement/useUserManagement.js
+//=====================================
 import { useState, useEffect, useCallback } from "react";
 import {
   getUsers,

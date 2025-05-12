@@ -1,3 +1,5 @@
+//src/hooks/productPage/useAddToCart.js
+//=====================================
 import { useAuthModal } from "@/context/AuthModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";

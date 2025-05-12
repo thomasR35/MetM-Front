@@ -1,3 +1,5 @@
+//src/hooks/productPage/useLastVisitedProduct.js
+//=====================================
 import { useState, useCallback } from "react";
 
 export function useQuantity(initial = 1) {

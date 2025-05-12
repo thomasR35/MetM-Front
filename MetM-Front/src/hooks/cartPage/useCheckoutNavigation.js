@@ -1,4 +1,5 @@
-// src/hooks/useCheckoutNavigation.js
+// src/hooks/cartPage/useCheckoutNavigation.js
+//=====================================
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";

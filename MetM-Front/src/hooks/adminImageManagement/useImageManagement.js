@@ -1,3 +1,5 @@
+// src/hooks/adminImageManagement/useImageEditModal.js
+//=====================================
 import { useState, useEffect, useCallback } from "react";
 import {
   getImages,

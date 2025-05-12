@@ -1,3 +1,5 @@
+//src/hooks/galleryPage/usePagination.js
+//=====================================
 import { useCallback } from "react";
 
 export function usePagination(currentPage, totalItems, itemsPerPage) {

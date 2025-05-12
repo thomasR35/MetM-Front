@@ -1,3 +1,5 @@
+// src/hooks/productPage/useImageUpload.js
+//=====================================
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";

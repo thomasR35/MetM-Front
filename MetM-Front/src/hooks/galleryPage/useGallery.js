@@ -1,3 +1,5 @@
+//src/hooks/galleryPage/useGallery.js
+//=====================================
 import { useState, useEffect } from "react";
 import { fetchGalleryImages } from "@/services/galleryService/galleryService";
 

@@ -1,3 +1,5 @@
+// src/hooks/productPage/useCustomization.js
+//=====================================
 import { useState } from "react";
 
 export function useCustomization(
