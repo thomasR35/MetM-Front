@@ -3,6 +3,7 @@
 @use "utils/variables" as var;
 @use "utils/mixins";
 @use "utils/global";
+@use "utils/toastOverrides";
 
 @use "components/footer";
 @use "components/forms";
