@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import AdminLayout from "@/layouts/AdminLayout";
 import UsersManagement from "@/pages/admin/UsersManagement";
 import ImagesManagement from "@/pages/admin/ImagesManagement";
-import { useAdminUser } from "@/hooks/adminDashboardPage/useAdminUser";
+import { useAdminUser } from "@/hooks/admin/adminDashboardPage/useAdminUser";
 
 export default function AdminDashboard() {
   const user = useAdminUser();

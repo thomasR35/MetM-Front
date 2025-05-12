@@ -5,9 +5,9 @@ import { createPortal } from "react-dom";
 
 import "@/styles/pages/_admin.scss";
 
-import { useImageManagement } from "@/hooks/adminImageManagement/useImageManagement";
-import { useKeywordManagement } from "@/hooks/adminImageManagement/useKeywordManagement";
-import { useImageEditModal } from "@/hooks/adminImageManagement/useImageEditModal";
+import { useImageManagement } from "@/hooks/admin/adminImageManagement/useImageManagement";
+import { useKeywordManagement } from "@/hooks/admin/adminImageManagement/useKeywordManagement";
+import { useImageEditModal } from "@/hooks/admin/adminImageManagement/useImageEditModal";
 
 // On récupère "http://metm-back.local/api" puis on enlève le "/api" final
 const API_BASE = import.meta.env.VITE_API_URL.replace(/\/api\/?$/i, "");

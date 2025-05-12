@@ -1,7 +1,7 @@
 //src/hooks/imageEditorModal/useImageEditor.js
 //===========================================
 import { useState, useRef, useLayoutEffect, useCallback } from "react";
-import useDragPosition from "@/hooks/imageEditorModal/useDragPosition";
+import useDragPosition from "@/hooks/components/imageEditorModal/useDragPosition";
 import { Cropper } from "@/services/cropping/Cropper";
 
 /**

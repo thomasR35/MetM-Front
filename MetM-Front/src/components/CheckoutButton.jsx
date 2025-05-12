@@ -1,7 +1,7 @@
 // src/components/CheckoutButton.jsx
 // ========================
 import React from "react";
-import { useStripeCheckout } from "@/hooks/stripeCheckout/useStripeCheckout";
+import { useStripeCheckout } from "@/hooks/components/stripeCheckout/useStripeCheckout";
 
 /**
  * Bouton de paiement Stripe.

@@ -3,8 +3,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import CheckoutButton from "@/components/CheckoutButton";
-import { useOrder } from "@/hooks/checkoutPage/useOrder";
-import { useCheckoutForm } from "@/hooks/checkoutPage/useCheckoutForm";
+import { useOrder } from "@/hooks/pages/checkoutPage/useOrder";
+import { useCheckoutForm } from "@/hooks/pages/checkoutPage/useCheckoutForm";
 import "../styles/pages/_checkout.scss";
 
 export default function CheckoutPage() {

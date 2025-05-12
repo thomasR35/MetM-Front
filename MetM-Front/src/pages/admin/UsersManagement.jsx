@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import "@/styles/pages/_admin.scss";
 
-import { useUserManagement } from "@/hooks/adminUserManagement/useUserManagement";
-import { useUserEditModal } from "@/hooks/adminUserManagement/useUserEditModal";
+import { useUserManagement } from "@/hooks/admin/adminUserManagement/useUserManagement";
+import { useUserEditModal } from "@/hooks/admin/adminUserManagement/useUserEditModal";
 
 export default function UsersManagement() {
   const { users, loading, addUser, editUser, removeUser } = useUserManagement();

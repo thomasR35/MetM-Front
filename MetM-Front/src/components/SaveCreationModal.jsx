@@ -3,7 +3,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import "@/styles/components/_saveCreationModal.scss";
-import { useSaveCreation } from "@/hooks/saveCreationModal/useSaveCreation";
+import { useSaveCreation } from "@/hooks/components/saveCreationModal/useSaveCreation";
 
 export default function SaveCreationModal(props) {
   const {

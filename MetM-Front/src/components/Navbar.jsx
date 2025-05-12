@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import "@/styles/components/_navbar.scss";
-import { useNavbar } from "@/hooks/navBar/useNavbar";
+import { useNavbar } from "@/hooks/components/navBar/useNavbar";
 
 export default function Navbar() {
   const {

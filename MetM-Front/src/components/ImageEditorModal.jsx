@@ -3,7 +3,7 @@
 import React from "react";
 import "@/styles/components/_imageEditorModal.scss";
 import { createPortal } from "react-dom";
-import { useImageEditor } from "@/hooks/imageEditorModal/useImageEditor";
+import { useImageEditor } from "@/hooks/components/imageEditorModal/useImageEditor";
 
 export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
   const {

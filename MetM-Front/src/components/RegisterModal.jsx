@@ -2,7 +2,7 @@
 // ========================
 import React from "react";
 import "../styles/pages/_register.scss";
-import { useRegisterModal } from "@/hooks/registerModal/useRegisterModal";
+import { useRegisterModal } from "@/hooks/components/registerModal/useRegisterModal";
 
 export default function RegisterModal() {
   const {

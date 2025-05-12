@@ -4,9 +4,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import MockupProduct from "@/components/MockupProduct";
 import { useCart } from "@/context/CartContext";
-import { useLastProduct } from "@/hooks/cartPage/useLastProduct";
-import { useCartOperations } from "@/hooks/cartPage/useCartOperations";
-import { useCheckoutNavigation } from "@/hooks/cartPage/useCheckoutNavigation";
+import { useLastProduct } from "@/hooks/pages/cartPage/useLastProduct";
+import { useCartOperations } from "@/hooks/pages/cartPage/useCartOperations";
+import { useCheckoutNavigation } from "@/hooks/pages/cartPage/useCheckoutNavigation";
 
 import "../styles/pages/_cartpage.scss";
 

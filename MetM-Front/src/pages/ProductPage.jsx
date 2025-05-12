@@ -8,12 +8,12 @@ import {
   productData,
   cropZones,
 } from "@/services/productService/productService";
-import { useLastVisitedProduct } from "@/hooks/productPage/useLastVisitedProduct";
-import { useImageUpload } from "@/hooks/productPage/useImageUpload";
-import { useCustomization } from "@/hooks/productPage/useCustomization";
-import { useQuantity } from "@/hooks/productPage/useQuantity";
-import { useAddToCart } from "@/hooks/productPage/useAddToCart";
-import { useSaveCreation } from "@/hooks/productPage/useSaveCreation";
+import { useLastVisitedProduct } from "@/hooks/pages/productPage/useLastVisitedProduct";
+import { useImageUpload } from "@/hooks/pages/productPage/useImageUpload";
+import { useCustomization } from "@/hooks/pages/productPage/useCustomization";
+import { useQuantity } from "@/hooks/pages/productPage/useQuantity";
+import { useAddToCart } from "@/hooks/pages/productPage/useAddToCart";
+import { useSaveCreation } from "@/hooks/pages/productPage/useSaveCreation";
 import { toast } from "react-toastify";
 
 import MockupProduct from "@/components/MockupProduct";

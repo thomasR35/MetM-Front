@@ -4,7 +4,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import "@/styles/components/_signup.scss";
 import RegisterModal from "./RegisterModal";
-import { useLoginModal } from "@/hooks/loginModal/useLoginModal";
+import { useLoginModal } from "@/hooks/components/loginModal/useLoginModal";
 
 export default function LoginModal() {
   const {

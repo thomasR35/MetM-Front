@@ -2,9 +2,9 @@
 //=====================================
 import React, { useState } from "react";
 import GalleryItem from "@/components/GalleryItem";
-import { useKeywords } from "@/hooks/galleryPage/useKeywords";
-import { useGallery } from "@/hooks/galleryPage/useGallery";
-import { usePagination } from "@/hooks/galleryPage/usePagination";
+import { useKeywords } from "@/hooks/pages/galleryPage/useKeywords";
+import { useGallery } from "@/hooks/pages/galleryPage/useGallery";
+import { usePagination } from "@/hooks/pages/galleryPage/usePagination";
 import "../styles/pages/_gallery.scss";
 
 export default function Gallery() {
