@@ -9,7 +9,7 @@
 .form-container {
   @include mix.card-style;
   width: 100%;
-  max-width: 600px;
+  max-width: 80vw;
   padding: var.$spacing-md;
 
   input,

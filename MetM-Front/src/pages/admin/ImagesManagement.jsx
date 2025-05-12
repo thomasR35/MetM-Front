@@ -1,3 +1,4 @@
+// src/pages/admin/ImagesManagement.jsx
 import React from "react";
 import { createPortal } from "react-dom";
 
@@ -6,6 +7,9 @@ import "@/styles/pages/_admin.scss";
 import { useImageManagement } from "@/hooks/adminImageManagement/useImageManagement";
 import { useKeywordManagement } from "@/hooks/adminImageManagement/useKeywordManagement";
 import { useImageEditModal } from "@/hooks/adminImageManagement/useImageEditModal";
+
+// On récupère "http://metm-back.local/api" puis on enlève le "/api" final
+const API_BASE = import.meta.env.VITE_API_URL.replace(/\/api\/?$/i, "");
 
 export default function ImagesManagement() {
   const {
@@ -49,7 +53,6 @@ export default function ImagesManagement() {
       setFile(null);
       setTitle("");
       setKwInput("");
-      // vider l’input file
       document.getElementById("file").value = "";
     } catch (err) {
       console.error(err);
@@ -171,7 +174,7 @@ export default function ImagesManagement() {
                   <td>{img.id}</td>
                   <td>
                     <img
-                      src={img.url}
+                      src={`${API_BASE}${img.url}`}
                       alt={img.title}
                       className="image-thumbnail"
                     />

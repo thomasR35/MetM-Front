@@ -1,145 +1,61 @@
 // src/pages/admin/UsersManagement.jsx
-// ========================
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { createPortal } from "react-dom";
-import axios from "@/api/axiosConfig";
 import "@/styles/pages/_admin.scss";
 
-const UsersManagement = () => {
-  const [users, setUsers] = useState([]);
+import { useUserManagement } from "@/hooks/adminUserManagement/useUserManagement";
+import { useUserEditModal } from "@/hooks/adminUserManagement/useUserEditModal";
+
+export default function UsersManagement() {
+  const { users, loading, addUser, editUser, removeUser } = useUserManagement();
+
+  const {
+    isOpen: isModalOpen,
+    selected: selectedUser,
+    formData: editData,
+    setFormData: setEditData,
+    open: openEditModal,
+    close: closeEditModal,
+  } = useUserEditModal();
+
+  // Formulaire de création
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
     password: "",
-    role: "user", // ✅ Assure que "user" est la valeur par défaut
+    role: "user",
   });
-  const [editUser, setEditUser] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 🔹 Fonction pour récupérer les utilisateurs depuis l'API
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get("http://metm-back.local/api/users");
-      setUsers(response.data);
-    } catch (error) {
-      console.error("❌ Erreur de chargement", error);
-    }
-  };
-
-  // 🔹 Charger les utilisateurs au montage
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  // 🔹 Gérer l'ajout d'un utilisateur
-  const handleSubmit = async (e) => {
+  const handleCreate = async (e) => {
     e.preventDefault();
-
-    try {
-      // ✅ Prépare les données utilisateur
-      const userData = {
-        ...newUser,
-        role: newUser.role || "user", // S'assurer que le rôle est bien défini
-      };
-
-      // ✅ Envoie la requête à l'API
-      const response = await axios.post("/users", userData);
-
-      // ✅ Vérifie que la réponse est bien un succès
-      if (response.data && response.data.message) {
-        console.log(
-          "✅ Utilisateur ajouté avec succès :",
-          response.data.message
-        );
-
-        // 🔄 Force le rechargement des utilisateurs depuis l'API
-        fetchUsers();
-
-        // ✅ Réinitialisation immédiate du formulaire
-        resetForm();
-      } else {
-        console.error("❌ Réponse API invalide :", response.data);
-      }
-    } catch (error) {
-      console.error("❌ Erreur lors de l'ajout", error.response?.data || error);
-    }
-  };
-
-  // 🔹 Réinitialiser le formulaire
-  const resetForm = () => {
+    await addUser(newUser);
     setNewUser({ username: "", email: "", password: "", role: "user" });
   };
 
-  // 🔹 Supprimer un utilisateur
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`/users/${id}`);
-
-      // ✅ Mettre à jour immédiatement la liste
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-
-      console.log(`✅ Utilisateur avec ID ${id} supprimé`);
-    } catch (error) {
-      console.error("❌ Erreur lors de la suppression", error);
-    }
-  };
-
-  // 🔹 Ouvrir la modale d'édition
-  const openEditModal = (user) => {
-    setEditUser({
-      ...user,
-      role: user.role || "user", // ✅ Forcer un rôle par défaut si vide
-    });
-    setIsModalOpen(true);
-  };
-
-  // 🔹 Fermer la modale
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setEditUser(null);
-  };
-
-  // 🔹 Gérer la mise à jour d'un utilisateur
   const handleUpdate = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.put(`/users/${editUser.id}`, {
-        ...editUser,
-        role: editUser.role || "user", // ✅ S'assurer que le rôle est bien envoyé
-      });
-
-      if (response.data) {
-        console.log("✅ Utilisateur mis à jour :", response.data);
-
-        // ✅ Mettre à jour immédiatement la liste
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user.id === editUser.id ? { ...user, ...response.data } : user
-          )
-        );
-
-        closeModal();
-      } else {
-        console.error("❌ Réponse API invalide :", response.data);
-      }
-    } catch (error) {
-      console.error("❌ Erreur lors de la mise à jour", error);
-    }
+    if (!selectedUser) return;
+    await editUser(selectedUser.id, {
+      username: editData.username,
+      email: editData.email,
+      role: editData.role,
+    });
+    closeEditModal();
   };
 
   return (
     <main>
       <h2>Gestion des utilisateurs</h2>
 
-      {/* 🔹 Formulaire d'ajout */}
+      {/* Ajout d’un utilisateur */}
       <section className="form-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleCreate}>
           <input
             type="text"
-            placeholder="Nom d'utilisateur"
+            placeholder="Nom d’utilisateur"
             value={newUser.username}
             onChange={(e) =>
-              setNewUser({ ...newUser, username: e.target.value })
+              setNewUser((u) => ({ ...u, username: e.target.value }))
             }
             required
           />
@@ -147,7 +63,9 @@ const UsersManagement = () => {
             type="email"
             placeholder="Email"
             value={newUser.email}
-            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            onChange={(e) =>
+              setNewUser((u) => ({ ...u, email: e.target.value }))
+            }
             required
           />
           <input
@@ -155,101 +73,108 @@ const UsersManagement = () => {
             placeholder="Mot de passe"
             value={newUser.password}
             onChange={(e) =>
-              setNewUser({ ...newUser, password: e.target.value })
+              setNewUser((u) => ({ ...u, password: e.target.value }))
             }
             required
           />
           <select
             value={newUser.role}
-            onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-            required
+            onChange={(e) =>
+              setNewUser((u) => ({ ...u, role: e.target.value }))
+            }
           >
             <option value="user">Utilisateur</option>
             <option value="admin">Admin</option>
           </select>
-
-          <button type="submit">Ajouter</button>
+          <button type="submit" className="btn btn-primary">
+            Ajouter
+          </button>
         </form>
       </section>
 
-      {/* 🔹 Liste des utilisateurs */}
+      {/* Liste des utilisateurs */}
       <section>
         <h2>Liste des utilisateurs</h2>
-        <p>{users.length} utilisateurs trouvés</p>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Email</th>
-              <th>Rôle</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.role || "user"}</td>
-                {/* ✅ Affichage correct du rôle */}
-                <td className="table-actions">
-                  <button
-                    className="btn btn-warning btn-sm"
-                    onClick={() => openEditModal(user)}
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Supprimer
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {loading ? (
+          <p>Chargement…</p>
+        ) : (
+          <>
+            <p>
+              {users.length} utilisateur{users.length > 1 ? "s" : ""}
+            </p>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Rôle</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((u) => (
+                  <tr key={u.id}>
+                    <td>{u.id}</td>
+                    <td>{u.username}</td>
+                    <td>{u.email}</td>
+                    <td>{u.role || "user"}</td>
+                    <td className="table-actions">
+                      <button
+                        className="btn btn-warning btn-sm"
+                        onClick={() => openEditModal(u)}
+                      >
+                        Modifier
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => removeUser(u.id)}
+                      >
+                        Supprimer
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
       </section>
 
-      {/* 🔹 Modale d'édition */}
+      {/* Modale d’édition */}
       {isModalOpen &&
-        editUser &&
+        selectedUser &&
         createPortal(
           <div className="modal-overlay">
             <div className="modal">
-              <span className="close" onClick={closeModal}>
+              <button className="close-btn" onClick={closeEditModal}>
                 &times;
-              </span>
-              <h3>Modifier l'utilisateur</h3>
+              </button>
+              <h3>Modifier l’utilisateur #{selectedUser.id}</h3>
               <form onSubmit={handleUpdate}>
                 <label>Nom</label>
                 <input
                   type="text"
-                  placeholder="Nom d'utilisateur"
-                  value={editUser.username}
+                  value={editData.username}
                   onChange={(e) =>
-                    setEditUser({ ...editUser, username: e.target.value })
+                    setEditData((d) => ({ ...d, username: e.target.value }))
                   }
                   required
                 />
                 <label>Email</label>
                 <input
                   type="email"
-                  placeholder="Email"
-                  value={editUser.email}
+                  value={editData.email}
                   onChange={(e) =>
-                    setEditUser({ ...editUser, email: e.target.value })
+                    setEditData((d) => ({ ...d, email: e.target.value }))
                   }
                   required
                 />
                 <label>Rôle</label>
                 <select
-                  value={editUser.role}
+                  value={editData.role}
                   onChange={(e) =>
-                    setEditUser({ ...editUser, role: e.target.value })
+                    setEditData((d) => ({ ...d, role: e.target.value }))
                   }
                 >
                   <option value="user">Utilisateur</option>
@@ -265,6 +190,4 @@ const UsersManagement = () => {
         )}
     </main>
   );
-};
-
-export default UsersManagement;
+}
