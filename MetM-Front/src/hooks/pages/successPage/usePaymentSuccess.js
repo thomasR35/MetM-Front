@@ -1,29 +1,24 @@
 // src/hooks/successPage/usePaymentSuccess.js
 // =========================================================
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useCart } from "@/context/CartContext";
+import { toast } from "react-toastify";
 
-/**
- * Lit le session_id dans l’URL, vide le panier et affiche un toast de succès.
- * @returns {string|null} sessionId
- */
 export function usePaymentSuccess() {
   const { clearCart } = useCart();
   const { search } = useLocation();
-  const params = new URLSearchParams(search);
-  const sessionId = params.get("session_id");
+  const firedRef = useRef(false);
 
   useEffect(() => {
-    if (sessionId) {
+    const sessionId = new URLSearchParams(search).get("session_id");
+    if (sessionId && !firedRef.current) {
       clearCart();
       toast.success("🎉 Paiement réussi ! Merci pour votre commande.", {
         position: "top-center",
         autoClose: 5000,
       });
+      firedRef.current = true;
     }
-  }, [sessionId, clearCart]);
-
-  return sessionId;
+  }, [search, clearCart]);
 }
