@@ -1,19 +1,22 @@
 // src/pages/CartPage.jsx
-// ========================
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useCart } from "@/context/CartContext";
-import { useAuth } from "@/context/AuthContext";
-import { useAuthModal } from "@/context/AuthModalContext";
+import { Link } from "react-router-dom";
 import MockupProduct from "@/components/MockupProduct";
+import { useCart } from "@/context/CartContext";
+import { useLastProduct } from "@/hooks/cartPage/useLastProduct";
+import { useCartOperations } from "@/hooks/cartPage/useCartOperations";
+import { useCheckoutNavigation } from "@/hooks/cartPage/useCheckoutNavigation";
 
-const CartPage = () => {
-  const { cartItems, removeFromCart, updateQuantity, total } = useCart();
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
+import "../styles/pages/_cartpage.scss";
 
-  // Si panier vide
+export default function CartPage() {
+  const { cartItems, total } = useCart();
+  const lastProduct = useLastProduct();
+  const { handleDecrement, handleIncrement, handleRemove } =
+    useCartOperations();
+  const { isAuthenticated, handleCheckoutClick } = useCheckoutNavigation();
+
+  // Panier vide
   if (cartItems.length === 0) {
     return (
       <main
@@ -23,24 +26,12 @@ const CartPage = () => {
         aria-labelledby="empty-cart-title"
       >
         <h1 id="empty-cart-title">Votre panier est vide</h1>
-        <Link
-          to={`/product/${localStorage.getItem("lastProduct") || "mug"}`}
-          className="generic-button"
-        >
+        <Link to={`/product/${lastProduct}`} className="generic-button">
           Retour au produit
         </Link>
       </main>
     );
   }
-
-  const handleCheckoutClick = () => {
-    if (isAuthenticated) {
-      navigate("/checkout");
-    } else {
-      setPostLoginRedirect("/checkout");
-      setShowSignup(true);
-    }
-  };
 
   return (
     <main
@@ -70,7 +61,7 @@ const CartPage = () => {
                   <MockupProduct
                     productImage={item.product.image}
                     croppedImageData={item.customImage}
-                    customText={""}
+                    customText=""
                     cropArea={{
                       width: item.customImage?.width || 0,
                       height: item.customImage?.height || 0,
@@ -95,24 +86,7 @@ const CartPage = () => {
                   >
                     <button
                       aria-label={`Réduire la quantité de ${item.product.name}`}
-                      onClick={() => {
-                        if (item.quantity > 1) {
-                          updateQuantity(
-                            item.product.id,
-                            item.customImage?.dataUrl,
-                            item.quantity - 1
-                          );
-                        } else {
-                          const ok = window.confirm(
-                            `Supprimer ${item.product.name} du panier ?`
-                          );
-                          if (!ok) return;
-                          removeFromCart(
-                            item.product.id,
-                            item.customImage?.dataUrl
-                          );
-                        }
-                      }}
+                      onClick={() => handleDecrement(item)}
                     >
                       −
                     </button>
@@ -121,13 +95,7 @@ const CartPage = () => {
                     </span>
                     <button
                       aria-label={`Augmenter la quantité de ${item.product.name}`}
-                      onClick={() =>
-                        updateQuantity(
-                          item.product.id,
-                          item.customImage?.dataUrl,
-                          item.quantity + 1
-                        )
-                      }
+                      onClick={() => handleIncrement(item)}
                     >
                       +
                     </button>
@@ -136,16 +104,7 @@ const CartPage = () => {
                   <button
                     className="generic-button"
                     aria-label={`Supprimer ${item.product.name} du panier`}
-                    onClick={() => {
-                      const ok = window.confirm(
-                        `Supprimer ${item.product.name} du panier ?`
-                      );
-                      if (!ok) return;
-                      removeFromCart(
-                        item.product.id,
-                        item.customImage?.dataUrl
-                      );
-                    }}
+                    onClick={() => handleRemove(item)}
                   >
                     Supprimer
                   </button>
@@ -171,14 +130,9 @@ const CartPage = () => {
           Procéder au paiement
         </button>
 
-        <button
-          className="generic-button"
-          onClick={() =>
-            navigate(`/product/${localStorage.getItem("lastProduct") || "mug"}`)
-          }
-        >
+        <Link to={`/product/${lastProduct}`} className="generic-button">
           Retour au produit
-        </button>
+        </Link>
 
         {!isAuthenticated && (
           <p className="checkout-hint" role="alert">
@@ -188,6 +142,4 @@ const CartPage = () => {
       </section>
     </main>
   );
-};
-
-export default CartPage;
+}
