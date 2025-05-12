@@ -1,193 +1,98 @@
-// src/pages/admin/ImagesManagement.jsx
-// ========================
-import { useState, useEffect } from "react";
+import React from "react";
 import { createPortal } from "react-dom";
-import axios from "@/api/axiosConfig";
+
 import "@/styles/pages/_admin.scss";
 
-const ImagesManagement = () => {
-  const [images, setImages] = useState([]);
-  const [file, setFile] = useState(null);
-  const [title, setTitle] = useState("");
-  const [keywords, setKeywords] = useState("");
-  const [allKeywords, setAllKeywords] = useState([]);
-  const [uploadError, setUploadError] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editData, setEditData] = useState({
-    title: "",
-    url: "",
-    keywords: "",
-  });
-  // 🔹 Charger les images et les mots-clés
-  useEffect(() => {
-    axios
-      .get("/images")
-      .then((response) => {
-        if (response.data && Array.isArray(response.data.images)) {
-          setImages(response.data.images);
-        } else {
-          console.error("❌ Réponse API invalide :", response.data);
-          setImages([]);
-        }
-      })
-      .catch((error) => {
-        console.error("❌ Erreur de chargement des images :", error);
-        setImages([]);
-      });
+import { useImageManagement } from "@/hooks/adminImageManagement/useImageManagement";
+import { useKeywordManagement } from "@/hooks/adminImageManagement/useKeywordManagement";
+import { useImageEditModal } from "@/hooks/adminImageManagement/useImageEditModal";
 
-    axios
-      .get("/keywords")
-      .then((response) => {
-        if (Array.isArray(response.data)) {
-          setAllKeywords(response.data);
-        }
-      })
-      .catch((error) =>
-        console.error("❌ Erreur de chargement des mots-clés :", error)
-      );
-  }, []);
+export default function ImagesManagement() {
+  const {
+    images,
+    loading: imgLoading,
+    handleUpload,
+    handleDelete,
+    handleUpdate,
+  } = useImageManagement();
 
-  const handleUpload = async (e) => {
+  const {
+    keywords: allKeywords,
+    loading: kwLoading,
+    addKeyword,
+    removeKeyword,
+  } = useKeywordManagement();
+
+  const {
+    isOpen: isModalOpen,
+    selected: selectedImage,
+    editData,
+    setEditData,
+    open: openEditModal,
+    close: closeEditModal,
+  } = useImageEditModal();
+
+  const [file, setFile] = React.useState(null);
+  const [title, setTitle] = React.useState("");
+  const [kwInput, setKwInput] = React.useState("");
+  const [uploadError, setUploadError] = React.useState("");
+
+  const onUpload = async (e) => {
     e.preventDefault();
     if (!file || !title) {
-      setUploadError("Veuillez sélectionner une image et saisir un titre.");
+      setUploadError("Image et titre requis.");
       return;
     }
-    setUploadError(null);
-
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("title", title);
-    formData.append("keywords", keywords);
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    formData.append("uploaded_by", user?.id || "1");
-
+    setUploadError("");
     try {
-      const response = await axios.post("/images", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      if (response.data && response.data.id) {
-        setImages((prevImages) => [...prevImages, response.data]);
-        setTitle("");
-        setKeywords("");
-        setFile(null);
-        document.getElementById("file").value = "";
-      }
-    } catch (error) {
-      console.error("❌ Erreur lors du téléversement :", error.response?.data);
+      await handleUpload(file, title, kwInput);
+      setFile(null);
+      setTitle("");
+      setKwInput("");
+      // vider l’input file
+      document.getElementById("file").value = "";
+    } catch (err) {
+      console.error(err);
+      setUploadError("Échec du téléversement.");
     }
   };
 
-  const handleDelete = async (id) => {
+  const onAddKeyword = async () => {
     try {
-      await axios.delete(`/images/${id}`);
-      setImages((prevImages) => prevImages.filter((image) => image.id !== id));
-    } catch (error) {
-      console.error("❌ Erreur lors de la suppression :", error.response?.data);
+      await addKeyword(kwInput);
+      setKwInput("");
+    } catch {
+      // silent
     }
   };
 
-  const handleUpdate = async (e) => {
+  const onUpdate = async (e) => {
     e.preventDefault();
     if (!selectedImage) return;
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    const updatedData = {
-      ...editData,
-      uploaded_by: user?.id || "1",
-    };
-
     try {
-      const response = await axios.put(
-        `/images/${selectedImage.id}`,
-        updatedData,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      setImages((prevImages) =>
-        prevImages.map((img) =>
-          img.id === selectedImage.id ? { ...img, ...updatedData } : img
-        )
-      );
-
-      handleCloseModal();
-    } catch (error) {
-      console.error("❌ Erreur lors de la mise à jour :", error.response?.data);
+      await handleUpdate(selectedImage.id, editData);
+      closeEditModal();
+    } catch (err) {
+      console.error(err);
     }
-  };
-
-  const openEditModal = (image) => {
-    if (!image) return;
-    setSelectedImage(image);
-    setEditData({
-      title: image.title || "",
-      url: image.url || "",
-      keywords: image.keywords || "",
-    });
-    setIsModalOpen(true);
-  };
-
-  const handleAddKeyword = async () => {
-    if (!keywords.trim()) return;
-
-    try {
-      const response = await axios.post("/keywords", {
-        name: keywords,
-        created_by: JSON.parse(localStorage.getItem("user"))?.id || "1",
-      });
-
-      if (response.data) {
-        setAllKeywords([...allKeywords, response.data]);
-        setKeywords("");
-      }
-    } catch (error) {
-      console.error(
-        "❌ Erreur lors de l'ajout du mot-clé :",
-        error.response?.data
-      );
-    }
-  };
-
-  const handleDeleteKeyword = async (id) => {
-    try {
-      await axios.delete(`/keywords/${id}`);
-      setAllKeywords(allKeywords.filter((kw) => kw.id !== id));
-      e;
-    } catch (error) {
-      console.error(
-        "❌ Erreur lors de la suppression du mot-clé :",
-        error.response?.data
-      );
-    }
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedImage(null);
   };
 
   return (
-    <main>
+    <main className="admin-images-management">
       <h2>Gestion des images</h2>
+
+      {/* Upload */}
       <section className="form-container">
-        <form onSubmit={handleUpload}>
-          <label htmlFor="title">Titre de l'image</label>
+        <form onSubmit={onUpload}>
+          <label htmlFor="title">Titre de l’image</label>
           <input
             id="title"
-            type="text"
-            placeholder="Titre de l'image"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
 
-          <label htmlFor="file">Sélectionner une image</label>
+          <label htmlFor="file">Sélectionner un fichier</label>
           <input
             id="file"
             type="file"
@@ -195,153 +100,151 @@ const ImagesManagement = () => {
             required
           />
 
+          <label htmlFor="keywords">Mots-clé (séparés par virgules)</label>
+          <input
+            id="keywords"
+            value={kwInput}
+            onChange={(e) => setKwInput(e.target.value)}
+            placeholder="chat,nature,…"
+          />
+
           <button type="submit" className="btn btn-primary">
             Uploader
           </button>
         </form>
-        {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
+        {uploadError && <p className="error-text">{uploadError}</p>}
       </section>
 
-      <h2>Gestion des mots-clés</h2>
+      {/* Mots-clé */}
+      <h2>Gestion des mots-clé</h2>
       <section className="keyword-management">
         <div className="add-keyword">
           <input
-            type="text"
+            value={kwInput}
+            onChange={(e) => setKwInput(e.target.value)}
             placeholder="Nouveau mot-clé"
-            value={keywords}
-            onChange={(e) => setKeywords(e.target.value)}
           />
-          <button className="btn btn-primary" onClick={handleAddKeyword}>
+          <button className="btn btn-primary" onClick={onAddKeyword}>
             Ajouter
           </button>
         </div>
 
-        <ul className="keyword-list">
-          {allKeywords.length > 0 ? (
-            allKeywords.map((kw) => (
+        {kwLoading ? (
+          <p>Chargement…</p>
+        ) : (
+          <ul className="keyword-list">
+            {allKeywords.map((kw) => (
               <li key={kw.id}>
                 {kw.name}
                 <button
                   className="btn btn-danger btn-sm"
-                  onClick={() => handleDeleteKeyword(kw.id)}
+                  onClick={() => removeKeyword(kw.id)}
                 >
                   ❌
                 </button>
               </li>
-            ))
-          ) : (
-            <p>Aucun mot-clé trouvé.</p>
-          )}
-        </ul>
+            ))}
+            {allKeywords.length === 0 && <li>Aucun mot-clé trouvé.</li>}
+          </ul>
+        )}
       </section>
 
+      {/* Liste des images */}
       <section>
-        <h2>Liste des images</h2>
-        <p>{images.length} image(s) trouvée(s)</p>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Aperçu</th>
-              <th>Titre</th>
-              <th>Mots-clés</th>
-              <th>Ajouté par</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(images) && images.length > 0 ? (
-              images.map((image) => (
-                <tr key={image.id}>
-                  <td>{image.id}</td>
+        <h2>Images ({images.length})</h2>
+        {imgLoading ? (
+          <p>Chargement…</p>
+        ) : (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Aperçu</th>
+                <th>Titre</th>
+                <th>Mots-clé</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {images.map((img) => (
+                <tr key={img.id}>
+                  <td>{img.id}</td>
                   <td>
                     <img
-                      src={`http://metm-back.local${image.url}`}
-                      alt={image.title}
+                      src={img.url}
+                      alt={img.title}
                       className="image-thumbnail"
                     />
                   </td>
-                  <td>{image.title}</td>
+                  <td>{img.title}</td>
                   <td>
-                    {image.keywords
-                      ? image.keywords.split(",").join(", ")
-                      : "Aucun"}
+                    {img.keywords ? img.keywords.split(",").join(", ") : "—"}
                   </td>
-                  <td>{image.uploaded_by || "Inconnu"}</td>
                   <td>
                     <button
                       className="btn btn-warning btn-sm"
-                      onClick={() => openEditModal(image)}
+                      onClick={() => openEditModal(img)}
                     >
                       Modifier
                     </button>
                     <button
                       className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(image.id)}
+                      onClick={() => handleDelete(img.id)}
                     >
                       Supprimer
                     </button>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6">Aucune image trouvée.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              ))}
+              {images.length === 0 && (
+                <tr>
+                  <td colSpan="5">Aucune image trouvée.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </section>
 
+      {/* Modale d’édition */}
       {isModalOpen &&
         selectedImage &&
         createPortal(
           <div className="modal-overlay">
             <div className="modal">
-              <span className="close" onClick={handleCloseModal}>
+              <button className="close-btn" onClick={closeEditModal}>
                 &times;
-              </span>
-              <h3>Modifier l'image</h3>
-
-              <form onSubmit={handleUpdate}>
+              </button>
+              <h3>Modifier l’image #{selectedImage.id}</h3>
+              <form onSubmit={onUpdate}>
                 <label>Titre</label>
                 <input
                   type="text"
                   value={editData.title}
                   onChange={(e) =>
-                    setEditData({ ...editData, title: e.target.value })
+                    setEditData((d) => ({ ...d, title: e.target.value }))
                   }
                   required
                 />
 
-                <label>Mots-clés (séparés par des virgules)</label>
+                <label>URL</label>
+                <input
+                  type="text"
+                  value={editData.url}
+                  onChange={(e) =>
+                    setEditData((d) => ({ ...d, url: e.target.value }))
+                  }
+                  required
+                />
+
+                <label>Mots-clé</label>
                 <input
                   type="text"
                   value={editData.keywords}
                   onChange={(e) =>
-                    setEditData({ ...editData, keywords: e.target.value })
+                    setEditData((d) => ({ ...d, keywords: e.target.value }))
                   }
-                  placeholder="Ex : chat, nature, paysage"
                 />
-
-                <label>Ajouter un mot-clé existant</label>
-                <select
-                  onChange={(e) =>
-                    setEditData((prev) => ({
-                      ...prev,
-                      keywords: prev.keywords
-                        ? `${prev.keywords}, ${e.target.value}`
-                        : e.target.value,
-                    }))
-                  }
-                >
-                  <option value="">-- Sélectionner un mot-clé --</option>
-                  {allKeywords.map((kw) => (
-                    <option key={kw.id} value={kw.name}>
-                      {kw.name}
-                    </option>
-                  ))}
-                </select>
 
                 <button type="submit" className="btn btn-success">
                   Mettre à jour
@@ -353,6 +256,4 @@ const ImagesManagement = () => {
         )}
     </main>
   );
-};
-
-export default ImagesManagement;
+}
