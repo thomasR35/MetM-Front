@@ -1,45 +1,26 @@
 // src/pages/AdminDashboard.jsx
-// ========================
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+
 import AdminLayout from "@/layouts/AdminLayout";
 import UsersManagement from "@/pages/admin/UsersManagement";
 import ImagesManagement from "@/pages/admin/ImagesManagement";
+import { useAdminUser } from "@/hooks/adminDashboardPage/useAdminUser";
 
-const AdminDashboard = () => {
-  const [adminName, setAdminName] = useState("");
-
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      try {
-        const user = JSON.parse(userData);
-        if (user && user.username) {
-          setAdminName(user.username);
-        }
-      } catch (error) {
-        console.error("❌ Erreur lors du parsing de l'utilisateur :", error);
-      }
-    }
-  }, []);
+export default function AdminDashboard() {
+  const user = useAdminUser();
+  const adminName = user?.username || "Inconnu";
 
   return (
     <Routes>
       <Route path="/" element={<AdminLayout />}>
         <Route
           index
-          element={
-            <h2>
-              Bienvenue sur le Dashboard Admin (
-              {adminName ? adminName : "Inconnu"})
-            </h2>
-          }
+          element={<h2>Bienvenue sur le Dashboard Admin ({adminName})</h2>}
         />
         <Route path="users" element={<UsersManagement />} />
         <Route path="images" element={<ImagesManagement />} />
       </Route>
     </Routes>
   );
-};
-
-export default AdminDashboard;
+}

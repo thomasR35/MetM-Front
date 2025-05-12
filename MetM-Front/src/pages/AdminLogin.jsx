@@ -1,43 +1,9 @@
 // src/pages/AdminLogin.jsx
-// ========================
-import { useState } from "react";
-import { login } from "@/api/auth";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useAdminLogin } from "@/hooks/adminLoginPage/useAdminLogin";
 
-const AdminLogin = () => {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-
-    try {
-      const data = await login(credentials.username, credentials.password);
-
-      if (data.token && data.user) {
-        localStorage.setItem("adminToken", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        console.log("Token stocké :", data.token);
-        console.log("Utilisateur stocké :", data.user);
-
-        navigate("/admin/dashboard");
-      } else {
-        throw new Error("Aucun token ou utilisateur reçu");
-      }
-    } catch (error) {
-      setError(error.response?.data?.error || "Erreur de connexion");
-    }
-  };
+export default function AdminLogin() {
+  const { credentials, error, handleChange, handleSubmit } = useAdminLogin();
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
@@ -46,21 +12,29 @@ const AdminLogin = () => {
         {error && <div className="alert alert-danger">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label">Identifiant</label>
+            <label htmlFor="admin-username" className="form-label">
+              Identifiant
+            </label>
             <input
+              id="admin-username"
               type="text"
               name="username"
               className="form-control"
+              value={credentials.username}
               onChange={handleChange}
               required
             />
           </div>
           <div className="mb-3">
-            <label className="form-label">Mot de passe</label>
+            <label htmlFor="admin-password" className="form-label">
+              Mot de passe
+            </label>
             <input
+              id="admin-password"
               type="password"
               name="password"
               className="form-control"
+              value={credentials.password}
               onChange={handleChange}
               required
             />
@@ -68,13 +42,15 @@ const AdminLogin = () => {
           <button type="submit" className="btn btn-primary w-100">
             Se connecter
           </button>
-          <button className="generic-button" onClick={() => navigate("/")}>
+          <button
+            type="button"
+            className="generic-button mt-2"
+            onClick={() => window.location.replace("/")}
+          >
             Retour à l’accueil
           </button>
         </form>
       </div>
     </div>
   );
-};
-
-export default AdminLogin;
+}
