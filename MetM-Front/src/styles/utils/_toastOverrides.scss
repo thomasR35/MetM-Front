@@ -5,7 +5,7 @@
 
 // toast générique (tous types confondus)
 .Toastify__toast {
-  border: 2px solid var.$text !important;
+  border: 1px solid var.$text !important;
   background-color: var.$main-bg !important;
   border-radius: 10px;
   color: var.$text !important;
@@ -13,7 +13,7 @@
 
 /* toast de succès */
 .Toastify__toast--success {
-  border: 2px solid var.$text !important;
+  border: 1px solid var.$text !important;
   background-color: var.$main-bg !important;
   border-radius: 10px;
   color: var.$text !important;
@@ -21,7 +21,7 @@
 
 /* toast d’erreur */
 .Toastify__toast--error {
-  border: 2px solid var.$text !important;
+  border: 1px solid var.$text !important;
   background-color: var.$main-bg !important;
   border-radius: 10px;
   color: var.$text !important;
@@ -29,7 +29,7 @@
 
 /* toast d’info */
 .Toastify__toast--info {
-  border: 2px solid var.$text !important;
+  border: 1px solid var.$text !important;
   background-color: var.$main-bg !important;
   border-radius: 10px;
   color: var.$text !important;
@@ -37,7 +37,7 @@
 
 /* toast d’avertissement */
 .Toastify__toast--warning {
-  border: 2px solid var.$text !important;
+  border: 1px solid var.$text !important;
   background-color: var.$main-bg !important;
   border-radius: 10px;
   color: var.$text !important;

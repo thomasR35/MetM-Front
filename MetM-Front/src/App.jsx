@@ -6,6 +6,7 @@ import Register from "./components/RegisterModal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthModal } from "@/context/AuthModalContext";
+import { useConfirm } from "@/hooks/components/confirmDialog/useConfirm.jsx";
 
 function App() {
   const {
@@ -15,6 +16,8 @@ function App() {
     setShowRegister,
     postLoginRedirect,
   } = useAuthModal();
+
+  const { ConfirmUI } = useConfirm();
 
   const openLoginModal = () => {
     setShowRegister(false);
@@ -48,6 +51,7 @@ function App() {
       )}
 
       <ToastContainer position="top-right" autoClose={3000} />
+      <ConfirmUI />
     </>
   );
 }

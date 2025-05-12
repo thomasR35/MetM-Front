@@ -7,7 +7,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { toast } from "react-toastify";
-import "@/styles/_toastOverrides.scss";
+import "@/styles/utils/_toastOverrides.scss";
 
 import {
   productData,
