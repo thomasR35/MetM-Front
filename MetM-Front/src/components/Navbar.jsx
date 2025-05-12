@@ -1,44 +1,22 @@
 // src/components/Navbar.jsx
 // ========================
-import { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/context/CartContext";
-import { useAuthModal } from "@/context/AuthModalContext";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
-import { toast } from "react-toastify";
-import "../styles/components/_navbar.scss";
+import "@/styles/components/_navbar.scss";
+import { useNavbar } from "@/hooks/navBar/useNavbar";
 
-const Navbar = () => {
-  const { isAuthenticated, isAdmin, logout } = useAuth();
-  const { cartItems } = useCart();
-  const { setShowSignup, setShowRegister, setPostLoginRedirect } =
-    useAuthModal();
-
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleLogout = () => {
-    if (window.confirm("Voulez-vous vraiment vous déconnecter ?")) {
-      logout();
-      setMenuOpen(false);
-      toast.info("Déconnexion réussie 👋", { icon: "👋" });
-    }
-  };
-
-  const handleLoginClick = (e) => {
-    e.preventDefault();
-    setPostLoginRedirect(null);
-    setShowSignup(true);
-    setMenuOpen(false);
-  };
-
-  const handleRegisterClick = (e) => {
-    e.preventDefault();
-    setPostLoginRedirect(null);
-    setShowRegister(true);
-    setMenuOpen(false);
-  };
+export default function Navbar() {
+  const {
+    isAuthenticated,
+    isAdmin,
+    totalItems,
+    menuOpen,
+    setMenuOpen,
+    handleLogout,
+    handleLoginClick,
+    handleRegisterClick,
+  } = useNavbar();
 
   return (
     <nav
@@ -47,30 +25,35 @@ const Navbar = () => {
       aria-label="Navigation principale"
     >
       <div className="navbar-container">
-        {/* BOUTON BURGER accessible */}
+        {/* Burger menu */}
         <button
           className="burger-menu"
           type="button"
           aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-controls="nav-center"
           aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen((o) => !o)}
         >
           {menuOpen ? <FaTimes /> : <FaBars />}
         </button>
 
-        {/* LOGO */}
+        {/* Logo */}
         <Link
           className="logo"
           to="/"
           aria-label="Accueil Marcelle & Maurice Shop"
+          onClick={() => setMenuOpen(false)}
         >
           Marcelle &amp; Maurice Shop
         </Link>
 
-        {/* LIENS CENTRAUX */}
+        {/* Liens centraux */}
         <div id="nav-center" className={`nav-center ${menuOpen ? "open" : ""}`}>
-          <Link className="btn-gallery" to="/gallery">
+          <Link
+            className="btn-gallery"
+            to="/gallery"
+            onClick={() => setMenuOpen(false)}
+          >
             Galerie
           </Link>
 
@@ -90,13 +73,17 @@ const Navbar = () => {
           )}
 
           {isAdmin && (
-            <Link className="btn-admin" to="/admin/dashboard">
+            <Link
+              className="btn-admin"
+              to="/admin/dashboard"
+              onClick={() => setMenuOpen(false)}
+            >
               Admin
             </Link>
           )}
         </div>
 
-        {/* ICÔNE PANIER */}
+        {/* Icône panier */}
         <div className="nav-right">
           <Link
             className="cart-icon"
@@ -104,6 +91,7 @@ const Navbar = () => {
             aria-label={`Panier (${totalItems} article${
               totalItems > 1 ? "s" : ""
             })`}
+            onClick={() => setMenuOpen(false)}
           >
             <FaShoppingCart />
             {totalItems > 0 && (
@@ -115,7 +103,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ANCIEN MENU MOBILE (si jamais tu le conserves) */}
+      {/* Menu mobile secondaire */}
       {menuOpen && (
         <ul className="nav-links-mobile" role="menu">
           <li role="none">
@@ -178,6 +166,4 @@ const Navbar = () => {
       )}
     </nav>
   );
-};
-
-export default Navbar;
+}

@@ -1,32 +1,14 @@
 // src/components/GalleryItem.jsx
 // ========================
 import React from "react";
+import { useGalleryItem } from "@/hooks/galleryItem/useGalleryItem";
+import placeholder from "@/assets/images/placeholder.jpg";
 
-const BASE_URL = "http://metm-back.local";
-
-const GalleryItem = ({ image }) => {
-  const imageUrl = image.url.startsWith("/uploads/")
-    ? `${BASE_URL}${image.url}`
-    : image.url;
-
-  const handleDownload = async () => {
-    try {
-      const response = await fetch(imageUrl, { mode: "cors" });
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.setAttribute("download", image.title || "image.jpg");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("❌ Erreur lors du téléchargement :", error);
-    }
-  };
+export default function GalleryItem({ image }) {
+  const { imageUrl, handleDownload } = useGalleryItem({
+    url: image.url,
+    title: image.title,
+  });
 
   return (
     <div className="gallery-item">
@@ -37,7 +19,7 @@ const GalleryItem = ({ image }) => {
         crossOrigin="anonymous"
         onError={(e) => {
           console.error("❌ Impossible de charger l'image :", e.target.src);
-          e.target.src = "../assets/images/placeholder.jpg";
+          e.target.src = placeholder;
         }}
       />
       <div className="gallery-info">
@@ -48,6 +30,4 @@ const GalleryItem = ({ image }) => {
       </div>
     </div>
   );
-};
-
-export default GalleryItem;
+}

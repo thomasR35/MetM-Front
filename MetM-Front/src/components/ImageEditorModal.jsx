@@ -1,56 +1,50 @@
 // src/components/ImageEditorModal.jsx
 // ========================
-import React, { useState, useRef, useLayoutEffect } from "react";
-import "../styles/components/_imageEditorModal.scss";
-import useDragPosition from "../hooks/imageEditorModal/useDragPosition.js";
-import { Cropper } from "../services/cropping/Cropper";
+import React from "react";
+import "@/styles/components/_imageEditorModal.scss";
+import { createPortal } from "react-dom";
+import { useImageEditor } from "@/hooks/imageEditorModal/useImageEditor";
 
-const ImageEditorModal = ({ uploadedImage, onClose, onApply }) => {
-  const [scale, setScale] = useState(1);
-  const [selectedFrame, setSelectedFrame] = useState("square");
-  const imageRef = useRef(null);
-  const imgContainerRef = useRef(null);
-  const frameRef = useRef(null);
-  const { position, startDragging } = useDragPosition();
+export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
+  const {
+    scale,
+    setScale,
+    selectedFrame,
+    setSelectedFrame,
+    imageRef,
+    imgContainerRef,
+    frameRef,
+    position,
+    startDragging,
+    applyCropping,
+  } = useImageEditor(uploadedImage, onApply, onClose);
 
-  // taille et position du masque, mesurées *dans* le conteneur de l'image
-  const [mask, setMask] = useState({ width: 0, height: 0, left: 0, top: 0 });
-
-  useLayoutEffect(() => {
-    if (!frameRef.current || !imgContainerRef.current) return;
-    const f = frameRef.current.getBoundingClientRect();
-    const c = imgContainerRef.current.getBoundingClientRect();
-    setMask({
-      width: f.width,
-      height: f.height,
-      left: f.left - c.left,
-      top: f.top - c.top,
-    });
-  }, [selectedFrame, uploadedImage]);
-
-  const applyCropping = () => {
-    const maskRect = frameRef.current.getBoundingClientRect();
-    const cropper = new Cropper(imageRef.current, maskRect, selectedFrame);
-    const { dataUrl, width, height } = cropper.crop();
-    onApply({ dataUrl, width, height });
-    onClose();
-  };
-
-  return (
+  return createPortal(
     <div className="modal-overlay">
-      <div className="modal">
-        <button className="close-btn" onClick={onClose}>
+      <div className="modal" role="dialog" aria-modal="true">
+        <button className="close-btn" onClick={onClose} aria-label="Fermer">
           ✖
         </button>
         <h3>Ajuster l'image</h3>
 
         <div className="frame-options">
-          <button onClick={() => setSelectedFrame("square")}>Carré</button>
-          <button onClick={() => setSelectedFrame("circle")}>Rond</button>
+          <button
+            className={selectedFrame === "square" ? "active" : ""}
+            onClick={() => setSelectedFrame("square")}
+          >
+            Carré
+          </button>
+          <button
+            className={selectedFrame === "circle" ? "active" : ""}
+            onClick={() => setSelectedFrame("circle")}
+          >
+            Rond
+          </button>
         </div>
 
-        <label>Zoom</label>
+        <label htmlFor="zoom-range">Zoom</label>
         <input
+          id="zoom-range"
           type="range"
           min="0.1"
           max="3"
@@ -78,8 +72,7 @@ const ImageEditorModal = ({ uploadedImage, onClose, onApply }) => {
           Appliquer
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
-};
-
-export default ImageEditorModal;
+}

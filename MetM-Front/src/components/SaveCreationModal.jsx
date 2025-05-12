@@ -1,108 +1,31 @@
 // src/components/SaveCreationModal.jsx
 // ========================
-import React, { useState, useEffect } from "react";
-import { CompositeImage } from "@/services/composite/CompositeImage";
-import { uploadImage, fetchKeywords } from "@/api/images";
-import { useAuth } from "@/context/AuthContext";
-import { useAuthModal } from "@/context/AuthModalContext";
-import { toast } from "react-toastify";
+import React from "react";
+import { createPortal } from "react-dom";
+import "@/styles/components/_saveCreationModal.scss";
+import { useSaveCreation } from "@/hooks/saveCreationModal/useSaveCreation";
 
-export default function SaveCreationModal({
-  isOpen,
-  onClose,
-  productType,
-  productImages,
-  currentSlide,
-  croppedImageData,
-  customText,
-  textOptions,
-  cropArea,
-}) {
-  const { user } = useAuth();
-  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
+export default function SaveCreationModal(props) {
+  const {
+    availableKeywords,
+    selectedKeywords,
+    keywordInput,
+    setKeywordInput,
+    addKeyword,
+    removeKeyword,
+    previewUrl,
+    handleSave,
+    handleAuthClick,
+    user,
+    onClose,
+  } = useSaveCreation(props);
 
-  const [availableKeywords, setAvailableKeywords] = useState([]);
-  const [selectedKeywords, setSelectedKeywords] = useState([]);
-  const [keywordInput, setKeywordInput] = useState("");
+  // Cas modal fermée
+  if (!props.isOpen) return null;
 
-  // Récupère les mots-clés existants quand la modale s'ouvre
-  useEffect(() => {
-    if (isOpen && user) {
-      fetchKeywords()
-        .then((data) => {
-          // On attend un tableau d'objets { id, name, ... }
-          setAvailableKeywords(Array.isArray(data) ? data : []);
-        })
-        .catch((err) => {
-          console.error("Erreur mots-clés :", err);
-          setAvailableKeywords([]);
-        });
-    }
-  }, [isOpen, user]);
-
-  const addKeyword = () => {
-    const kw = keywordInput.trim();
-    if (kw && !selectedKeywords.includes(kw)) {
-      setSelectedKeywords((prev) => [...prev, kw]);
-    }
-    setKeywordInput("");
-  };
-
-  const removeKeyword = (kw) =>
-    setSelectedKeywords((prev) => prev.filter((k) => k !== kw));
-
-  // Prépare l'URL d'aperçu
-  const previewUrl = croppedImageData?.dataUrl || croppedImageData || "";
-
-  const handleSave = async () => {
-    // Si ni image ni texte custom, rien à faire
-    if (!croppedImageData && !customText) {
-      toast.info("Aucune modification détectée.");
-      return;
-    }
-    try {
-      // 1) Génère le composite (texte + image)
-      const composite = await CompositeImage.create({
-        productImageUrl: productImages[currentSlide],
-        croppedData: croppedImageData,
-        customText,
-        textOptions,
-        cropArea,
-      });
-      const blob = await (await fetch(composite.dataUrl)).blob();
-
-      // 2) Téléverse avec uploaded_by + keywords
-      const result = await uploadImage(
-        blob,
-        `${productType}-${Date.now()}`,
-        user.id,
-        selectedKeywords
-      );
-
-      if (!result || !result.url) {
-        throw new Error("Téléversement échoué");
-      }
-
-      toast.success("Création enregistrée !");
-      onClose();
-    } catch (err) {
-      console.error("Échec handleSave :", err);
-      toast.error("Échec de l’enregistrement de la création.");
-    }
-  };
-
-  const handleAuthClick = () => {
-    // Fermeture + redirection après login
-    onClose();
-    setPostLoginRedirect(window.location.pathname);
-    setShowSignup(true);
-  };
-
-  if (!isOpen) return null;
-
-  // Si pas connecté, propose la connexion
+  // Si pas connecté, on propose la connexion
   if (!user) {
-    return (
+    return createPortal(
       <div className="modal-overlay" role="dialog" aria-modal="true">
         <div className="modal">
           <button className="close-btn" onClick={onClose} aria-label="Fermer">
@@ -114,12 +37,13 @@ export default function SaveCreationModal({
             Se connecter
           </button>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   }
 
-  // Modale d'enregistrement
-  return (
+  // Modal d'enregistrement
+  return createPortal(
     <div
       className="modal-overlay"
       role="dialog"
@@ -153,7 +77,7 @@ export default function SaveCreationModal({
               <option key={kw.id} value={kw.name} />
             ))}
           </datalist>
-          <button type="button" onClick={addKeyword} className="apply-btn">
+          <button type="button" onClick={addKeyword} className="generic-button">
             Ajouter
           </button>
         </div>
@@ -173,10 +97,11 @@ export default function SaveCreationModal({
           ))}
         </ul>
 
-        <button type="button" onClick={handleSave} className="apply-btn">
+        <button type="button" onClick={handleSave} className="generic-button">
           Sauvegarder
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

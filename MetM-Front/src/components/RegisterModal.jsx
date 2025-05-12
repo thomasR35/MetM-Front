@@ -1,61 +1,19 @@
 // src/components/RegisterModal.jsx
 // ========================
-import { useState } from "react";
-import { registerUser } from "@/api/auth";
+import React from "react";
 import "../styles/pages/_register.scss";
+import { useRegisterModal } from "@/hooks/registerModal/useRegisterModal";
 
-const Register = ({
-  openLoginModal,
-  closeRegisterModal,
-  setPostLoginRedirect,
-}) => {
-  const [credentials, setCredentials] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
-
-    if (credentials.password !== credentials.confirmPassword) {
-      setError("❌ Les mots de passe ne correspondent pas.");
-      return;
-    }
-
-    setLoading(true);
-
-    const response = await registerUser(
-      credentials.username,
-      credentials.email,
-      credentials.password
-    );
-
-    if (response.success) {
-      setSuccessMessage("🎉 Inscription réussie !");
-      // On attend un peu puis on bascule sur la modal de login
-      setTimeout(() => {
-        setPostLoginRedirect(null);
-        closeRegisterModal();
-        openLoginModal();
-      }, 1000);
-    } else {
-      setError(response.message || "❌ Erreur inconnue.");
-    }
-
-    setLoading(false);
-  };
+export default function RegisterModal() {
+  const {
+    credentials,
+    error,
+    successMessage,
+    loading,
+    handleChange,
+    handleSubmit,
+    closeRegisterModal,
+  } = useRegisterModal();
 
   return (
     <div
@@ -144,7 +102,7 @@ const Register = ({
 
         <button
           type="submit"
-          className="btn-submit"
+          className="generic-button"
           disabled={loading}
           aria-busy={loading}
         >
@@ -153,6 +111,4 @@ const Register = ({
       </form>
     </div>
   );
-};
-
-export default Register;
+}
