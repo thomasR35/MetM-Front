@@ -1,41 +1,11 @@
 // src/pages/Contact.jsx
-// ========================
-import React, { useState } from "react";
-import { sendContactForm } from "@/api/contactApi";
+import React from "react";
+import { useContactForm } from "@/hooks/contactPage/useContactForm";
+import "../styles/pages/_contact.scss";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [status, setStatus] = useState(null); // null | "loading" | "success" | "error"
-  const [error, setError] = useState(""); // message d’erreur général
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((f) => ({ ...f, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("loading");
-    setError("");
-    try {
-      const result = await sendContactForm(formData);
-      if (result.success) {
-        setStatus("success");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-      } else {
-        throw new Error(result.message || "Erreur serveur");
-      }
-    } catch (err) {
-      setStatus("error");
-      setError(err.message);
-      console.error("Contact form error:", err);
-    }
-  };
+  const { formData, status, error, handleChange, handleSubmit } =
+    useContactForm();
 
   return (
     <main
@@ -46,7 +16,7 @@ export default function Contact() {
     >
       <h1 id="contact-title">Contactez-nous</h1>
 
-      {/* zone de notification de statut */}
+      {/* Notifications de statut */}
       <div id="form-status" role="status" aria-live="polite" aria-atomic="true">
         {status === "success" && (
           <p className="success-message">
@@ -69,6 +39,7 @@ export default function Contact() {
           Formulaire de contact
         </h2>
 
+        {/* Coordonnées */}
         <fieldset>
           <legend>Vos coordonnées</legend>
 
@@ -77,14 +48,14 @@ export default function Contact() {
               Nom <span aria-hidden="true">*</span>
             </label>
             <input
-              type="text"
               id="contact-name"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
+              type="text"
               required
               aria-required="true"
               aria-invalid={status === "error" && !formData.name}
+              value={formData.name}
+              onChange={handleChange}
             />
           </div>
 
@@ -93,18 +64,19 @@ export default function Contact() {
               Email <span aria-hidden="true">*</span>
             </label>
             <input
-              type="email"
               id="contact-email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+              type="email"
               required
               aria-required="true"
               aria-invalid={status === "error" && !formData.email}
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
         </fieldset>
 
+        {/* Détails de la demande */}
         <fieldset>
           <legend>Détails de la demande</legend>
 
@@ -113,14 +85,14 @@ export default function Contact() {
               Objet <span aria-hidden="true">*</span>
             </label>
             <input
-              type="text"
               id="contact-subject"
               name="subject"
-              value={formData.subject}
-              onChange={handleChange}
+              type="text"
               required
               aria-required="true"
               aria-invalid={status === "error" && !formData.subject}
+              value={formData.subject}
+              onChange={handleChange}
             />
           </div>
 
@@ -132,11 +104,11 @@ export default function Contact() {
               id="contact-message"
               name="message"
               rows={6}
-              value={formData.message}
-              onChange={handleChange}
               required
               aria-required="true"
               aria-invalid={status === "error" && !formData.message}
+              value={formData.message}
+              onChange={handleChange}
             />
           </div>
         </fieldset>
