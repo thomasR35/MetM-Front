@@ -1,5 +1,6 @@
 // src/components/SaveCreationModal.jsx
 // ========================
+// src/components/SaveCreationModal.jsx
 import React from "react";
 import { createPortal } from "react-dom";
 import "@/styles/components/_saveCreationModal.scss";
@@ -14,17 +15,17 @@ export default function SaveCreationModal(props) {
     setKeywordInput,
     addKeyword,
     removeKeyword,
-    previewUrl,
     handleSave,
     handleAuthClick,
+    saving,
     user,
     onClose,
-    saving,
   } = useSaveCreation(props);
 
+  // modal fermée
   if (!props.isOpen) return null;
 
-  // Si non connecté
+  // cas non connecté
   if (!user) {
     return createPortal(
       <div className="modal-overlay" role="dialog" aria-modal="true">
@@ -43,7 +44,7 @@ export default function SaveCreationModal(props) {
     );
   }
 
-  // Modale d’enregistrement
+  // vraie modale d’enregistrement
   return createPortal(
     <div
       className="modal-overlay"
@@ -58,6 +59,7 @@ export default function SaveCreationModal(props) {
         <h2 id="save-modal-title">Enregistrer la création</h2>
 
         <div className="preview">
+          {/* On réaffiche le composite via MockupProduct */}
           <MockupProduct
             productImage={props.productImages[props.currentSlide]}
             croppedImageData={props.croppedImageData}
@@ -88,7 +90,7 @@ export default function SaveCreationModal(props) {
         <ul className="keywords-list">
           {selectedKeywords.map((kw) => (
             <li key={kw}>
-              {kw}
+              {kw}{" "}
               <button
                 className="close-btn"
                 aria-label={`Supprimer ${kw}`}

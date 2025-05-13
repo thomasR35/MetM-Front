@@ -1,5 +1,5 @@
-// src/hooks/loginModal/useLoginModal.js
-//=====================================================
+// src/hooks/components/saveCreationModal/useSaveCreation.js
+// =============================================================
 import { useState, useEffect, useCallback } from "react";
 import { CompositeImage } from "@/services/composite/CompositeImage";
 import { uploadImage, fetchKeywords } from "@/api/images";
@@ -7,15 +7,9 @@ import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { toast } from "react-toastify";
 
-/**
- * Hook gérant la logique d'enregistrement d'une création :
- * - chargement des mots-clés
- * - sélection / suppression
- * - génération du composite + upload
- * - cas non connecté
- */
 export function useSaveCreation({
   isOpen,
+  onClose,
   productType,
   productImages,
   currentSlide,
@@ -23,29 +17,25 @@ export function useSaveCreation({
   customText,
   textOptions,
   cropArea,
-  onClose,
 }) {
   const { user } = useAuth();
   const { setShowSignup, setPostLoginRedirect } = useAuthModal();
 
-  // ⚙️ mots-clés
   const [availableKeywords, setAvailableKeywords] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [keywordInput, setKeywordInput] = useState("");
+  const [saving, setSaving] = useState(false);
 
-  // 1) charger les mots-clés quand la modal s'ouvre et qu'on est connecté
+  // 1) Charger les mots-clés existants à l’ouverture
   useEffect(() => {
     if (isOpen && user) {
       fetchKeywords()
         .then((data) => setAvailableKeywords(Array.isArray(data) ? data : []))
-        .catch((err) => {
-          console.error("Erreur mots-clés :", err);
-          setAvailableKeywords([]);
-        });
+        .catch(() => toast.error("Erreur chargement mots-clés"));
     }
   }, [isOpen, user]);
 
-  // ⚙️ gestion des mots-clés sélectionnés
+  // 2) Ajouter / supprimer un mot-clé
   const addKeyword = useCallback(() => {
     const kw = keywordInput.trim();
     if (kw && !selectedKeywords.includes(kw)) {
@@ -58,17 +48,25 @@ export function useSaveCreation({
     setSelectedKeywords((prev) => prev.filter((k) => k !== kw));
   }, []);
 
-  // ⚙️ URL d'aperçu
-  const previewUrl = croppedImageData?.dataUrl || "";
-
-  // ⚙️ sauvegarde (crop + upload)
+  // 3) Sauvegarde : génération composite + upload
   const handleSave = useCallback(async () => {
+    // pas de modif => rien à faire
     if (!croppedImageData && !customText.trim()) {
       toast.info("Aucune modification détectée.");
       return;
     }
+
+    // pas connecté => ouvrir la modale de login
+    if (!user) {
+      onClose();
+      setPostLoginRedirect(window.location.pathname);
+      setShowSignup(true);
+      return;
+    }
+
+    setSaving(true);
     try {
-      // 1) création du composite en local
+      // générer le composite
       const composite = await CompositeImage.create({
         productImageUrl: productImages[currentSlide],
         croppedData: croppedImageData,
@@ -76,36 +74,41 @@ export function useSaveCreation({
         textOptions,
         cropArea,
       });
-      // 2) récupération du blob
       const blob = await (await fetch(composite.dataUrl)).blob();
-      // 3) upload
-      const result = await uploadImage(
+
+      // upload
+      await uploadImage(
         blob,
         `${productType}-${Date.now()}`,
         user.id,
         selectedKeywords
       );
-      if (!result?.url) throw new Error("Téléversement échoué");
+
       toast.success("Création enregistrée !");
       onClose();
     } catch (err) {
-      console.error("Échec handleSave :", err);
-      toast.error("Échec de l’enregistrement de la création.");
+      console.error("Échec upload :", err);
+      toast.error("Échec de l’enregistrement.");
+    } finally {
+      setSaving(false);
     }
   }, [
-    croppedImageData,
-    customText,
+    isOpen,
+    onClose,
     productImages,
     currentSlide,
+    croppedImageData,
+    customText,
     textOptions,
     cropArea,
     productType,
     user,
     selectedKeywords,
-    onClose,
+    setPostLoginRedirect,
+    setShowSignup,
   ]);
 
-  // ⚙️ cas pas connecté → ouverture du modal auth
+  // 4) rediriger vers login si besoin
   const handleAuthClick = useCallback(() => {
     onClose();
     setPostLoginRedirect(window.location.pathname);
@@ -119,9 +122,9 @@ export function useSaveCreation({
     setKeywordInput,
     addKeyword,
     removeKeyword,
-    previewUrl,
     handleSave,
     handleAuthClick,
+    saving,
     user,
     onClose,
   };
