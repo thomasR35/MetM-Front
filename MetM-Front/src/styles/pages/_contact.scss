@@ -89,12 +89,12 @@
     margin-top: 1rem;
 
     .success-message {
-      color: green;
+      color: var.$success-color;
       font-weight: bold;
     }
 
     .error-message {
-      color: red;
+      color: var.$danger-color;
       font-weight: bold;
     }
   }

@@ -14,7 +14,7 @@
   width: 250px;
   background-color: var.$dark-color;
   padding: var.$spacing-md;
-  color: white;
+  color: var.$light-color;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,7 +37,7 @@
   }
 
   .nav-link {
-    color: white;
+    color: var.$light-color;
     font-size: 1rem;
     padding: 10px;
     transition: background 0.3s ease-in-out;

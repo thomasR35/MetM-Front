@@ -18,7 +18,7 @@
 .table {
   width: 100%;
   display: table;
-  background: white;
+  background: var.$light-color;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: visible;
@@ -39,14 +39,14 @@
   ========================= */
   th {
     background-color: var.$primary-color;
-    color: white;
+    color: var.$light-color;
   }
 
   /* ========================
      LIGNES ALTERNÉES
   ========================= */
   tr:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: var.$light-color;
   }
 
   /* ========================
@@ -57,7 +57,7 @@
     height: 80px;
     object-fit: cover;
     border-radius: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid var.$text;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     &:hover {

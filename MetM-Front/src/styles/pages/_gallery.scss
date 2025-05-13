@@ -40,10 +40,11 @@
 
   button {
     background: #fb6f92;
-    color: white;
+    color: var.$text;
     border: none;
     padding: 8px 15px;
-    border-radius: 5px;
+    border: 1px solid transparent;
+    border-radius: 10px;
     cursor: pointer;
     transition: background 0.3s;
 
@@ -53,7 +54,9 @@
     }
 
     &:hover:not(:disabled) {
-      background: #ff8fab;
+      background: var.$links-hover;
+      color: var.$text;
+      border: 1px solid var.$text;
     }
   }
 }
@@ -82,12 +85,9 @@
   font-size: 0.9rem;
   transition: background 0.3s;
 
-  &:hover {
-    background: #fb6f92;
-  }
-
-  &.selected {
-    background: #fb4570;
-    font-weight: bold;
+  &:hover,
+  &:focus {
+    background: var.$links-hover;
+    border: 1px solid transparent;
   }
 }

@@ -60,7 +60,8 @@
       margin-top: auto;
       align-self: center;
 
-      &:hover {
+      &:hover,
+      &:focus {
         background: var.$links-hover;
         border: 2px solid var.$links-hover;
       }

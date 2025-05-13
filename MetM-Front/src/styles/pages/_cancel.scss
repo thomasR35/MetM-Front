@@ -1,5 +1,8 @@
 // src/styles/pages/_cancel.scss
 // ========================
+
+@use "../utils/variables" as var;
+
 .static-page.cancel-page {
   display: flex;
   flex-direction: column;
@@ -17,7 +20,7 @@
     text-align: center;
   }
   code {
-    background: #f4f4f4;
+    background: var.$light-color;
     padding: 0.2rem 0.4rem;
     border-radius: 3px;
   }

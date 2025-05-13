@@ -52,7 +52,7 @@
 ======================== */
 @mixin button-style($bg-color) {
   background-color: $bg-color;
-  color: white;
+  color: var.$light-color;
   font-weight: bold;
   padding: 10px;
   border-radius: 5px;
@@ -85,7 +85,7 @@
    MIXIN POUR STYLE DE CARTE
 ======================== */
 @mixin card-style {
-  background: white;
+  background: var.$light-color;
   padding: var.$spacing-md;
   border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
