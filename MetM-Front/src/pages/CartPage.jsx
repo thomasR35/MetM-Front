@@ -74,10 +74,7 @@ export default function CartPage() {
             {cartItems.map((item, idx) => {
               const itemId = `cart-item-${idx}`;
               const custom = item.customImage ?? null;
-              // pour l'affichage, on peut continuer d'utiliser src
-              const src =
-                custom?.dataUrl /* image uploadée */ ??
-                item.product.image; /* mockup de base */
+              const src = custom?.dataUrl ?? item.product.image;
 
               return (
                 <li

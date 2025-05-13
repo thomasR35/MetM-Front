@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useAuthModal } from "@/context/AuthModalContext";
+import { useConfirm } from "@/hooks/components/confirmDialog/useConfirm";
 import { toast } from "react-toastify";
 
 /**
@@ -15,6 +16,7 @@ export function useNavbar() {
   const { cartItems } = useCart();
   const { setShowSignup, setShowRegister, setPostLoginRedirect } =
     useAuthModal();
+  const { confirm, ConfirmUI } = useConfirm();
 
   // Nombre total d'articles dans le panier
   const totalItems = useMemo(
@@ -26,13 +28,23 @@ export function useNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Déconnexion
-  const handleLogout = useCallback(() => {
-    if (window.confirm("Voulez-vous vraiment vous déconnecter ?")) {
+  const handleLogout = useCallback(async () => {
+    try {
+      // Affiche votre modale et attend que l'utilisateur confirme
+      await confirm({
+        title: "Déconnexion",
+        message: "Voulez-vous vraiment vous déconnecter ?",
+        confirmLabel: "Se déconnecter",
+        cancelLabel: "Annuler",
+      });
+      // Si on arrive ici, l'utilisateur a cliqué sur “Confirmer”
       logout();
       setMenuOpen(false);
       toast.info("Déconnexion réussie 👋", { icon: "👋" });
+    } catch {
+      // L'utilisateur a cliqué sur “Annuler” ou fermé la modale : on ne fait rien
     }
-  }, [logout]);
+  }, [confirm, logout]);
 
   // Ouvre la modal de connexion
   const handleLoginClick = useCallback(
@@ -65,5 +77,6 @@ export function useNavbar() {
     handleLogout,
     handleLoginClick,
     handleRegisterClick,
+    ConfirmUI,
   };
 }
