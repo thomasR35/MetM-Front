@@ -1,6 +1,6 @@
 // src/hooks/components/confirmDialog/useConfirm.js
 //=====================================
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import ConfirmDialog from "@/components/ConfirmDialog";
 
 export function useConfirm() {

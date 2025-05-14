@@ -1,6 +1,5 @@
 // src/components/ConfirmDialog.jsx
 //======================================
-import React from "react";
 import { createPortal } from "react-dom";
 import "@/styles/components/_confirmDialog.scss";
 

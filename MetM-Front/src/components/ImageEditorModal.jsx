@@ -1,6 +1,5 @@
 // src/components/ImageEditorModal.jsx
 // ========================
-import React from "react";
 import "@/styles/components/_imageEditorModal.scss";
 import { createPortal } from "react-dom";
 import { useImageEditor } from "@/hooks/components/imageEditorModal/useImageEditor";

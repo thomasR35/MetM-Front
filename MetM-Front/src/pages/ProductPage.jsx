@@ -1,6 +1,6 @@
 // src/pages/ProductPage.jsx
 // ========================
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";

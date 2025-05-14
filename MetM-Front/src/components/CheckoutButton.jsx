@@ -1,7 +1,5 @@
 // src/components/CheckoutButton.jsx
 // ========================
-// src/components/CheckoutButton.jsx
-import React from "react";
 
 export default function CheckoutButton({
   onClick,

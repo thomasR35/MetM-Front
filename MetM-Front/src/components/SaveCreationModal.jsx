@@ -1,7 +1,5 @@
 // src/components/SaveCreationModal.jsx
 // ========================
-// src/components/SaveCreationModal.jsx
-import React from "react";
 import { createPortal } from "react-dom";
 import "@/styles/components/_saveCreationModal.scss";
 import { useSaveCreation } from "@/hooks/components/saveCreationModal/useSaveCreation";

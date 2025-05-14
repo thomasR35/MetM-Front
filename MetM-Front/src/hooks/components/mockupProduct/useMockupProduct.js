@@ -5,12 +5,33 @@ import { TextOverlay } from "@/services/text/TextOverlay";
 
 /**
  * Hook qui gère tout le dessin du mockup sur un canvas.
- * @param {string} productImage        — URL de la mockup du produit
- * @param {{ dataUrl:string, width:number, height:number }?} croppedImageData
+ *
+ * @param {string} productImage
+ *   URL de la mockup du produit (image de fond).
+ * @param {Object} [croppedImageData]
+ *   Données de l’image recadrée à superposer, si présente.
+ * @param {string} croppedImageData.dataUrl
+ *   Data-URL de l’image recadrée (base64).
+ * @param {number} croppedImageData.width
+ *   Largeur en pixels de l’image recadrée.
+ * @param {number} croppedImageData.height
+ *   Hauteur en pixels de l’image recadrée.
  * @param {string} customText
- * @param {{ fontFamily:string, fontSize:number, color:string, position:{x:number,y:number} }} textOptions
+ *   Texte personnalisé à afficher sur le mockup.
+ * @param {Object} textOptions
+ *   Options de rendu pour le texte.
+ * @param {string} textOptions.fontFamily
+ *   Famille de police (ex. `"Arial"`, `"Roboto"`, etc.).
+ * @param {number} textOptions.fontSize
+ *   Taille de police en pixels.
+ * @param {string} textOptions.color
+ *   Couleur du texte (CSS color string, ex. `"#000"` ou `"rgba(255,255,255,0.8)"`).
+ * @param {{ x: number, y: number }} textOptions.position
+ *   Position (en pixels) du point de départ de dessin du texte sur le canvas.
  * @returns {import('react').RefObject<HTMLCanvasElement>}
+ *   Référence vers l’élément `<canvas>` utilisé pour le rendu.
  */
+
 export function useMockupProduct({
   productImage,
   croppedImageData,

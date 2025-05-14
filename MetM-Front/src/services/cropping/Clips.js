@@ -3,7 +3,6 @@
 export const clipStrategies = {
   square: {
     clip(ctx, w, h) {
-      // simple rectangle
       ctx.beginPath();
       ctx.rect(0, 0, w, h);
       ctx.clip();

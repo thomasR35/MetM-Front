@@ -1,6 +1,5 @@
 // src/components/MockupProduct.jsx
 // ========================
-import React from "react";
 import { useMockupProduct } from "@/hooks/components/mockupProduct/useMockupProduct";
 
 export default function MockupProduct(props) {

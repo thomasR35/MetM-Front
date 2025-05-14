@@ -1,6 +1,5 @@
 // src/components/Navbar.jsx
 // ========================
-import React from "react";
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import "@/styles/components/_navbar.scss";

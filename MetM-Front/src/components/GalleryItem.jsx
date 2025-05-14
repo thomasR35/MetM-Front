@@ -1,6 +1,5 @@
 // src/components/GalleryItem.jsx
 // ========================
-import React from "react";
 import { useGalleryItem } from "@/hooks/components/galleryItem/useGalleryItem";
 import placeholder from "@/assets/images/placeholder.jpg";
 

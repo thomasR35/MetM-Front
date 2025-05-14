@@ -1,6 +1,5 @@
 // src/pages/Home.jsx
 // ========================
-import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/pages/_Home.scss";
 import tshirt from "../assets/images/tshirt.jpg";

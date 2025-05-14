@@ -1,6 +1,5 @@
 // src/components/RegisterModal.jsx
 // ========================
-import React from "react";
 import "../styles/pages/_register.scss";
 import { useRegisterModal } from "@/hooks/components/registerModal/useRegisterModal";
 

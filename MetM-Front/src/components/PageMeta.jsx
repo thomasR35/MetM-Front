@@ -1,6 +1,5 @@
 // src/components/PageMeta.jsx
 // ========================
-import React from "react";
 import { Helmet } from "react-helmet";
 import { usePageMeta } from "@/hooks/components/metaPage/usePageMeta";
 

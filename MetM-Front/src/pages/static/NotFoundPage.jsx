@@ -1,6 +1,5 @@
 // src/pages/static/NotFoundPage.jsx
 // ========================
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/pages/_notfound.scss";
 

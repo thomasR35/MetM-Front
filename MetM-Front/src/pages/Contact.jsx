@@ -1,6 +1,5 @@
 // src/pages/Contact.jsx
 //=====================================
-import React from "react";
 import { useContactForm } from "@/hooks/pages/contactPage/useContactForm";
 import "../styles/pages/_contact.scss";
 

@@ -1,6 +1,5 @@
 // src/components/LoginModal.jsx
 // ======================================
-import React from "react";
 import { createPortal } from "react-dom";
 import "@/styles/components/_signup.scss";
 import RegisterModal from "./RegisterModal";

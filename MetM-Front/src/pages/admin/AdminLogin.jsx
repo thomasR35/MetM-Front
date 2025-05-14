@@ -1,6 +1,5 @@
 // src/pages/AdminLogin.jsx
 //=====================================
-import React from "react";
 import { useAdminLogin } from "@/hooks/admin/adminLoginPage/useAdminLogin";
 
 export default function AdminLogin() {

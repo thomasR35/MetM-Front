@@ -1,6 +1,7 @@
 // src/services/checkoutService.js
 /**
- * Appelle votre back pour créer une session Stripe (ou tout autre mécanisme de paiement).
+ * @module services/checkoutService
+ * @description Service pour gérer le paiement avec Stripe
  * @param {Array} items  — items du panier
  * @param {number} total — montant total
  * @param {Object} customerData — { name, email, address, userId? }
