@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "serve:secure": "node server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -17,6 +18,9 @@
     "@stripe/stripe-js": "^7.2.0",
     "axios": "^1.8.1",
     "bootstrap": "^5.3.3",
+    "compression": "^1.8.0",
+    "express": "^5.1.0",
+    "express-static-gzip": "^3.0.0",
     "fabric": "^6.6.1",
     "glob": "^11.0.1",
     "lru-cache": "^11.0.2",
@@ -29,7 +33,9 @@
     "react-toastify": "^11.0.5",
     "rimraf": "^6.0.1",
     "sass": "^1.85.1",
-    "swiper": "^11.2.5"
+    "swiper": "^11.2.5",
+    "tarteaucitronjs": "^1.21.0",
+    "vite-plugin-compression": "^0.5.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -40,6 +46,9 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
-    "vite": "^6.2.0"
+    "http-server": "^14.1.1",
+    "serve": "^14.2.4",
+    "vite": "^6.2.0",
+    "vite-imagetools": "^7.1.0"
   }
 }

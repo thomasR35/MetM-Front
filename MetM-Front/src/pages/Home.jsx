@@ -53,7 +53,7 @@ const Home = () => {
                 className="product-selection__link"
                 aria-label={`Personnaliser ${p.label}`}
               >
-                <img src={p.img} alt={p.alt} />
+                <img src={p.img} alt={p.alt} loading="lazy" />
                 <span>{p.label}</span>
               </Link>
             </li>

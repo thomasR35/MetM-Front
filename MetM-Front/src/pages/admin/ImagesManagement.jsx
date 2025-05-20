@@ -177,6 +177,7 @@ export default function ImagesManagement() {
                     <img
                       src={`${API_BASE}${img.url}`}
                       alt={img.title}
+                      loading="lazy"
                       className="image-thumbnail"
                     />
                   </td>

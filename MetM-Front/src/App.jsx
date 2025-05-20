@@ -1,4 +1,3 @@
-import React from "react";
 import PageMeta from "@/components/PageMeta";
 import AppRouter from "./router/AppRouter";
 import Signup from "./components/LoginModal";

@@ -16,6 +16,7 @@ export default function GalleryItem({ image }) {
         alt={`Image uploadée par ${image.uploaded_by}`}
         className="gallery-image"
         crossOrigin="anonymous"
+        loading="lazy"
         onError={(e) => {
           console.error("❌ Impossible de charger l'image :", e.target.src);
           e.target.src = placeholder;

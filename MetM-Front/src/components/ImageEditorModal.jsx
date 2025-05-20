@@ -58,6 +58,7 @@ export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
               ref={imageRef}
               src={uploadedImage}
               alt="À recadrer"
+              loading="lazy"
               onMouseDown={startDragging}
               style={{
                 transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
