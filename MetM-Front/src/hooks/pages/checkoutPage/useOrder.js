@@ -33,10 +33,10 @@ export function useOrder() {
       // 3) sinon on lance Stripe
       setLoading(true);
       try {
-        const payload = cartItems.map((i) => ({
-          product_name: i.product.name,
-          unit_amount: Math.round(i.product.price * 100),
-          quantity: i.quantity,
+        const payload = cartItems.map((item) => ({
+          product_name: item.product.name,
+          unit_amount: Math.round(item.product.price * 100),
+          quantity: item.quantity,
         }));
 
         const sessionId = await createCheckoutSession(payload);
