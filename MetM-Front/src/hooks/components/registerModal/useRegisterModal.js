@@ -4,13 +4,11 @@ import { useState, useCallback } from "react";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { registerUser } from "@/api/auth";
 
+const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
 export function useRegisterModal() {
-  const {
-    setShowSignup,
-    setShowRegister,
-    setPostLoginRedirect,
-    // on pourrait aussi lire showRegister si on veut conditionner l’affichage
-  } = useAuthModal();
+  const { setShowSignup, setShowRegister, setPostLoginRedirect } =
+    useAuthModal();
 
   const [credentials, setCredentials] = useState({
     username: "",
@@ -45,6 +43,15 @@ export function useRegisterModal() {
       setError(null);
       setSuccessMessage(null);
 
+      // Vérification de la robustesse du mot de passe
+      if (!passwordRegex.test(credentials.password)) {
+        setError(
+          "❌ Le mot de passe doit faire au moins 8 caractères, contenir au moins une majuscule, un chiffre et un caractère spécial."
+        );
+        return;
+      }
+
+      // Confirmation des deux champs mot de passe
       if (credentials.password !== credentials.confirmPassword) {
         setError("❌ Les mots de passe ne correspondent pas.");
         return;
