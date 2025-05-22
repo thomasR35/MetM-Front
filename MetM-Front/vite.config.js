@@ -22,6 +22,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      "/uploads": {
+        target: "http://metm-back.local",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/uploads/, "/uploads"),
+      },
     },
   },
   build: {

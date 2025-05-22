@@ -1,5 +1,5 @@
 // src/api/auth.js
-const API_BASE = "http://metm-back.local/api";
+const API_BASE = "/api";
 
 /**
  * POST /api/auth/login
