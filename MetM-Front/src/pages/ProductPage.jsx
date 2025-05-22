@@ -111,7 +111,7 @@ export default function ProductPage() {
       </h1>
 
       <p className="price" aria-label={`Prix : ${product.price}`}>
-        Prix : {product.price}
+        Prix : {product.price}€
       </p>
 
       {/* Slider + Aperçu */}
@@ -258,32 +258,30 @@ export default function ProductPage() {
               />
             </fieldset>
           </form>
-
-          {/* Dropzone */}
-          <section
-            className="upload-container"
-            role="region"
-            aria-labelledby="upload-title"
-          >
-            <h3 id="upload-title" className="sr-only">
-              Importer une image
-            </h3>
-            <div
-              {...getRootProps()}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === " ") &&
-                getRootProps().onClick(e)
-              }
-              aria-label="Importer une image pour personnaliser le produit"
-              className="dropzone"
-            >
-              <input {...getInputProps()} />
-              <p>Déposez votre image ou cliquez pour importer</p>
-            </div>
-          </section>
         </aside>
+        {/* Dropzone */}
+        <section
+          className="upload-container"
+          role="region"
+          aria-labelledby="upload-title"
+        >
+          <h3 id="upload-title" className="sr-only">
+            Importer une image
+          </h3>
+          <div
+            {...getRootProps()}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) =>
+              (e.key === "Enter" || e.key === " ") && getRootProps().onClick(e)
+            }
+            aria-label="Importer une image pour personnaliser le produit"
+            className="dropzone"
+          >
+            <input {...getInputProps()} />
+            <p>Déposez votre image ou cliquez pour importer</p>
+          </div>
+        </section>
       </section>
 
       {/* Modale de recadrage */}
