@@ -152,7 +152,7 @@ export default function ProductPage() {
                   croppedImageData={croppedImageData}
                   customText={customText}
                   textOptions={textOptions}
-                  cropArea={cropZones[productType][idx]}
+                  cropArea={cropZones[productType]}
                 />
               </SwiperSlide>
             ))}
@@ -304,7 +304,7 @@ export default function ProductPage() {
           croppedImageData={croppedImageData}
           customText={customText}
           textOptions={textOptions}
-          cropArea={cropZones[productType][currentSlide]}
+          cropArea={cropZones[productType]}
         />
       )}
 

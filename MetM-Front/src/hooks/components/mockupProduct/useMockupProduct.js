@@ -1,4 +1,4 @@
-// src/hooks/mockupProduct/useMockupProduct.js
+// src/hooks/components/mockupProduct/useMockupProduct.js
 // =========================================
 import { useEffect, useRef } from "react";
 import { TextOverlay } from "@/services/text/TextOverlay";
@@ -31,12 +31,12 @@ import { TextOverlay } from "@/services/text/TextOverlay";
  * @returns {import('react').RefObject<HTMLCanvasElement>}
  *   Référence vers l’élément `<canvas>` utilisé pour le rendu.
  */
-
 export function useMockupProduct({
   productImage,
   croppedImageData,
   customText,
   textOptions,
+  cropArea,
 }) {
   const canvasRef = useRef(null);
 
@@ -54,37 +54,58 @@ export function useMockupProduct({
       canvas.height = baseImg.height;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 1) Dessine la mockup
+      // 1) Fond : la mockup
       ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
 
+      // utilitaire pour le texte
       const drawText = () => {
         TextOverlay.draw(ctx, customText, textOptions);
       };
 
-      // 2) Si image custom, on la dessine au centre
+      // 2) Si on a une image util
       if (croppedImageData?.dataUrl) {
         const userImg = new Image();
         userImg.crossOrigin = "anonymous";
         userImg.src = croppedImageData.dataUrl;
         userImg.onload = () => {
-          const { width: cw, height: ch } = croppedImageData;
-          const dx = (canvas.width - cw) / 2;
-          const dy = (canvas.height - ch) / 2;
-          ctx.drawImage(userImg, dx, dy, cw, ch);
-          // 3) Texte par-dessus
+          // dimensions réelles du crop
+          const cw = croppedImageData.width;
+          const ch = croppedImageData.height;
+
+          // si cropArea est bien fourni et valide, on l'utilise,
+          // sinon on retombe sur le centrage automatique
+          let x, y, wZone, hZone;
+          if (
+            cropArea &&
+            typeof cropArea.width === "number" &&
+            typeof cropArea.height === "number"
+          ) {
+            x = cropArea.x ?? 0;
+            y = cropArea.y ?? 0;
+            wZone = cropArea.width;
+            hZone = cropArea.height;
+          } else {
+            x = (canvas.width - cw) / 2;
+            y = (canvas.height - ch) / 2;
+            wZone = cw;
+            hZone = ch;
+          }
+
+          // enfin on dessine
+          ctx.drawImage(userImg, x, y, wZone, hZone);
           drawText();
         };
       } else {
-        // sans custom image, on dessine directement le texte
+        // 3) sans image util, juste le texte
         drawText();
       }
 
-      // 4) Styling responsive
+      // 4) responsive
       canvas.style.width = "100%";
       canvas.style.height = "auto";
       canvas.style.display = "block";
     };
-  }, [productImage, croppedImageData, customText, textOptions]);
+  }, [productImage, croppedImageData, customText, textOptions, cropArea]);
 
   return canvasRef;
 }

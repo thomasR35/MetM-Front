@@ -47,32 +47,43 @@
   margin-bottom: 3rem;
   flex-wrap: wrap;
   width: 100%;
+
+  @include mix.responsive(sm) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @include mix.responsive(xs) {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 /* =================== 
 SLIDER (PARTIE GAUCHE) 
 =================== */
 .product-slider {
-  width: 80%;
+  max-width: 50%;
   margin: 0 auto;
   flex: 1;
+  border: 1px solid var.$text;
   @include mix.responsive(lg) {
     width: 70vw;
     height: auto;
   }
 
   @include mix.responsive(md-lg) {
-    width: 70vw;
+    max-width: 50%;
     height: auto;
   }
 
   @include mix.responsive(sm) {
-    width: 95vw;
+    min-width: 100%;
     height: auto;
   }
 
   @include mix.responsive(xs) {
-    width: 100vw;
+    min-width: 100%;
     height: auto;
     aspect-ratio: 1 / 1;
   }
@@ -89,6 +100,25 @@ SLIDER (PARTIE GAUCHE)
   width: 20vw;
   flex: 1;
   height: 100%;
+  @include mix.responsive(lg) {
+    width: 100%;
+    height: auto;
+  }
+
+  @include mix.responsive(md-lg) {
+    width: 100%;
+    height: auto;
+  }
+
+  @include mix.responsive(sm) {
+    width: 100%;
+    height: auto;
+  }
+
+  @include mix.responsive(xs) {
+    width: 100%;
+    height: auto;
+  }
 }
 
 /* ======================= 

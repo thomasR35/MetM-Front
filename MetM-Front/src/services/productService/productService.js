@@ -1,28 +1,26 @@
 // src/services/productService.js
-import mug1 from "@/assets/images/mug1.jpg";
-import mug2 from "@/assets/images/mug2.jpg";
-import mug3 from "@/assets/images/mug3.jpg";
-import tshirt from "@/assets/images/tshirt.jpg";
-import pins1 from "@/assets/images/pins1.jpg";
-import pins2 from "@/assets/images/pins2.jpg";
-import pins3 from "@/assets/images/pins3.jpg";
+import mug1 from "@/assets/images/mug.webp";
+import mug2 from "@/assets/images/mug-noir.webp";
+import tshirt1 from "@/assets/images/tshirt-homme-FFF.webp";
+import tshirt2 from "@/assets/images/tshirt-homme-000.webp";
+import tshirt3 from "@/assets/images/tshirt-homme-A09D98.webp";
+import tshirt4 from "@/assets/images/tshirt-femme-FFF.webp";
+import tshirt5 from "@/assets/images/tshirt-femme-000.webp";
+import tshirt6 from "@/assets/images/tshirt-femme-A09D98.webp";
+import pins from "@/assets/images/pins.webp";
 
 export const productData = {
-  mug: { name: "Mug", price: 14.99, images: [mug1, mug2, mug3] },
-  tshirt: { name: "T-Shirt", price: 19.99, images: [tshirt] },
-  pins: { name: "Pin’s", price: 9.99, images: [pins1, pins2, pins3] },
+  mug: { name: "Mug", price: 14.99, images: [mug1, mug2] },
+  tshirt: {
+    name: "T-Shirt",
+    price: 19.99,
+    images: [tshirt1, tshirt2, tshirt3, tshirt4, tshirt5, tshirt6],
+  },
+  pins: { name: "Pin’s", price: 4.99, images: [pins] },
 };
 
 export const cropZones = {
-  mug: [
-    { width: 260, height: 220 },
-    { width: 280, height: 240 },
-    { width: 240, height: 200 },
-  ],
-  tshirt: [{ width: 260, height: 300 }],
-  pins: [
-    { width: 100, height: 100 },
-    { width: 110, height: 110 },
-    { width: 90, height: 90 },
-  ],
+  mug: { x: 250, y: 320, width: 300, height: 300 },
+  tshirt: { x: 320, y: 220, width: 350, height: 350 },
+  pins: { x: 141, y: 134, width: 470, height: 470 },
 };
