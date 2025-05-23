@@ -37,12 +37,27 @@ export class CompositeImage {
     ctx.drawImage(base, 0, 0, canvas.width, canvas.height);
 
     // 4) dessiner le crop centré ou selon cropArea
-    // Ici on centre ; si tu veux coller exactement à cropArea.x/y, remplace dx/dy
+    // On récupère tes valeurs de cropArea (fallback au centre si jamais manquant)
     const cw = croppedData.width;
     const ch = croppedData.height;
-    const dx = (canvas.width - cw) / 2;
-    const dy = (canvas.height - ch) / 2;
-    ctx.drawImage(user, dx, dy, cw, ch);
+    let dx, dy, dw, dh;
+    if (
+      cropArea &&
+      typeof cropArea.width === "number" &&
+      typeof cropArea.height === "number"
+    ) {
+      dx = cropArea.x ?? 0;
+      dy = cropArea.y ?? 0;
+      dw = cropArea.width;
+      dh = cropArea.height;
+    } else {
+      // fallback centré
+      dx = (canvas.width - cw) / 2;
+      dy = (canvas.height - ch) / 2;
+      dw = cw;
+      dh = ch;
+    }
+    ctx.drawImage(user, dx, dy, dw, dh);
 
     // 5) dessiner le texte par-dessus
     TextOverlay.draw(ctx, customText, textOptions);
