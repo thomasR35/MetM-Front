@@ -2,18 +2,7 @@
 // ========================
 import { TextOverlay } from "../text/TextOverlay";
 
-/**
- * Génère une image composite (crop + texte) et retourne un dataURL.
- */
 export class CompositeImage {
-  /**
-   * @param {string} productImageUrl    URL de la mockup (t-shirt, mug…)
-   * @param {{dataUrl:string,width:number,height:number}} croppedData
-   * @param {string} customText
-   * @param {object} textOptions
-   * @param {{x:number,y:number,width:number,height:number}} cropArea
-   * @returns {Promise<{dataUrl:string,width:number,height:number}>}
-   */
   static async create({
     productImageUrl,
     croppedData,

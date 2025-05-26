@@ -1,5 +1,6 @@
 // src/hooks/pages/productPage/useAddToCart.js
 // ======================================
+
 import { useAuthModal } from "@/context/AuthModalContext";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -12,27 +13,23 @@ export function useAddToCart({
   product,
   currentSlide,
   cropZones,
-  customization: { customText, textOptions, croppedImageData },
+  customization: { customText, textOptions, customImageData },
 }) {
   const { user } = useAuth();
   const { addToCart } = useCart();
   const { setPostLoginRedirect, setShowSignup } = useAuthModal();
 
   async function handleAddToCart(quantity) {
-    // 1) Calculer le prix en float, que product.price soit string ou number
-    let prixFloat;
-    if (typeof product.price === "number") {
-      prixFloat = product.price;
-    } else {
-      // ex: "14,99€"
-      prixFloat = parseFloat(
-        product.price.toString().replace(",", ".").replace("€", "")
-      );
-      if (isNaN(prixFloat)) prixFloat = 0;
-    }
+    // 1) Prix en float
+    let prixFloat =
+      typeof product.price === "number"
+        ? product.price
+        : parseFloat(
+            product.price.toString().replace(",", ".").replace("€", "")
+          ) || 0;
 
-    // 2) Si pas de customisation => article standard
-    if (!croppedImageData && !customText.trim()) {
+    // 2) Aucun custom => standard
+    if (!customImageData && !customText.trim()) {
       addToCart(
         {
           id: productType,
@@ -47,47 +44,55 @@ export function useAddToCart({
       return;
     }
 
-    // 3) Si pas connecté => ouvrir modal d'auth
+    // 3) Pas connecté => modale d'authent
     if (!user) {
       setPostLoginRedirect(window.location.pathname);
       setShowSignup(true);
       return;
     }
 
-    // 4) Sinon, on crée le composite et on téléverse
-    try {
+    // 4) Composer et téléverser si custom
+    let finalImageUrl = product.images[currentSlide];
+    let customData = null;
+
+    if (customImageData) {
+      // extraire dataUrl & dimensions de customImageData
+      const {
+        dataUrl: croppedDataUrl,
+        width: cw,
+        height: ch,
+      } = customImageData;
+      const croppedData = { dataUrl: croppedDataUrl, width: cw, height: ch };
+
+      // créer le composite
       const composite = await CompositeImage.create({
         productImageUrl: product.images[currentSlide],
-        croppedData: croppedImageData,
+        croppedData,
         customText,
         textOptions,
-        cropArea: cropZones[productType][currentSlide],
+        cropArea: cropZones[productType],
       });
 
-      // récupérer le blob depuis le dataURL
+      // récupérer le blob et téléverser
       const blob = await (await fetch(composite.dataUrl)).blob();
-
-      // téléversement
-      // uploadImage(file, title, uploaded_by, keywordsArray)
       const uploadResult = await uploadImage(
         blob,
         `${productType}-${Date.now()}`,
         user.id,
-        [] // ou un tableau de mots-clés si tu en as
+        []
       );
 
-      // déterminer l'URL finale
-      const finalImageUrl = uploadResult.url || composite.dataUrl;
-
-      // données custom pour le panier
-      const customData = {
+      finalImageUrl = uploadResult.url || composite.dataUrl;
+      customData = {
         id: uploadResult.id,
         dataUrl: finalImageUrl,
         width: composite.width,
         height: composite.height,
       };
+    }
 
-      // ajout au panier
+    // 5) Ajouter au panier
+    try {
       addToCart(
         {
           id: productType,
@@ -98,7 +103,6 @@ export function useAddToCart({
         customData,
         quantity
       );
-
       toast.success("Article ajouté au panier !");
     } catch (err) {
       console.error("Erreur handleAddToCart :", err);

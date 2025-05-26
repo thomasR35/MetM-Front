@@ -52,7 +52,7 @@ export default function ProductPage() {
     setCustomText,
     textOptions,
     setTextOptions,
-    croppedImageData,
+    croppedImageData: customImageData,
     setCroppedImageData,
   } = useCustomization();
 
@@ -65,7 +65,7 @@ export default function ProductPage() {
     product,
     currentSlide,
     cropZones,
-    customization: { customText, textOptions, croppedImageData },
+    customization: { customText, textOptions, customImageData },
   });
 
   // Auth & modal signup pour la sauvegarde
@@ -78,7 +78,7 @@ export default function ProductPage() {
   // Ouvre la modale de sauvegarde
   const handleSaveClick = () => {
     // 1) pas de modif ?
-    if (!croppedImageData && !customText.trim()) {
+    if (!customImageData && !customText.trim()) {
       toast.info("Aucune modification détectée.");
       return;
     }
@@ -149,7 +149,7 @@ export default function ProductPage() {
               >
                 <MockupProduct
                   productImage={img}
-                  croppedImageData={croppedImageData}
+                  croppedImageData={customImageData}
                   customText={customText}
                   textOptions={textOptions}
                   cropArea={cropZones[productType]}
@@ -301,7 +301,7 @@ export default function ProductPage() {
           productType={productType}
           productImages={product.images}
           currentSlide={currentSlide}
-          croppedImageData={croppedImageData}
+          croppedImageData={customImageData}
           customText={customText}
           textOptions={textOptions}
           cropArea={cropZones[productType]}
