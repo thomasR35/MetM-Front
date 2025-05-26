@@ -17,6 +17,9 @@ import Privacy from "@/pages/static/Privacy";
 import NotFoundPage from "@/pages/static/NotFoundPage";
 import SuccessPage from "@/pages/static/SuccessPage";
 import CancelPage from "@/pages/static/CancelPage";
+import PersonalGalleryPage from "@/pages/PersonalGalleryPage";
+import OrdersHistoryPage from "@/pages/OrdersHistoryPage";
+import OrderDetailPage from "@/pages/OrderDetailPage";
 import { useAuth } from "@/context/AuthContext";
 
 const AppRouter = ({
@@ -130,11 +133,51 @@ const AppRouter = ({
           </MainLayout>
         }
       />
+      <Route
+        path="/account/creations"
+        element={
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
+            <PersonalGalleryPage />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/account/orders"
+        element={
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
+            <OrdersHistoryPage />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/order/:orderId"
+        element={
+          <MainLayout
+            setShowSignup={setShowSignup}
+            setShowRegister={setShowRegister}
+            setPostLoginRedirect={setPostLoginRedirect}
+          >
+            <OrderDetailPage />
+          </MainLayout>
+        }
+      />
+
       <Route path="/success" element={<SuccessPage />} />
       <Route path="/cancel" element={<CancelPage />} />
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
+
+      <Route path="/account/creations" element={<PersonalGalleryPage />} />
+      <Route path="/account/orders" element={<OrdersHistoryPage />} />
 
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/dashboard/*" element={<AdminDashboard />} />

@@ -13,6 +13,7 @@
 @use "components/sidebar";
 @use "components/table";
 @use "components/saveCreationModal";
+@use "components/accountModal";
 
 @use "pages/admin";
 @use "pages/dashboard";
@@ -29,6 +30,9 @@
 @use "pages/privacy";
 @use "pages/success";
 @use "pages/cancel";
+@use "pages/ordersHistory";
+@use "pages/personalGallery";
+@use "pages/orderDetail";
 
 a {
   text-decoration: none;

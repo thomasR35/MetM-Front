@@ -1,0 +1,55 @@
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.account-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var.$navbar-bg;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.account-options {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  li + li {
+    margin-top: 0.5rem;
+  }
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var.$text;
+    background: var.$button-bg;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+      background: var.$text-bg;
+      border-color: var.$links;
+    }
+    &.btn-delete {
+      background: var.$button-bg;
+      &:hover {
+        background: var.$danger-color;
+      }
+    }
+  }
+}
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}

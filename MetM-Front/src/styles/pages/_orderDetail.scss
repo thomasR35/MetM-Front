@@ -1,0 +1,34 @@
+@use "../utils/variables" as var;
+/* ========================
+   DÉTAIL DE LA COMMANDE
+   ======================== */
+.order-detail {
+  .order-details {
+    width: 100%;
+    max-width: 60vw;
+    margin: 2rem auto;
+    padding: 1rem;
+    border: 1px solid var.$text;
+    border-radius: 5px;
+    background-color: var.$text-bg;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      p {
+        font-size: 1.5rem;
+        color: var.$text;
+        font-weight: 550;
+        margin: 0.5rem 0;
+      }
+    }
+  }
+}

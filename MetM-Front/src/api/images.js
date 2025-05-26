@@ -38,14 +38,17 @@ export async function fetchImages(keywords = [], page = 1, limit = 20) {
   }
 }
 
-/**
- * Upload d’une image (FormData multipart)
- * @param {File|Blob} file
- * @param {string} title
- * @param {number|null} uploaded_by
- * @param {string[]|string} keywords
- * @returns {Promise<{ id: number, url: string, ... }>}
- */
+/** Récupère les images de l’utilisateur courant */
+export async function fetchMyImages() {
+  try {
+    const { data } = await api.get("/users/me/images");
+    return data.images ?? [];
+  } catch (err) {
+    console.error("❌ Erreur API fetchMyImages :", err.response?.data || err);
+    throw err;
+  }
+}
+
 export async function uploadImage(
   file,
   title = "",

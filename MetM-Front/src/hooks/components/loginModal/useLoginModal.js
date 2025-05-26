@@ -62,7 +62,7 @@ export function useLoginModal() {
           credentials.username,
           credentials.password
         );
-        authLogin(user, token);
+        authLogin({ user, token });
         toast.success(`Bienvenue, ${user.username} !`);
         closeModal();
         navigate(postLoginRedirect || "/");

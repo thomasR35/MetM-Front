@@ -1,9 +1,11 @@
 // src/components/Navbar.jsx
 // ========================
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes } from "react-icons/fa";
 import "@/styles/components/_navbar.scss";
 import { useNavbar } from "@/hooks/components/navBar/useNavbar";
+import AccountModal from "@/components/AccountModal";
 
 export default function Navbar() {
   const {
@@ -17,6 +19,13 @@ export default function Navbar() {
     handleRegisterClick,
     ConfirmUI,
   } = useNavbar();
+  const [accountOpen, setAccountOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const openAccount = () => {
+    setMenuOpen(false);
+    setAccountOpen(true);
+  };
 
   return (
     <>
@@ -33,7 +42,7 @@ export default function Navbar() {
             aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-controls="nav-center"
             aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((o) => !o)}
+            onClick={() => setMenuOpen((prev) => !prev)}
           >
             {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
@@ -71,9 +80,14 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <button className="btn-logout" onClick={handleLogout}>
-                Déconnexion
-              </button>
+              <>
+                <button className="btn-account" onClick={openAccount}>
+                  Mon compte
+                </button>
+                <button className="btn-logout" onClick={handleLogout}>
+                  Déconnexion
+                </button>
+              </>
             )}
 
             {isAdmin && (
@@ -87,7 +101,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Icône panier */}
+          {/* Panier */}
           <div className="nav-right">
             <Link
               className="cart-icon"
@@ -143,15 +157,26 @@ export default function Navbar() {
                 </li>
               </>
             ) : (
-              <li role="none">
-                <button
-                  role="menuitem"
-                  className="btn-logout"
-                  onClick={handleLogout}
-                >
-                  Déconnexion
-                </button>
-              </li>
+              <>
+                <li role="none">
+                  <button
+                    role="menuitem"
+                    className="btn-account"
+                    onClick={openAccount}
+                  >
+                    Mon compte
+                  </button>
+                </li>
+                <li role="none">
+                  <button
+                    role="menuitem"
+                    className="btn-logout"
+                    onClick={handleLogout}
+                  >
+                    Déconnexion
+                  </button>
+                </li>
+              </>
             )}
 
             {isAdmin && (
@@ -169,6 +194,14 @@ export default function Navbar() {
           </ul>
         )}
       </nav>
+
+      {/* Modale Mon compte */}
+      <AccountModal
+        isOpen={accountOpen}
+        onClose={() => setAccountOpen(false)}
+      />
+
+      {/* Dialogue de confirmation générique */}
       <ConfirmUI />
     </>
   );

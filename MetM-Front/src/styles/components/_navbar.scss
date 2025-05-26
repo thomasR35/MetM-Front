@@ -197,6 +197,7 @@
   .btn-login,
   .btn-register,
   .btn-logout,
+  .btn-account,
   .btn-admin {
     @include mix.button-main(var.$button-bg);
     height: 45px;

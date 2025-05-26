@@ -1,0 +1,63 @@
+@use "../utils/variables" as var;
+/* ========================
+   LISTE DES COMMANDES
+   ======================== */
+.orders-history {
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .orders-list {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+
+    .order-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid var.$text;
+      border-radius: 5px;
+      background-color: var.$text-bg;
+
+      .order-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        h2 {
+          font-size: 2rem;
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          font-size: 1.5rem;
+          color: var.$text;
+          font-weight: 550;
+          margin: 0.25rem 0;
+        }
+      }
+
+      .details-link {
+        padding: 0.5rem 1rem;
+        border: 1px solid var.$text;
+        border-radius: 5px;
+        background-color: var.$button-bg;
+        color: var.$text;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+
+        &:hover,
+        &:focus {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}
