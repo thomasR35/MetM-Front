@@ -2,9 +2,9 @@
 // ========================
 import { Link } from "react-router-dom";
 import "../styles/pages/_Home.scss";
-import tshirt from "../assets/images/tshirt-homme-FFF.webp";
-import mug from "../assets/images/mug.webp";
-import pins from "../assets/images/pins.webp";
+import tshirt from "../assets/images/demoshirt.png";
+import mug from "../assets/images/demomug.png";
+import pins from "../assets/images/demopins.png";
 
 const Home = () => {
   return (
