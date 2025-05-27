@@ -1,15 +1,18 @@
 @use "../utils/variables" as var;
+
 /* ========================
    DÉTAIL DE LA COMMANDE
    ======================== */
 .order-detail {
+  padding: 2rem;
+
   .order-details {
     width: 100%;
     max-width: 60vw;
-    margin: 2rem auto;
-    padding: 1rem;
+    margin: 0 auto 2rem;
+    padding: 1.5rem;
     border: 1px solid var.$text;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     background-color: var.$text-bg;
 
     h1 {
@@ -18,16 +21,66 @@
       text-align: center;
     }
 
-    .order-info {
+    p {
+      font-size: 1rem;
+      color: var.$text;
+      margin: 0.5rem 0;
+    }
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+    text-align: center;
+  }
+
+  .orders-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 60vw;
+
+    .order-card {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      padding: 1rem;
+      border: 1px solid var.$text;
+      border-radius: 0.5rem;
+      background-color: var.$text-bg;
+      transition: transform 0.2s ease-in-out;
 
-      p {
-        font-size: 1.5rem;
-        color: var.$text;
-        font-weight: 550;
-        margin: 0.5rem 0;
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .order-thumb {
+        width: 6rem;
+        height: 6rem;
+        object-fit: cover;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+      }
+
+      .order-info {
+        text-align: center;
+
+        h3 {
+          font-size: 1rem;
+          margin: 0.5rem 0;
+          color: var.$text;
+        }
+
+        p {
+          font-size: 0.9rem;
+          color: var.$text;
+          font-weight: 600;
+          margin: 0;
+        }
       }
     }
   }
