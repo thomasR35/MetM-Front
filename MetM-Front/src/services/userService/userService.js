@@ -24,3 +24,11 @@ export async function deleteUser(id) {
   await axios.delete(`/users/${id}`);
   return true;
 }
+
+export function getStoredUser() {
+  try {
+    return JSON.parse(localStorage.getItem("metm-user"));
+  } catch {
+    return null;
+  }
+}

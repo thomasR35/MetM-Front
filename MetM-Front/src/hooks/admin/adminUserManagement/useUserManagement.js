@@ -53,7 +53,7 @@ export function useUserManagement() {
       setLoading(true);
       try {
         await updateUser(id, updatedData);
-        await loadUsers(); // ← idem : reload
+        await loadUsers();
       } catch (err) {
         console.error("❌ Erreur de modification :", err);
         setError(err);
@@ -69,7 +69,7 @@ export function useUserManagement() {
       setLoading(true);
       try {
         await deleteUser(id);
-        await loadUsers(); // ← idem : reload
+        await loadUsers();
       } catch (err) {
         console.error("❌ Erreur de suppression :", err);
         setError(err);
