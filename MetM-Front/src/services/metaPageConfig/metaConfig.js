@@ -1,5 +1,6 @@
 // src/services/metaConfig.js
 //=====================================
+import { fetchProductBySlug } from "@/api/products.js";
 
 export const metaConfig = [
   {
@@ -13,29 +14,37 @@ export const metaConfig = [
     },
   },
   {
-    // Page produit dynamique
     path: "/product/:productType",
-    getMeta: ({ productType }) => {
-      const productData = {
-        mug: { name: "Mug", price: "14,99€", image: "/assets/images/mug1.jpg" },
-        tshirt: {
-          name: "T-Shirt",
-          price: "19,99€",
-          image: "/assets/images/tshirt.jpg",
-        },
-        pins: {
-          name: "Pin’s",
-          price: "9,99€",
-          image: "/assets/images/pins1.jpg",
-        },
-      };
-      const prod = productData[productType] || productData.mug;
-      return {
-        title: `Personnalisation ${prod.name} – Marcelle et Maurice Shop`,
-        description: `Créez un ${prod.name} unique à ${prod.price} en téléchargeant votre image.`,
-        canonical: `https://marcelle-maurice.shop/product/${productType}`,
-        image: `https://marcelle-maurice.shop${prod.image}`,
-      };
+    /** getMeta peut retourner une Promise, votre routeur doit la gérer */
+    getMeta: async ({ productType }) => {
+      try {
+        const prod = await fetchProductBySlug(productType);
+        if (!prod) {
+          // fallback si le produit n'existe pas
+          return {
+            title: "Produit introuvable – Marcelle et Maurice Shop",
+            description: "Le produit que vous recherchez est introuvable.",
+            canonical: `https://marcelle-maurice.shop/product/${productType}`,
+            image: "https://marcelle-maurice.shop/assets/images/og-home.jpg",
+          };
+        }
+        const name = prod.name;
+        const price = parseFloat(prod.price).toFixed(2).replace(".", ",") + "€";
+        const img = prod.image_url; // champ renvoyé par l'API
+        return {
+          title: `Personnalisation ${name} – Marcelle et Maurice Shop`,
+          description: `Créez un ${name} unique à ${price} en téléchargeant votre image.`,
+          canonical: `https://marcelle-maurice.shop/product/${productType}`,
+          image: `https://marcelle-maurice.shop${img}`,
+        };
+      } catch (err) {
+        console.error("Erreur getMeta product:", err);
+        return {
+          title: "Produit – Marcelle et Maurice Shop",
+          description: "Personnalisez votre produit.",
+          canonical: `https://marcelle-maurice.shop/product/${productType}`,
+        };
+      }
     },
   },
   {

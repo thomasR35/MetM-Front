@@ -1,6 +1,5 @@
 // src/hooks/useOrder.js
 //=====================================
-// src/hooks/useOrder.js
 import { useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
@@ -34,6 +33,8 @@ export function useOrder() {
 
       setLoading(true);
       try {
+        console.log("cartItems before sendOrder:", cartItems);
+
         // ➊ Enregistre la commande côté back
         await sendOrder({
           user_id: user.id,
@@ -41,7 +42,7 @@ export function useOrder() {
           items: cartItems.map((item) => ({
             product: { id: item.product.id },
             quantity: item.quantity,
-            // customImageId: item.customImageId ?? null, // si tu enregistres des customs
+            customImageId: item.customImage?.id ?? null,
           })),
           total,
         });

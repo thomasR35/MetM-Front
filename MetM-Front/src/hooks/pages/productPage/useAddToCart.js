@@ -32,10 +32,11 @@ export function useAddToCart({
     if (!customImageData && !customText.trim()) {
       addToCart(
         {
-          id: productType,
+          id: product.id,
           name: product.name,
           price: prixFloat,
-          image: product.images[currentSlide],
+          image_url: product.images[currentSlide],
+          slug: product.slug,
         },
         null,
         quantity
@@ -95,10 +96,12 @@ export function useAddToCart({
     try {
       addToCart(
         {
-          id: productType,
+          id: product.id,
+          slug: product.slug,
           name: product.name,
           price: prixFloat,
-          image: finalImageUrl,
+          image_url: finalImageUrl,
+          slug: product.slug,
         },
         customData,
         quantity
