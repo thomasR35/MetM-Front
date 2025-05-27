@@ -128,8 +128,9 @@ BLOC DE PERSONNALISATION
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-  padding: 20px;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1rem;
   background: var.$text-bg;
   border-radius: 10px;
   border: 1px solid var.$text;

@@ -85,9 +85,27 @@
   font-size: 0.9rem;
   transition: background 0.3s;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background: var.$links-hover;
-    border: 1px solid transparent;
+    border-color: 1px solid transparent;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var.$text;
+    background: var.$links-hover;
+    border-color: 1px solid transparent;
+    text-decoration: underline;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+  }
+  &.selected {
+    background-color: var.$links-hover;
+    color: var.$text;
+    border-color: transparent;
+    box-shadow: 0 0 0 2px var.$light-color;
   }
 }
