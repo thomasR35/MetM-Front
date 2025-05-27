@@ -1,6 +1,6 @@
 // src/pages/ProductPage.jsx
 // ========================
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -9,10 +9,8 @@ import "swiper/css/navigation";
 import { toast } from "react-toastify";
 import "@/styles/utils/_toastOverrides.scss";
 
-import {
-  productData,
-  cropZones,
-} from "@/services/productService/productService";
+import { fetchProductBySlug } from "@/api/products";
+import { cropZones } from "@/services/cropping/cropZones";
 import { useLastVisitedProduct } from "@/hooks/pages/productPage/useLastVisitedProduct";
 import { useImageUpload } from "@/hooks/pages/productPage/useImageUpload";
 import { useCustomization } from "@/hooks/pages/productPage/useCustomization";
@@ -28,15 +26,11 @@ import SaveCreationModal from "@/components/SaveCreationModal";
 
 export default function ProductPage() {
   const { productType } = useParams();
-  const product = productData[productType] || productData.mug;
 
-  // Mémoriser le dernier produit visité
-  useLastVisitedProduct(productType);
-
-  // Slide actif du Swiper
+  // ─── Hooks appelés en-tête ─────────────────────────────────────────
+  const [product, setProduct] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Drag & drop + édition d’image
   const {
     uploadedImage,
     isModalOpen,
@@ -46,7 +40,6 @@ export default function ProductPage() {
     closeModal,
   } = useImageUpload();
 
-  // Texte personnalisé & image recadrée
   const {
     customText,
     setCustomText,
@@ -56,10 +49,33 @@ export default function ProductPage() {
     setCroppedImageData,
   } = useCustomization();
 
-  // Quantité
   const { quantity, increment, decrement } = useQuantity();
+  const { user } = useAuth();
+  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
-  // Ajout au panier
+  // Mémoriser le dernier produit visité
+  useLastVisitedProduct(productType);
+
+  // Charger le produit depuis l’API
+  useEffect(() => {
+    fetchProductBySlug(productType)
+      .then((p) => {
+        if (!p) {
+          toast.error("Produit introuvable");
+          return;
+        }
+        setProduct(p);
+      })
+      .catch(() => toast.error("Erreur de chargement du produit"));
+  }, [productType]);
+
+  // Tant que le produit n'est pas chargé, on affiche un loader
+  if (!product) {
+    return <p>Chargement…</p>;
+  }
+
+  // Préparer la fonction d'ajout au panier
   const { handleAddToCart } = useAddToCart({
     productType,
     product,
@@ -68,37 +84,26 @@ export default function ProductPage() {
     customization: { customText, textOptions, customImageData },
   });
 
-  // Auth & modal signup pour la sauvegarde
-  const { user } = useAuth();
-  const { setShowSignup, setPostLoginRedirect } = useAuthModal();
-
-  // État local de la modale « Enregistrer la création »
-  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
-
-  // Ouvre la modale de sauvegarde
+  // Handlers
   const handleSaveClick = () => {
-    // 1) pas de modif ?
     if (!customImageData && !customText.trim()) {
       toast.info("Aucune modification détectée.");
       return;
     }
-    // 2) pas connecté ?
     if (!user) {
       setPostLoginRedirect(window.location.pathname);
       setShowSignup(true);
       return;
     }
-    // 3) sinon on ouvre la modale Save
     setIsSaveModalOpen(true);
   };
   const closeSaveModal = () => setIsSaveModalOpen(false);
-
-  // Applique l’image recadrée dans le service
   const handleApplyCroppedImage = (data) => {
     const result = onImageApply(data);
     setCroppedImageData(result);
   };
 
+  // ─── JSX principal ─────────────────────────────────────────────────────
   return (
     <main
       id="main-content"
@@ -123,7 +128,6 @@ export default function ProductPage() {
         <h2 id="customization-section" className="sr-only">
           Personnalisation et aperçu
         </h2>
-
         <section
           className="product-slider"
           role="region"
@@ -142,11 +146,7 @@ export default function ProductPage() {
             aria-roledescription="carousel"
           >
             {product.images.map((img, idx) => (
-              <SwiperSlide
-                key={idx}
-                aria-roledescription="slide"
-                aria-label={`${product.name}, vue ${idx + 1}`}
-              >
+              <SwiperSlide key={idx} aria-roledescription="slide">
                 <MockupProduct
                   productImage={img}
                   croppedImageData={customImageData}
@@ -259,6 +259,7 @@ export default function ProductPage() {
             </fieldset>
           </form>
         </aside>
+
         {/* Dropzone */}
         <section
           className="upload-container"
@@ -275,8 +276,8 @@ export default function ProductPage() {
             onKeyDown={(e) =>
               (e.key === "Enter" || e.key === " ") && getRootProps().onClick(e)
             }
-            aria-label="Importer une image pour personnaliser le produit"
             className="dropzone"
+            aria-label="Importer une image pour personnaliser le produit"
           >
             <input {...getInputProps()} />
             <p>Déposez votre image ou cliquez pour importer</p>
@@ -284,7 +285,7 @@ export default function ProductPage() {
         </section>
       </section>
 
-      {/* Modale de recadrage */}
+      {/* Modales */}
       {isModalOpen && (
         <ImageEditorModal
           uploadedImage={uploadedImage}
@@ -292,8 +293,6 @@ export default function ProductPage() {
           onApply={handleApplyCroppedImage}
         />
       )}
-
-      {/* Modale d’enregistrement */}
       {isSaveModalOpen && (
         <SaveCreationModal
           isOpen={isSaveModalOpen}
@@ -325,21 +324,14 @@ export default function ProductPage() {
         </button>
       </section>
 
-      {/* Ajouter au panier */}
+      {/* Actions */}
       <button
         className="generic-button"
         onClick={() => handleAddToCart(quantity)}
-        aria-label={`Ajouter ${quantity} ${product.name} au panier`}
       >
         Ajouter au panier
       </button>
-
-      {/* Bouton enregistrer */}
-      <button
-        className="generic-button"
-        onClick={handleSaveClick}
-        aria-label="Enregistrer la création"
-      >
+      <button className="generic-button" onClick={handleSaveClick}>
         Enregistrer la création
       </button>
 
@@ -351,20 +343,19 @@ export default function ProductPage() {
       >
         <h2 id="switch-product-title">Changer de produit</h2>
         <div className="product-switch-links">
-          {Object.keys(productData)
-            .filter((key) => key !== productType)
-            .map((key) => (
-              <Link
-                key={key}
-                to={`/product/${key}`}
-                className="product-switch-link"
-              >
-                {productData[key].name}
-              </Link>
-            ))}
+          <Link to="/product/mug" className="product-switch-link">
+            Mug
+          </Link>
+          <Link to="/product/tshirt" className="product-switch-link">
+            T-Shirt
+          </Link>
+          <Link to="/product/pins" className="product-switch-link">
+            Pin’s
+          </Link>
         </div>
       </nav>
 
+      {/* Lien vers le panier */}
       <Link to="/panier">
         <button className="generic-button" aria-label="Accéder au panier">
           Accéder au panier
