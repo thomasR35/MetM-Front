@@ -1,5 +1,6 @@
 // src/hooks/adminUserManagement/useUserManagement.js
 //=====================================
+// src/hooks/adminUserManagement/useUserManagement.js
 import { useState, useEffect, useCallback } from "react";
 import {
   getUsers,
@@ -18,6 +19,7 @@ export function useUserManagement() {
     try {
       const list = await getUsers();
       setUsers(list);
+      setError(null);
     } catch (err) {
       console.error("❌ Erreur de chargement des utilisateurs :", err);
       setError(err);
@@ -30,24 +32,53 @@ export function useUserManagement() {
     loadUsers();
   }, [loadUsers]);
 
-  const addUser = useCallback(async (newUser) => {
-    const created = await createUser(newUser);
-    setUsers((prev) => [...prev, created]);
-    return created;
-  }, []);
+  const addUser = useCallback(
+    async (newUser) => {
+      setLoading(true);
+      try {
+        await createUser(newUser);
+        await loadUsers(); // ← on recharge la liste complète
+      } catch (err) {
+        console.error("❌ Erreur de création :", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loadUsers]
+  );
 
-  const editUser = useCallback(async (id, updatedData) => {
-    const updated = await updateUser(id, updatedData);
-    setUsers((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, ...updated } : u))
-    );
-    return updated;
-  }, []);
+  const editUser = useCallback(
+    async (id, updatedData) => {
+      setLoading(true);
+      try {
+        await updateUser(id, updatedData);
+        await loadUsers(); // ← idem : reload
+      } catch (err) {
+        console.error("❌ Erreur de modification :", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loadUsers]
+  );
 
-  const removeUser = useCallback(async (id) => {
-    await deleteUser(id);
-    setUsers((prev) => prev.filter((u) => u.id !== id));
-  }, []);
+  const removeUser = useCallback(
+    async (id) => {
+      setLoading(true);
+      try {
+        await deleteUser(id);
+        await loadUsers(); // ← idem : reload
+      } catch (err) {
+        console.error("❌ Erreur de suppression :", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loadUsers]
+  );
 
   return {
     users,

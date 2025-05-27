@@ -1,16 +1,26 @@
-// src/services/userService.js
+//src/services/userService/userService.js
+//=====================================
+import axios from "@/api/axiosConfig";
 
-/**
- * Récupère et parse les données de l'utilisateur stockées dans localStorage.
- * @returns {object|null} L'objet user ou null si indisponible / invalide
- */
-export function getStoredUser() {
-  const data = localStorage.getItem("user");
-  if (!data) return null;
-  try {
-    return JSON.parse(data);
-  } catch {
-    console.error("❌ Impossible de parser 'user' depuis localStorage");
-    return null;
-  }
+export async function getUsers() {
+  const { data } = await axios.get("/users");
+  return data; // [{ id, name, email, role, ... }, …]
+}
+
+export async function createUser({ username, email, password, role }) {
+  // mapping username → name
+  const payload = { name: username, email, password, role };
+  const { data } = await axios.post("/users", payload);
+  return data; // l'utilisateur créé, avec son id retourné par le back
+}
+
+export async function updateUser(id, { username, email, role }) {
+  const payload = { name: username, email, role };
+  const { data } = await axios.put(`/users/${id}`, payload);
+  return data; // l'objet mis à jour
+}
+
+export async function deleteUser(id) {
+  await axios.delete(`/users/${id}`);
+  return true;
 }
