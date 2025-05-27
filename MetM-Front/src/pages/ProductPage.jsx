@@ -54,6 +54,14 @@ export default function ProductPage() {
   const { setShowSignup, setPostLoginRedirect } = useAuthModal();
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
+  // Préparer la fonction d'ajout au panier
+  const { handleAddToCart } = useAddToCart({
+    productType,
+    product,
+    currentSlide,
+    cropZones,
+    customization: { customText, textOptions, customImageData },
+  });
   // Mémoriser le dernier produit visité
   useLastVisitedProduct(productType);
 
@@ -74,15 +82,6 @@ export default function ProductPage() {
   if (!product) {
     return <p>Chargement…</p>;
   }
-
-  // Préparer la fonction d'ajout au panier
-  const { handleAddToCart } = useAddToCart({
-    productType,
-    product,
-    currentSlide,
-    cropZones,
-    customization: { customText, textOptions, customImageData },
-  });
 
   // Handlers
   const handleSaveClick = () => {
@@ -115,9 +114,29 @@ export default function ProductPage() {
         Personnalisation du {product.name}
       </h1>
 
-      <p className="price" aria-label={`Prix : ${product.price}`}>
-        Prix : {product.price}€
+      <p className="price" aria-label={`Prix: ${product.price}`}>
+        Prix Unitaire: {product.price}€
       </p>
+
+      {/* Navigation produit */}
+      <nav
+        role="navigation"
+        aria-labelledby="switch-product-title"
+        className="product-navigation"
+      >
+        <h2 id="switch-product-title">Changer de produit</h2>
+        <div className="product-switch-links">
+          <Link to="/product/mug" className="product-switch-link">
+            Mug
+          </Link>
+          <Link to="/product/tshirt" className="product-switch-link">
+            T-Shirt
+          </Link>
+          <Link to="/product/pins" className="product-switch-link">
+            Pin’s
+          </Link>
+        </div>
+      </nav>
 
       {/* Slider + Aperçu */}
       <section
@@ -174,8 +193,7 @@ export default function ProductPage() {
           >
             {/* Texte */}
             <fieldset>
-              <legend>Texte personnalisé</legend>
-              <label htmlFor="customText">Texte :</label>
+              <label htmlFor="customText">Texte personnalisé:</label>
               <input
                 id="customText"
                 type="text"
@@ -187,9 +205,8 @@ export default function ProductPage() {
 
             {/* Taille */}
             <fieldset>
-              <legend>Taille du texte</legend>
               <label htmlFor="fontSizeRange">
-                Taille : {textOptions.fontSize}px
+                Taille du texte: {textOptions.fontSize}px
               </label>
               <input
                 id="fontSizeRange"
@@ -206,9 +223,8 @@ export default function ProductPage() {
 
             {/* Position Y */}
             <fieldset>
-              <legend>Position verticale</legend>
               <label htmlFor="positionRange">
-                Position Y : {Math.round(textOptions.position.y * 100)}%
+                Position verticale : {Math.round(textOptions.position.y * 100)}%
               </label>
               <input
                 id="positionRange"
@@ -226,9 +242,29 @@ export default function ProductPage() {
               />
             </fieldset>
 
+            {/* Position X */}
+            <fieldset>
+              <label htmlFor="positionRange">
+                Position verticale : {Math.round(textOptions.position.x * 100)}%
+              </label>
+              <input
+                id="positionRange"
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={textOptions.position.x}
+                onChange={(e) =>
+                  setTextOptions((o) => ({
+                    ...o,
+                    position: { ...o.position, x: +e.target.value },
+                  }))
+                }
+              />
+            </fieldset>
+
             {/* Police */}
             <fieldset>
-              <legend>Police</legend>
               <label htmlFor="fontFamily">Police :</label>
               <select
                 id="fontFamily"
@@ -246,8 +282,7 @@ export default function ProductPage() {
 
             {/* Couleur */}
             <fieldset>
-              <legend>Couleur du texte</legend>
-              <label htmlFor="fontColor">Couleur :</label>
+              <label htmlFor="fontColor">Couleur du texte :</label>
               <input
                 id="fontColor"
                 type="color"
@@ -307,6 +342,9 @@ export default function ProductPage() {
         />
       )}
 
+      <button className="generic-button" onClick={handleSaveClick}>
+        Enregistrer la création
+      </button>
       {/* Sélecteur de quantité */}
       <section
         role="group"
@@ -331,29 +369,6 @@ export default function ProductPage() {
       >
         Ajouter au panier
       </button>
-      <button className="generic-button" onClick={handleSaveClick}>
-        Enregistrer la création
-      </button>
-
-      {/* Navigation produit */}
-      <nav
-        role="navigation"
-        aria-labelledby="switch-product-title"
-        className="product-navigation"
-      >
-        <h2 id="switch-product-title">Changer de produit</h2>
-        <div className="product-switch-links">
-          <Link to="/product/mug" className="product-switch-link">
-            Mug
-          </Link>
-          <Link to="/product/tshirt" className="product-switch-link">
-            T-Shirt
-          </Link>
-          <Link to="/product/pins" className="product-switch-link">
-            Pin’s
-          </Link>
-        </div>
-      </nav>
 
       {/* Lien vers le panier */}
       <Link to="/panier">
