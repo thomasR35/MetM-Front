@@ -23,12 +23,12 @@ export default function OrderDetailPage() {
 
   return (
     <main id="main-content" className="order-detail">
-      <h1>Détails de la commande #{order.order.id}</h1>
-      <p>Date : {new Date(order.order.order_date).toLocaleString()}</p>
-      <p>Total : {parseFloat(order.order.total_amount).toFixed(2)} €</p>
-      <p>Statut : {order.order.status}</p>
-
-      {/* ← ICI : la liste des articles */}
+      <article className="order-details">
+        <h1>Détails de la commande #{order.order.id}</h1>
+        <p>Date : {new Date(order.order.order_date).toLocaleString()}</p>
+        <p>Total : {parseFloat(order.order.total_amount).toFixed(2)} €</p>
+        <p>Statut : {order.order.status}</p>
+      </article>
       <h2>Articles</h2>
       <ul className="orders-list">
         {order.items.map((item) => (
@@ -37,7 +37,7 @@ export default function OrderDetailPage() {
             className="order-card"
           >
             <img
-              src={item.product_image_url}
+              src={item.product_image_url || "/images/placeholder.png"}
               alt={item.product_name}
               className="order-thumb"
             />
