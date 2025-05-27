@@ -1,68 +1,62 @@
 // src/hooks/adminImageManagement/useImageEditModal.js
 //=====================================
 import { useState, useEffect, useCallback } from "react";
-import {
-  getImages,
-  uploadImage,
-  deleteImage,
-  updateImage,
-} from "@/services/admin/imageService";
-import { getStoredUser } from "@/services/userService/userService";
+import axios from "@/api/axiosConfig";
 
 export function useImageManagement() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const loadImages = useCallback(async () => {
+  // 1) Fonction pour tout charger en une fois
+  const fetchAllImages = useCallback(async () => {
     setLoading(true);
     try {
-      const imgs = await getImages();
-      setImages(imgs);
+      const { data } = await axios.get("/images?limit=10000&page=1");
+      // votre API renvoie { images: [...], total: N }
+      setImages(data.images);
     } catch (err) {
-      console.error("❌ Erreur de chargement des images :", err);
-      setError(err);
+      console.error("Erreur fetchAllImages :", err);
     } finally {
       setLoading(false);
     }
   }, []);
 
+  // 2) Au montage, on charge tout
   useEffect(() => {
-    loadImages();
-  }, [loadImages]);
+    fetchAllImages();
+  }, [fetchAllImages]);
 
-  const handleUpload = useCallback(async (file, title, keywords) => {
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("title", title);
-    formData.append("keywords", keywords);
-    const user = getStoredUser();
-    formData.append("uploaded_by", user?.id || "1");
+  // 3) Après chaque action CRUD, on re-charge tout
+  const handleUpload = async (formData) => {
+    try {
+      await axios.post("/images", formData);
+      await fetchAllImages();
+    } catch (err) {
+      console.error("Upload failed :", err);
+    }
+  };
 
-    const newImage = await uploadImage(formData);
-    setImages((prev) => [...prev, newImage]);
-    return newImage;
-  }, []);
+  const handleDelete = async (imageId) => {
+    try {
+      await axios.delete(`/images/${imageId}`);
+      await fetchAllImages();
+    } catch (err) {
+      console.error("Delete failed :", err);
+    }
+  };
 
-  const handleDelete = useCallback(async (id) => {
-    await deleteImage(id);
-    setImages((prev) => prev.filter((img) => img.id !== id));
-  }, []);
-
-  const handleUpdate = useCallback(async (id, updatedData) => {
-    const user = getStoredUser();
-    const payload = { ...updatedData, uploaded_by: user?.id || "1" };
-    const updated = await updateImage(id, payload);
-    setImages((prev) =>
-      prev.map((img) => (img.id === id ? { ...img, ...updated } : img))
-    );
-  }, []);
+  const handleUpdate = async (imageId, payload) => {
+    try {
+      await axios.put(`/images/${imageId}`, payload);
+      await fetchAllImages();
+    } catch (err) {
+      console.error("Update failed :", err);
+    }
+  };
 
   return {
     images,
     loading,
-    error,
-    loadImages,
     handleUpload,
     handleDelete,
     handleUpdate,
