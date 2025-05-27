@@ -63,17 +63,18 @@ export async function uploadImage(
     formData.append("uploaded_by", uploaded_by);
   }
 
-  // Normalise keywords en tableau de chaînes
-  const kwList = Array.isArray(keywords)
-    ? keywords
-    : typeof keywords === "string"
-    ? keywords
-        .split(",")
-        .map((k) => k.trim())
-        .filter(Boolean)
-    : [];
-
-  kwList.forEach((kw) => formData.append("keywords[]", kw));
+  // On envoie toujours une string CSV pour les mots-clés
+  let kwString = "";
+  if (Array.isArray(keywords) && keywords.length) {
+    kwString = keywords.filter(Boolean).join(",");
+  } else if (typeof keywords === "string" && keywords.trim()) {
+    kwString = keywords
+      .split(",")
+      .map((k) => k.trim())
+      .filter(Boolean)
+      .join(",");
+  }
+  formData.append("keywords", kwString);
 
   try {
     // Ne PAS préciser headers ; axiosConfig enverra correctement le boundary
