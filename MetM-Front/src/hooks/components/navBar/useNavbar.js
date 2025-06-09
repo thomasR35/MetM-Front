@@ -30,7 +30,7 @@ export function useNavbar() {
   // Déconnexion
   const handleLogout = useCallback(async () => {
     try {
-      // Affiche votre modale et attend que l'utilisateur confirme
+      // Affiche la modale et attend que l'utilisateur confirme
       await confirm({
         title: "Déconnexion",
         message: "Voulez-vous vraiment vous déconnecter ?",
