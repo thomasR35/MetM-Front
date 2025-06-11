@@ -6,7 +6,7 @@ import { imagetools } from "vite-imagetools";
 import compression from "vite-plugin-compression";
 
 export default defineConfig({
-  base: "/MetM-Front",
+  base: "/",
   plugins: [
     react(),
     imagetools(),
@@ -19,12 +19,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://mauriceetmarcelle.go.yj.fr/",
+        target: "https://mauriceetmarcelle.go.yj.fr/",
         changeOrigin: true,
         secure: false,
       },
       "/uploads": {
-        target: "http://mauriceetmarcelle.go.yj.fr/",
+        target: "https://mauriceetmarcelle.go.yj.fr/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/uploads/, "/uploads"),
       },
