@@ -1,0 +1,36 @@
+<IfModule mod_deflate.c>
+  # Compresse tout ce qui est textuel
+  AddOutputFilterByType DEFLATE
+    text/plain
+    text/html
+    text/xml
+    text/css
+    text/javascript
+    application/javascript
+    application/x-javascript
+    application/json
+    application/xml
+
+  # Évite de compresser des petits fichiers déjà minifiés
+  DeflateCompressionLevel 6
+  DeflateMinLength        256
+
+  # Garde le header Vary pour les caches
+  Header append Vary Accept-Encoding
+</IfModule>
+
+<IfModule mod_brotli.c>
+  # Si vous préférez Brotli (plus efficace que Gzip)
+  AddOutputFilterByType BROTLI_COMPRESS
+    text/plain
+    text/html
+    text/xml
+    text/css
+    text/javascript
+    application/javascript
+    application/x-javascript
+    application/json
+    application/xml
+  BrotliCompressionQuality 6
+  Header append Vary Accept-Encoding
+</IfModule>
