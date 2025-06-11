@@ -6,8 +6,8 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { sendOrder } from "@/api/orders";
-import { stripePromise } from "@/services/stripe/stripe";
-import { createCheckoutSession } from "@/services/checkoutService/checkoutService"; // <-- chemin corrigé
+import stripePromise from "@/services/stripe/stripe.js";
+import { createCheckoutSession } from "@/services/checkoutService/checkoutService";
 
 export function useOrder() {
   const { cartItems, total, clearCart } = useCart();
