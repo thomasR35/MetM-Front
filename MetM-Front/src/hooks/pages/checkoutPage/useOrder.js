@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { sendOrder } from "@/api/orders";
 import stripePromise from "@/services/stripe/stripe.js";
-import { createCheckoutSession } from "@/services/checkoutService/checkoutService";
+import { createCheckoutSession } from "@/services/checkoutService/checkoutService.js";
 
 export function useOrder() {
   const { cartItems, total, clearCart } = useCart();
