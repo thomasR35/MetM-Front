@@ -1,13 +1,22 @@
 // src/api/axiosConfig.js
 import axios from "axios";
 
-// Création de l’instance Axios avec baseURL dynamique
+// URL fixe en production, proxy Vite en dev
+const PROD_API_URL = "https://mauriceetmarcelle.go.yj.fr/api";
+const DEV_API_URL = import.meta.env.VITE_API_URL || "/api";
+
+// import.meta.env.MODE vaut "development" ou "production"
+const baseURL =
+  import.meta.env.MODE === "production" ? PROD_API_URL : DEV_API_URL;
+
+// Pour debug : vérifie bien quelle URL est utilisée
+console.log(`[axiosConfig] baseURL = ${baseURL}`);
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL,
   withCredentials: true,
 });
 
-// Intercepteur pour ajouter le token (si présent)
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -16,9 +25,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default api;
