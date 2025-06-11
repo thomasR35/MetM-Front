@@ -1,5 +1,5 @@
 // src/api/products.js
-import axios from "/src/api/axiosConfig.js";
+import axios from "./axiosConfig.js";
 
 export async function fetchProducts() {
   const { data } = await axios.get("/products");
