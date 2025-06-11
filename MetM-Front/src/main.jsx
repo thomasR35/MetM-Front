@@ -4,14 +4,14 @@ import "./styles/main.scss";
 
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 
 import { AuthProvider } from "@/context/AuthContext";
 import { AuthModalProvider } from "@/context/AuthModalContext";
 import { CartProvider } from "@/context/CartContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter basename="/MetM-Front/">
+  <HashRouter>
     <AuthProvider>
       <AuthModalProvider>
         <CartProvider>
@@ -19,5 +19,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </CartProvider>
       </AuthModalProvider>
     </AuthProvider>
-  </BrowserRouter>
+  </HashRouter>
 );

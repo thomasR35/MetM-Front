@@ -1,5 +1,5 @@
 // src/api/auth.js
-const API_BASE = "/api";
+const API_BASE = "https://mauriceetmarcelle.go.yj.fr/api";
 
 /**
  * POST /api/auth/login

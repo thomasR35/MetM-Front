@@ -1,7 +1,7 @@
 // src/api/images.js
 // ====================
 import api from "./axiosConfig";
-const VITE_URL = import.meta.env.VITE_API_URL;
+const VITE_URL = import.meta.env.UPLOADS_URL;
 const API_BASE = VITE_URL.replace(/\/api\/?$/, "");
 
 /**
