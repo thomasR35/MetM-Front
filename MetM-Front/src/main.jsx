@@ -11,7 +11,7 @@ import { AuthModalProvider } from "@/context/AuthModalContext";
 import { CartProvider } from "@/context/CartContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
+  <BrowserRouter basename="/MetM-Front/">
     <AuthProvider>
       <AuthModalProvider>
         <CartProvider>
