@@ -11,8 +11,6 @@ import api from "@/api/axiosConfig.js";
  */
 export async function createCheckoutSession(items, total, customerData) {
   try {
-    // En prod  : POST https://mauriceetmarcelle.go.yj.fr/api/stripe/checkout
-    // En dev   : POST /api/stripe/checkout (proxy Vite)
     const { data } = await api.post("/stripe/checkout", {
       items,
       total,
@@ -21,12 +19,17 @@ export async function createCheckoutSession(items, total, customerData) {
 
     console.log("✅ createCheckoutSession response:", data);
 
-    // Certains back renvoient { url }, d'autres { sessionId }
-    if (data.url) {
-      return { url: data.url };
+    // Stripe v3 renvoie souvent un { id: 'cs_test_…' }
+    if (data.id) {
+      return { sessionId: data.id };
     }
+    // ou un { sessionId: '…' }
     if (data.sessionId) {
       return { sessionId: data.sessionId };
+    }
+    // si vous avez ajusté pour renvoyer une URL directement :
+    if (data.url) {
+      return { url: data.url };
     }
 
     throw new Error("Réponse Stripe inattendue : " + JSON.stringify(data));
