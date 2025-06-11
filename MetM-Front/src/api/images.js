@@ -1,8 +1,8 @@
 // src/api/images.js
 // ====================
 import api from "./axiosConfig";
-const VITE_URL = import.meta.env.UPLOADS_URL;
-const API_BASE = VITE_URL.replace(/\/api\/?$/, "");
+const uploadsUrl = import.meta.env.VITE_UPLOADS_URL;
+const API_BASE = (uploadsUrl ?? "").replace(/\/uploads\/?$/, "");
 
 /**
  * Récupère tous les mots-clés.
