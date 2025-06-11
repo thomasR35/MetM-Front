@@ -18,12 +18,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://metm-back.local",
+        target: "http://mauriceetmarcelle.go.yj.fr/",
         changeOrigin: true,
         secure: false,
       },
       "/uploads": {
-        target: "http://metm-back.local",
+        target: "http://mauriceetmarcelle.go.yj.fr/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/uploads/, "/uploads"),
       },
