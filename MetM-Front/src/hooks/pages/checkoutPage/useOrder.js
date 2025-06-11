@@ -6,7 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { sendOrder } from "@/api/orders";
-import { createCheckoutSession } from "@/services/checkoutService"; // <-- chemin corrigé
+import { createCheckoutSession } from "@/services/checkoutService/checkoutService"; // <-- chemin corrigé
 
 export function useOrder() {
   const { cartItems, total, clearCart } = useCart();
@@ -18,12 +18,10 @@ export function useOrder() {
 
   const processOrder = useCallback(
     async (formData) => {
-      // 1) panier vide
       if (cartItems.length === 0) {
         navigate(`/product/${localStorage.getItem("lastProduct") || "mug"}`);
         return;
       }
-      // 2) pas connecté
       if (!isAuthenticated) {
         setPostLoginRedirect(location.pathname + location.search);
         setShowSignup(true);
@@ -32,9 +30,7 @@ export function useOrder() {
 
       setLoading(true);
       try {
-        console.log("cartItems before sendOrder:", cartItems);
-
-        // ➊ Enregistre la commande côté back
+        // 1) Enregistrer la commande
         await sendOrder({
           user_id: user.id,
           customer: formData,
@@ -46,28 +42,39 @@ export function useOrder() {
           total,
         });
 
-        // ➋ Prépare les items pour Stripe
+        // 2) Créer la session Stripe
         const stripeItems = cartItems.map((item) => ({
           product_name: item.product.name,
           unit_amount: Math.round(item.product.price * 100),
           quantity: item.quantity,
         }));
 
-        // ➌ Crée la session Stripe (POST /stripe/checkout)
-        const { url } = await createCheckoutSession(
+        // Attention : on reçoit peut-être { sessionId } ou { url }
+        const session = await createCheckoutSession(
           stripeItems,
           total,
           formData
         );
+        console.log("createCheckoutSession response →", session);
 
-        // ➍ Vide le panier avant redirection
+        // 3) Vider le panier
         clearCart();
 
-        // ➎ Redirige vers Stripe Checkout
-        window.location.href = url;
+        // 4) Redirection
+        if (session.url) {
+          // si ton back renvoie directement l’URL de checkout
+          window.location.href = session.url;
+        } else if (session.sessionId) {
+          // si ton back ne renvoie qu’un sessionId
+          const stripe = await stripePromise;
+          await stripe.redirectToCheckout({ sessionId: session.sessionId });
+        } else {
+          throw new Error(
+            "Session Stripe invalide : " + JSON.stringify(session)
+          );
+        }
       } catch (err) {
         console.error("Erreur processOrder :", err);
-        // afficher un message à l'utilisateur si nécessaire
       } finally {
         setLoading(false);
       }
