@@ -11,9 +11,9 @@ import api from "@/api/axiosConfig.js";
  */
 export async function createCheckoutSession(items, total, customerData) {
   try {
-    // En prod : POST https://mauriceetmarcelle.go.yj.fr/api/checkout/session
-    // En dev  : POST /api/checkout/session (proxy Vite)
-    const response = await api.post("/checkout/session", {
+    // En prod  : POST https://mauriceetmarcelle.go.yj.fr/api/stripe/checkout
+    // En dev   : POST /api/stripe/checkout (proxy Vite)
+    const response = await api.post("/stripe/checkout", {
       items,
       total,
       customerData,

@@ -6,8 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { sendOrder } from "@/api/orders";
-import { stripePromise } from "@/services/stripe/stripe";
-import { createCheckoutSession } from "@/api/checkout";
+import { createCheckoutSession } from "@/services/checkoutService"; // <-- chemin corrigé
 
 export function useOrder() {
   const { cartItems, total, clearCart } = useCart();
@@ -47,20 +46,28 @@ export function useOrder() {
           total,
         });
 
-        // ➋ Crée la session Stripe
+        // ➋ Prépare les items pour Stripe
         const stripeItems = cartItems.map((item) => ({
           product_name: item.product.name,
           unit_amount: Math.round(item.product.price * 100),
           quantity: item.quantity,
         }));
-        const sessionId = await createCheckoutSession(stripeItems);
-        const stripe = await stripePromise;
-        await stripe.redirectToCheckout({ sessionId });
 
-        // ➌ Vide le panier (après redirection ou sur ta page success)
+        // ➌ Crée la session Stripe (POST /stripe/checkout)
+        const { url } = await createCheckoutSession(
+          stripeItems,
+          total,
+          formData
+        );
+
+        // ➍ Vide le panier avant redirection
         clearCart();
+
+        // ➎ Redirige vers Stripe Checkout
+        window.location.href = url;
       } catch (err) {
         console.error("Erreur processOrder :", err);
+        // afficher un message à l'utilisateur si nécessaire
       } finally {
         setLoading(false);
       }
