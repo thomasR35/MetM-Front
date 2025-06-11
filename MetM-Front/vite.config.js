@@ -6,6 +6,7 @@ import { imagetools } from "vite-imagetools";
 import compression from "vite-plugin-compression";
 
 export default defineConfig({
+  base: "/MetM-Front",
   plugins: [
     react(),
     imagetools(),
