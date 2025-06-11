@@ -37,7 +37,10 @@ export default function OrderDetailPage() {
             className="order-card"
           >
             <img
-              src={item.product_image_url || "/images/placeholder.png"}
+              src={
+                "https://mauriceetmarcelle.go.yj.fr" + item.product_image_url ||
+                "/images/placeholder.png"
+              }
               alt={item.product_name}
               className="order-thumb"
             />

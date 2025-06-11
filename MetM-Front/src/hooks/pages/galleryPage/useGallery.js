@@ -19,7 +19,7 @@ export function useGallery(selectedKeywords, currentPage, perPage) {
           perPage
         );
         setImages(Array.isArray(imgs) ? imgs : []);
-        setTotal(typeof total === "number" ? total : imgs.length);
+        setTotal(typeof total === "number" && total > 0 ? total : imgs.length);
       } catch (err) {
         console.error("Erreur images :", err);
         setImages([]);
