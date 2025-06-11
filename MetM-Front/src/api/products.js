@@ -2,8 +2,12 @@
 import axios from "./axiosConfig.js";
 
 export async function fetchProducts() {
-  const { data } = await axios.get("/products");
-  return data; // [{id, name, price, image_url, category,…}, …]
+  const { data } = await api.get("/products");
+  const uploadsBase = import.meta.env.VITE_UPLOADS_URL;
+  return data.map((p) => ({
+    ...p,
+    image_url: `${uploadsBase}${p.image_url}`,
+  }));
 }
 
 export async function fetchProductBySlug(slug) {
