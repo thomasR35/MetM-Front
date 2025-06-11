@@ -2,6 +2,7 @@
   "name": "metm-front",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://thomasr35.github.io/MetM-Front/",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -53,6 +54,5 @@
     "serve": "^14.2.4",
     "vite": "^6.2.0",
     "vite-imagetools": "^7.1.0"
-  },
-  "homepage": "https://thomasR35.github.io/MetM-Front"
+  }
 }
