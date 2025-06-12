@@ -1,6 +1,5 @@
 // src/components/RegisterModal.jsx
 // ========================
-import { useState } from "react";
 import "../styles/pages/_register.scss";
 import { useRegisterModal } from "@/hooks/components/registerModal/useRegisterModal";
 
@@ -107,17 +106,16 @@ export default function RegisterModal() {
           <label id="label-password" htmlFor="register-password">
             Mot de passe
           </label>
-
+          <p id="register-password-requirements" className="pwd-requirements">
+            Le mot de passe doit faire au moins 8 caractères, contenir une
+            majuscule, un chiffre et un caractère spécial.
+          </p>
           <input
             type="password"
             id="register-password"
             name="password"
             value={credentials.password}
-            onChange={(e) => {
-              handleChange(e);
-              hideRequirements();
-            }}
-            onFocus={hideRequirements}
+            onChange={handleChange}
             required
             aria-required="true"
             pattern="(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}"
@@ -128,11 +126,6 @@ export default function RegisterModal() {
             }`}
           />
         </div>
-
-        <p id="register-password-requirements" className="pwd-requirements">
-          Le mot de passe doit faire au moins 8 caractères, contenir une
-          majuscule, un chiffre et un caractère spécial.
-        </p>
 
         <div
           className="input-group"
@@ -147,11 +140,7 @@ export default function RegisterModal() {
             id="register-confirmPassword"
             name="confirmPassword"
             value={credentials.confirmPassword}
-            onChange={(e) => {
-              handleChange(e);
-              hideRequirements();
-            }}
-            onFocus={hideRequirements}
+            onChange={handleChange}
             required
             aria-required="true"
             pattern="(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}"
