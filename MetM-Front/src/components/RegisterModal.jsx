@@ -103,13 +103,13 @@ export default function RegisterModal() {
           role="group"
           aria-labelledby="label-password"
         >
-          <label id="label-password" htmlFor="register-password">
-            Mot de passe
-          </label>
           <p id="register-password-requirements" className="pwd-requirements">
             Le mot de passe doit faire au moins 8 caractères, contenir une
             majuscule, un chiffre et un caractère spécial.
           </p>
+          <label id="label-password" htmlFor="register-password">
+            Mot de passe
+          </label>
           <input
             type="password"
             id="register-password"
