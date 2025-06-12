@@ -1,4 +1,4 @@
-// src/index.jsx
+// src/main.jsx
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/main.scss";
 
