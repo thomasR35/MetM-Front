@@ -15,9 +15,6 @@ export default function RegisterModal() {
     closeRegisterModal,
   } = useRegisterModal();
 
-  const [showPwdReq, setShowPwdReq] = useState(true);
-  const hideRequirements = () => setShowPwdReq(false);
-
   return (
     <div
       className="modal-content"
@@ -110,12 +107,6 @@ export default function RegisterModal() {
           <label id="label-password" htmlFor="register-password">
             Mot de passe
           </label>
-          {showPwdReq && (
-            <p id="register-password-requirements" className="pwd-requirements">
-              Le mot de passe doit faire au moins 8 caractères, contenir une
-              majuscule, un chiffre et un caractère spécial.
-            </p>
-          )}
 
           <input
             type="password"
@@ -137,6 +128,11 @@ export default function RegisterModal() {
             }`}
           />
         </div>
+
+        <p id="register-password-requirements" className="pwd-requirements">
+          Le mot de passe doit faire au moins 8 caractères, contenir une
+          majuscule, un chiffre et un caractère spécial.
+        </p>
 
         <div
           className="input-group"
