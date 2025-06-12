@@ -15,6 +15,9 @@ export default function RegisterModal() {
     closeRegisterModal,
   } = useRegisterModal();
 
+  const [showPwdReq, setShowPwdReq] = useState(true);
+  const hideRequirements = () => setShowPwdReq(false);
+
   return (
     <div
       className="modal-content"
