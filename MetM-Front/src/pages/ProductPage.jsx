@@ -224,7 +224,8 @@ export default function ProductPage() {
             {/* Position Y */}
             <fieldset>
               <label htmlFor="positionRange">
-                Position verticale : {Math.round(textOptions.position.y * 100)}%
+                Position verticale du texte:{" "}
+                {Math.round(textOptions.position.y * 100)}%
               </label>
               <input
                 id="positionRange"
@@ -245,7 +246,7 @@ export default function ProductPage() {
             {/* Position X */}
             <fieldset>
               <label htmlFor="positionRange">
-                Position horizontale :{" "}
+                Position horizontale du texte:{" "}
                 {Math.round(textOptions.position.x * 100)}%
               </label>
               <input
