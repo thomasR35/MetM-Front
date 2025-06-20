@@ -1,8 +1,10 @@
 // src/pages/AdminLogin.jsx
 //=====================================
 import { useAdminLogin } from "@/hooks/admin/adminLoginPage/useAdminLogin";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
+  const navigate = useNavigate();
   const { credentials, error, handleChange, handleSubmit } = useAdminLogin();
 
   return (
@@ -45,7 +47,7 @@ export default function AdminLogin() {
           <button
             type="button"
             className="generic-button mt-2"
-            onClick={() => window.location.replace("/")}
+            onClick={() => navigate("/")}
           >
             Retour à l’accueil
           </button>
