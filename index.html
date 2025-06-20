@@ -4,7 +4,10 @@
     <script src="tarteaucitron/tarteaucitron.min.js"></script>
     <script>
       tarteaucitron.init({
-        privacyUrl: "/#/mentions-legales",
+        privacyUrl:
+          window.location.origin +
+          window.location.pathname +
+          "#/mentions-legales",
         bodyPosition: "top",
         hashtag: "#tarteaucitron",
         cookieName: "tarteaucitron",
