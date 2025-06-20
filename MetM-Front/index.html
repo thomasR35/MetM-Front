@@ -50,9 +50,16 @@
       window.addEventListener("load", () => {
         const link = document.getElementById("tarteaucitronLinkPrivacy");
         if (link) {
-          link.href = privacyUrl;
-          link.addEventListener("click", () => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
             tarteaucitron.userInterface?.closePanel();
+            const closeBtn = document.querySelector(
+              ".tarteaucitronAlertBig .tarteaucitronClosePanel"
+            );
+            if (closeBtn) {
+              closeBtn.click();
+            }
+            window.location.href = privacyUrl;
           });
         }
       });
