@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href="https://thomasr35.github.io/MetM-Front/" />
-
     <script src="tarteaucitron/tarteaucitron.min.js"></script>
     <script>
-      const privacyUrl =
-        window.location.origin +
-        window.location.pathname +
-        "#/mentions-legales";
-
       tarteaucitron.init({
-        privacyUrl: privacyUrl,
+        privacyUrl:
+          window.location.origin +
+          window.location.pathname +
+          "#/mentions-legales",
         bodyPosition: "top",
         hashtag: "#tarteaucitron",
         cookieName: "tarteaucitron",
@@ -46,24 +40,10 @@
         serverSide: false,
         partnersList: true,
       });
-
-      window.addEventListener("load", () => {
-        const link = document.getElementById("tarteaucitronLinkPrivacy");
-        if (link) {
-          link.addEventListener("click", (e) => {
-            e.preventDefault();
-            tarteaucitron.userInterface?.closePanel();
-            const closeBtn = document.querySelector(
-              ".tarteaucitronAlertBig .tarteaucitronClosePanel"
-            );
-            if (closeBtn) {
-              closeBtn.click();
-            }
-            window.location.href = privacyUrl;
-          });
-        }
-      });
     </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href="https://thomasr35.github.io/MetM-Front/" />
 
     <meta property="og:title" content="Marcelle et Maurice Shop" />
     <meta
