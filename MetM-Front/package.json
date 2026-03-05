@@ -24,7 +24,7 @@
     "compression": "^1.8.0",
     "express": "^5.1.0",
     "express-static-gzip": "^3.0.0",
-    "fabric": "^6.6.1",
+    "fabric": "^7.2.0",
     "glob": "^11.0.1",
     "lru-cache": "^11.0.2",
     "react": "^19.0.0",
@@ -36,7 +36,7 @@
     "react-toastify": "^11.0.5",
     "rimraf": "^6.0.1",
     "sass": "^1.85.1",
-    "swiper": "^11.2.5",
+    "swiper": "^12.1.2",
     "tarteaucitronjs": "^1.21.0",
     "vite-plugin-compression": "^0.5.1"
   },
