@@ -71,7 +71,7 @@ export default function SaveCreationModal(props) {
           </button>
         </div>
       </div>,
-      document.body
+      document.body,
     );
   }
 
@@ -182,6 +182,6 @@ export default function SaveCreationModal(props) {
         </button>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }
