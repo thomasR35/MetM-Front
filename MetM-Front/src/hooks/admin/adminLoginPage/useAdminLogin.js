@@ -24,7 +24,7 @@ export function useAdminLogin() {
       try {
         const data = await adminLogin(
           credentials.username,
-          credentials.password
+          credentials.password,
         );
         if (data.token && data.user) {
           localStorage.setItem("adminToken", data.token);
@@ -36,12 +36,12 @@ export function useAdminLogin() {
       } catch (err) {
         // err.response?.data?.error si axios, sinon err.message
         setError(
-          err.response?.data?.error || err.message || "Erreur de connexion"
+          err.response?.data?.error || err.message || "Erreur de connexion",
         );
         console.error("Admin login error:", err);
       }
     },
-    [credentials, navigate]
+    [credentials, navigate],
   );
 
   return {

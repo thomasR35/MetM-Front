@@ -1,0 +1,280 @@
+// src/styles/components/_admin-modals.scss
+// ========================
+// Modales spécifiques à l'espace admin :
+// EditUserModal et EditImageModal
+// Héritent du pattern .modal / .close défini dans _modal.scss
+@use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
+
+/* ========================
+   SURCHARGE ADMIN : overlay
+   (identique à _modal.scss mais z-index renforcé
+   pour passer au-dessus du contenu admin)
+======================== */
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(42, 31, 26, 0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease both;
+}
+
+/* ========================
+   MODALE ADMIN GÉNÉRIQUE
+======================== */
+.admin-modal {
+  position: relative;
+  background: #fdf8f5;
+  padding: 2.5rem 2rem 2rem;
+  border-radius: 3px;
+  width: min(480px, 96vw);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  border: 1px solid rgba(180, 130, 120, 0.2);
+  box-shadow: 0 24px 64px rgba(42, 31, 26, 0.2);
+  animation: slideUp 0.25s ease both;
+
+  /* ========================
+     TITRE
+  ========================= */
+  h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: #2a1f1a;
+    letter-spacing: 0.02em;
+    text-align: left;
+    margin-bottom: 0.4rem;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: rgba(180, 130, 120, 0.4);
+      margin-top: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+/* ========================
+   BOUTON FERMER
+======================== */
+.admin-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: rgba(42, 31, 26, 0.35);
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+
+  &:hover {
+    color: #2a1f1a;
+    background: rgba(42, 31, 26, 0.06);
+  }
+}
+
+/* ========================
+   GROUPES DE CHAMPS
+======================== */
+.admin-modal .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+
+  label {
+    font-family: "Jost", sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(42, 31, 26, 0.5);
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(180, 130, 120, 0.25);
+    border-radius: 2px;
+    background: #fff;
+    font-family: "Jost", sans-serif;
+    font-size: 0.88rem;
+    color: #2a1f1a;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: #b48278;
+    }
+    &::placeholder {
+      color: rgba(42, 31, 26, 0.3);
+    }
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b48278' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+  }
+}
+
+/* ========================
+   APERÇU IMAGE (EditImageModal)
+======================== */
+.admin-modal .image-preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #f5ede8;
+  border: 1px solid rgba(180, 130, 120, 0.18);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+/* ========================
+   TAGS MOTS-CLÉS (EditImageModal)
+======================== */
+.admin-modal .keywords-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: "Jost", sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: #2a1f1a;
+    background: rgba(180, 130, 120, 0.1);
+    border: 1px solid rgba(180, 130, 120, 0.2);
+    border-radius: 2px;
+    padding: 0.25rem 0.55rem 0.25rem 0.7rem;
+
+    button {
+      background: transparent;
+      border: none;
+      font-size: 0.65rem;
+      color: rgba(180, 80, 80, 0.6);
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.15s ease;
+
+      &:hover {
+        color: #b45050;
+      }
+    }
+  }
+}
+
+/* ========================
+   ACTIONS MODALE
+   (Annuler + Sauvegarder)
+======================== */
+.admin-modal-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+
+  button {
+    flex: 1;
+    padding: 0.8rem;
+    font-family: "Jost", sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.22s ease;
+  }
+
+  .btn-cancel {
+    background: transparent;
+    border: 1px solid rgba(42, 31, 26, 0.18);
+    color: rgba(42, 31, 26, 0.5);
+
+    &:hover {
+      border-color: rgba(42, 31, 26, 0.35);
+      color: #2a1f1a;
+    }
+  }
+
+  .btn-save {
+    background: #2a1f1a;
+    border: 1px solid #2a1f1a;
+    color: #fdf8f5;
+
+    &:hover {
+      background: #b48278;
+      border-color: #b48278;
+    }
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* ========================
+   ANIMATIONS
+======================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

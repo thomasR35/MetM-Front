@@ -7,12 +7,13 @@
    FOOTER GLOBAL
 ======================== */
 .footer {
-  background-color: var.$navbar-bg;
-  padding: 1.5rem 2rem;
+  background-color: #2a1f1a;
+  padding: 2rem 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid var.$text;
+  border-top: none;
+  margin-top: auto;
 }
 
 /* ========================
@@ -20,10 +21,24 @@
 ======================== */
 .footer-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1.5rem;
+
+    @include mix.responsive(sm) {
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: center;
+    }
+  }
 }
 
 /* ========================
@@ -31,35 +46,17 @@
 ======================== */
 .footer-link,
 .footer-text {
-  font-size: 1.2rem;
-  color: var.$text;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(253, 248, 245, 0.5);
   text-decoration: none;
-  text-align: center;
-  margin: 0.5rem 0.5rem;
-
-  // Responsiveness progressive
-  @include mix.responsive(lg) {
-    font-size: 1.1rem;
-  }
-
-  @include mix.responsive(md-lg) {
-    font-size: 1.05rem;
-  }
-
-  @include mix.responsive(md) {
-    font-size: 1rem;
-  }
-
-  @include mix.responsive(sm-md) {
-    font-size: 0.95rem;
-  }
+  transition: color 0.2s ease;
 
   @include mix.responsive(sm) {
-    font-size: 0.9rem;
-  }
-
-  @include mix.responsive(xs) {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -67,6 +64,18 @@
    HOVER SUR LES LIENS
 ======================== */
 .footer-link:hover {
-  text-decoration: underline;
-  color: var.$links;
+  color: #b48278;
+  text-decoration: none;
+}
+
+/* ========================
+   TEXTE COPYRIGHT (centré)
+======================== */
+.footer-text {
+  text-align: center;
+  color: rgba(253, 248, 245, 0.3);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
 }

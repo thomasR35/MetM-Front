@@ -4,98 +4,188 @@
 @use "../utils/variables" as var;
 
 /* ========================
-   PAGE DE CONTACT PRINCIPALE
+   PAGE PRINCIPALE
 ======================== */
 .contact-page {
-  max-width: 80vw;
-  margin: 0 auto;
+  width: 100%;
+  background: #fdf8f5;
+  animation: fadeUp 0.6s ease both;
 
-  @include mix.responsive(xl) {
-    max-width: 40%;
-  }
-  @include mix.responsive(lg) {
-    max-width: 50%;
-  }
-
-  h1 {
+  /* ========================
+     HERO BANNIÈRE
+  ========================= */
+  > h1 {
+    background: #2a1f1a;
     text-align: center;
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 2rem 0;
+    padding: 3.5rem 2rem 3rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    color: #fdf8f5;
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: rgba(253, 248, 245, 0.3);
+      margin: 1.25rem auto 0;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 80%, rgba(180,130,120,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
   }
 }
 
 /* ========================
-   FORMULAIRE DE CONTACT
+   NOTIFICATIONS DE STATUT
+======================== */
+#form-status {
+  max-width: 560px;
+  margin: 2rem auto 0;
+  padding: 0 2rem;
+
+  .success-message {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    color: #4a7c59;
+    background: rgba(74, 124, 89, 0.07);
+    border: 1px solid rgba(74, 124, 89, 0.2);
+    border-radius: 2px;
+    padding: 0.75rem 1rem;
+  }
+
+  .error-message {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    color: #b45050;
+    background: rgba(180, 80, 80, 0.07);
+    border: 1px solid rgba(180, 80, 80, 0.2);
+    border-radius: 2px;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ========================
+   FORMULAIRE
 ======================== */
 .contact-form {
+  max-width: 560px;
+  margin: 2.5rem auto 5rem;
+  padding: 0 2rem;
+
   fieldset {
-    border: 1px solid var.$text;
-    border-radius: 5px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    border: 1px solid rgba(180, 130, 120, 0.18);
+    border-radius: 3px;
+    padding: 1.5rem 1.5rem 0.5rem;
+    margin-bottom: 1.25rem;
+    background: #fff;
 
     legend {
-      font-weight: 600;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #b48278;
       padding: 0 0.5rem;
     }
   }
 
+  /* ========================
+     GROUPES DE CHAMPS
+  ========================= */
   .form-group {
     display: flex;
     flex-direction: column;
+    gap: 0.4rem;
     margin-bottom: 1rem;
 
     label {
-      font-weight: 500;
-      margin-bottom: 0.25rem;
-    }
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(42, 31, 26, 0.55);
 
-    label span[aria-hidden="true"] {
-      color: var.$text;
-      margin-left: 0.25rem;
+      span[aria-hidden="true"] {
+        color: #b48278;
+        margin-left: 0.2rem;
+      }
     }
 
     input,
     textarea {
-      padding: 0.8rem;
-      border: 1px solid var.$text;
-      border-radius: 5px;
-      font-size: 1rem;
-      font-family: inherit;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid rgba(180, 130, 120, 0.25);
+      border-radius: 2px;
+      background: #fdf8f5;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      color: #2a1f1a;
+      outline: none;
+      transition: border-color 0.2s ease;
+
+      &:focus { border-color: #b48278; }
+      &::placeholder { color: rgba(42, 31, 26, 0.3); }
+
+      &[aria-invalid="true"] {
+        border-color: rgba(180, 80, 80, 0.45);
+      }
     }
 
     textarea {
       resize: vertical;
-      min-height: 150px;
+      min-height: 140px;
+      line-height: 1.6;
     }
   }
 
+  /* ========================
+     BOUTON ENVOYER
+  ========================= */
   .form-button {
     width: 100%;
-    margin: 2rem auto;
-    @include mix.button-main(var.$button-bg);
+    margin-top: 0.5rem;
+    padding: 0.9rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: #2a1f1a;
+    color: #fdf8f5;
+    border: 1px solid #2a1f1a;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.22s ease, border-color 0.22s ease;
 
-    @include mix.responsive(xl) {
-      max-width: 60vw;
-    }
-    @include mix.responsive(lg) {
-      max-width: 70vw;
-    }
-  }
-
-  .form-status {
-    text-align: center;
-    margin-top: 1rem;
-
-    .success-message {
-      color: var.$success-color;
-      font-weight: bold;
+    &:hover:not(:disabled) {
+      background: #b48278;
+      border-color: #b48278;
     }
 
-    .error-message {
-      color: var.$danger-color;
-      font-weight: bold;
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
+}
+
+/* ========================
+   ANIMATION
+======================== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

@@ -1,5 +1,5 @@
 // src/pages/PersonalGalleryPage.jsx
-//
+// ========================
 import { useState, useEffect } from "react";
 import { fetchMyImages } from "@/api/images";
 import GalleryItem from "@/components/GalleryItem";
@@ -16,23 +16,16 @@ export default function PersonalGalleryPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <main id="main-content" role="main" className="personal-gallery">
-        <h1>Mes créations</h1>
-        <p role="status" aria-live="polite">
-          Chargement de votre galerie personnelle…
-        </p>
-      </main>
-    );
-  }
-
   return (
     <main id="main-content" role="main" className="personal-gallery">
       <h1>Mes créations</h1>
 
-      {images.length === 0 ? (
-        <p role="alert">Vous n’avez encore aucune création.</p>
+      {loading ? (
+        <p role="status" aria-live="polite">
+          Chargement de votre galerie…
+        </p>
+      ) : images.length === 0 ? (
+        <p role="alert">Vous n'avez encore aucune création.</p>
       ) : (
         <section
           className="gallery-grid"

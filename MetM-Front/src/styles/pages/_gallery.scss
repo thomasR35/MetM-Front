@@ -1,30 +1,163 @@
 // src/styles/pages/_gallery.scss
 // ========================
 @use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap");
 
 /* ========================
-   CONTENEUR PRINCIPAL GALERIE
+   CONTENEUR PRINCIPAL
 ======================== */
 .gallery-container {
-  padding: 20px;
-  text-align: center;
+  width: 100%;
+  background: #fdf8f5;
+  animation: fadeUp 0.6s ease both;
+}
 
-  h2 {
-    color: var.$text;
-    font-family: "Asap", sans-serif;
-    font-size: 2rem;
+/* ========================
+   HERO BANNIÈRE
+======================== */
+.gallery-container > h1 {
+  background: #2a1f1a;
+  text-align: center;
+  padding: 3.5rem 2rem 3rem;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  color: #fdf8f5;
+  letter-spacing: 0.02em;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: rgba(253, 248, 245, 0.3);
+    margin: 1.25rem auto 0;
   }
 
-  /* ========================
-     GRILLE DES IMAGES
-  ========================= */
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    padding: 20px;
-    justify-items: center;
-    justify-content: center;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 70% 60% at 50% 80%,
+      rgba(180, 130, 120, 0.15) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+}
+
+/* ========================
+   NUAGE DE MOTS-CLÉS
+======================== */
+.keyword-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 2.5rem 4vw 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ========================
+   BOUTON MOT-CLÉ
+======================== */
+.keyword-btn {
+  font-family: "Jost", sans-serif;
+  font-weight: 400;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #2a1f1a;
+  background: transparent;
+  border: 1px solid rgba(42, 31, 26, 0.22);
+  padding: 0.45rem 1rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #2a1f1a;
+    color: #fdf8f5;
+    border-color: #2a1f1a;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #b48278;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &.selected {
+    background: #2a1f1a;
+    color: #fdf8f5;
+    border-color: #2a1f1a;
+
+    &:hover {
+      background: #b48278;
+      border-color: #b48278;
+    }
+  }
+}
+
+/* ========================
+   COMPTEUR D'IMAGES
+======================== */
+.gallery-count {
+  font-family: "Jost", sans-serif !important;
+  font-weight: 300;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b48278 !important;
+  text-align: center;
+  padding: 0 2rem 2rem;
+  margin: 0 !important;
+}
+
+/* ========================
+   GRILLE DES IMAGES
+======================== */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.25rem;
+  padding: 0 4vw 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  /* états de chargement / vide */
+  > p {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: rgba(42, 31, 26, 0.4);
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  @include mix.responsive(sm) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+    padding: 0 1.5rem 3rem;
+  }
+
+  @include mix.responsive(xs) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    padding: 0 1rem 2rem;
   }
 }
 
@@ -35,77 +168,58 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-top: 1.5rem;
+  gap: 1rem;
+  padding: 0 2rem 4rem;
 
   button {
-    background: #fb6f92;
-    color: var.$text;
-    border: none;
-    padding: 8px 15px;
-    border: 1px solid transparent;
-    border-radius: 10px;
+    font-family: "Jost", sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.55rem 1.4rem;
+    border-radius: 2px;
+    border: 1px solid rgba(42, 31, 26, 0.25);
+    background: transparent;
+    color: #2a1f1a;
     cursor: pointer;
-    transition: background 0.3s;
-
-    &:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
+    transition: all 0.22s ease;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
 
     &:hover:not(:disabled) {
-      background: var.$links-hover;
-      color: var.$text;
-      border: 1px solid var.$text;
+      background: #2a1f1a;
+      color: #fdf8f5;
+      border-color: #2a1f1a;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
     }
   }
+
+  span {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(42, 31, 26, 0.5);
+    min-width: 100px;
+    text-align: center;
+  }
 }
 
 /* ========================
-   MOTS-CLÉS (FILTRAGE)
+   ANIMATIONS
 ======================== */
-.keyword-cloud {
-  margin: 15px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-/* ========================
-   BOUTON DE MOT-CLÉ
-======================== */
-.keyword-btn {
-  background-color: var.$button-bg;
-  color: var.$text;
-  border: 1px solid var.$text;
-  padding: 8px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s;
-
-  &:hover {
-    background: var.$links-hover;
-    border-color: 1px solid transparent;
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
-
-  &:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var.$text;
-    background: var.$links-hover;
-    border-color: 1px solid transparent;
-    text-decoration: underline;
-  }
-
-  &:focus:not(:focus-visible) {
-    outline: none;
-    box-shadow: none;
-  }
-  &.selected {
-    background-color: var.$links-hover;
-    color: var.$text;
-    border-color: transparent;
-    box-shadow: 0 0 0 2px var.$light-color;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

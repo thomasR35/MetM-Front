@@ -3,109 +3,184 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
-/* ========================
-   MODALE OVERLAY GÉNÉRIQUE
-======================== */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
+// ⚠️  RegisterModal.jsx utilise .modal-content et .close-modal
+// au lieu de .modal et .close-btn (pattern utilisé partout ailleurs).
+// Ce fichier stylise les deux noms de classes pour ne pas casser
+// l'existant — idéalement, aligner le JSX sur .modal / .close-btn
+// lors d'un prochain refactor.
 
 /* ========================
    CONTENU DE LA MODALE
+   (.modal-content = alias de .modal)
 ======================== */
 .modal-content {
-  background: var.$main-bg;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  text-align: center;
   position: relative;
-}
-
-/* ========================
-   BOUTON FERMETURE MODALE
-======================== */
-.close-modal {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-/* ========================
-   CONTAINER FORMULAIRE D’INSCRIPTION
-======================== */
-.register-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: var.$navbar-bg;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
+  background: #fdf8f5;
+  padding: 2.5rem 2rem 2rem;
+  border-radius: 3px;
+  width: min(400px, 92vw);
+  border: 1px solid rgba(180, 130, 120, 0.2);
+  box-shadow: 0 24px 64px rgba(42, 31, 26, 0.18);
+  animation: slideUp 0.25s ease both;
 
   h2 {
-    margin-bottom: 1rem;
-  }
-
-  /* ========================
-     GROUPE D’INPUTS
-  ========================= */
-  .input-group {
-    margin-bottom: 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: #2a1f1a;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.4rem;
     text-align: left;
 
-    label {
-      font-size: 1rem;
-      margin-bottom: 0.3rem;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.8rem;
-      border: 1px solid var.$text;
-      border-radius: 5px;
-    }
-  }
-
-  /* ========================
-     BOUTON ENVOI
-  ========================= */
-  .btn-submit {
-    background: var.$button-bg;
-    color: var.$text;
-    border: none;
-    padding: 0.8rem;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1.2rem;
-
-    &:hover {
-      background: var.$links-hover;
+    &::after {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: rgba(180, 130, 120, 0.4);
+      margin-top: 0.75rem;
+      margin-bottom: 1.5rem;
     }
   }
 }
 
 /* ========================
-   MESSAGE DE SUCCÈS
+   BOUTON FERMER
+   (.close-modal = alias de .close-btn)
 ======================== */
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  color: rgba(42, 31, 26, 0.35);
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: #2a1f1a;
+    background: rgba(42, 31, 26, 0.06);
+  }
+}
+
+/* ========================
+   MESSAGES ERREUR / SUCCÈS
+======================== */
+.error-message {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: #b45050;
+  background: rgba(180, 80, 80, 0.07);
+  border: 1px solid rgba(180, 80, 80, 0.2);
+  border-radius: 2px;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
 .success-message {
-  color: var.$links;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 1rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: #4a7c59;
+  background: rgba(74, 124, 89, 0.07);
+  border: 1px solid rgba(74, 124, 89, 0.2);
+  border-radius: 2px;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ========================
+   EXIGENCES MOT DE PASSE
+======================== */
+.pwd-requirements {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  color: rgba(42, 31, 26, 0.45);
+  background: rgba(180, 130, 120, 0.06);
+  border-left: 2px solid rgba(180, 130, 120, 0.3);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0 2px 2px 0;
+  margin-bottom: 0.6rem;
+}
+
+/* ========================
+   GROUPES D'INPUTS
+======================== */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+
+  label {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(42, 31, 26, 0.55);
+  }
+
+  input {
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(180, 130, 120, 0.25);
+    border-radius: 2px;
+    background: #fff;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.88rem;
+    color: #2a1f1a;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus { border-color: #b48278; }
+    &::placeholder { color: rgba(42, 31, 26, 0.3); }
+  }
+}
+
+/* ========================
+   BOUTON S'INSCRIRE
+======================== */
+.modal-content .generic-button {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.85rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: #2a1f1a;
+  color: #fdf8f5;
+  border: 1px solid #2a1f1a;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.22s ease, border-color 0.22s ease;
+
+  &:hover:not(:disabled) {
+    background: #b48278;
+    border-color: #b48278;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* ========================
+   ANIMATION
+======================== */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

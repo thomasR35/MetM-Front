@@ -1,39 +1,75 @@
 // src/styles/pages/_notfound.scss
 // ========================
 @use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
 
 .notfound-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
+  min-height: 80vh;
   text-align: center;
-  padding: 2rem;
+  padding: 4rem 2rem;
+  background: #fdf8f5;
+  animation: fadeUp 0.6s ease both;
 
+  /* grand 404 décoratif */
   h1 {
-    font-size: 6rem;
-    margin: 0;
-    color: var.$main-bg;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(5rem, 14vw, 9rem);
+    color: rgba(180, 130, 120, 0.2);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0 0 0.25rem;
+    user-select: none;
   }
 
+  /* sous-titre */
   p {
-    font-size: 1.5rem;
-    margin: 1rem 0 2rem;
-  }
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(42, 31, 26, 0.45);
+    max-width: 340px;
+    line-height: 1.7;
+    margin: 0 0 2.5rem;
 
-  button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    background-color: var.$button-bg;
-    color: var.$text;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-
-    &:hover {
-      background-color: var.$links-hover;
+    &::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: rgba(180, 130, 120, 0.35);
+      margin: 0 auto 1.5rem;
     }
   }
+
+  /* bouton retour */
+  button {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.85rem 2.5rem;
+    border: 1px solid #2a1f1a;
+    border-radius: 2px;
+    background: #2a1f1a;
+    color: #fdf8f5;
+    cursor: pointer;
+    transition: background 0.22s ease, border-color 0.22s ease;
+
+    &:hover {
+      background: #b48278;
+      border-color: #b48278;
+    }
+  }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

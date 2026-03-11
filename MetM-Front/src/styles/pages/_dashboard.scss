@@ -4,61 +4,138 @@
 @use "../utils/mixins" as mix;
 
 /* ========================
-   BACKGROUND GÉNÉRAL
+   BACKGROUND
 ======================== */
 body {
-  background-color: var.$light-color;
+  background: #f5ede8;
 }
 
 /* ========================
-   WRAPPER FLEX DU DASHBOARD
-   (Sidebar + Contenu)
+   WRAPPER DASHBOARD
 ======================== */
 .d-flex {
+  display: flex;
   max-height: 100vh;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 /* ========================
-   CONTENU PRINCIPAL ADMIN
+   CONTENU PRINCIPAL
 ======================== */
 .admin-content {
-  width: calc(100% - 250px);
+  width: calc(100% - 220px);
   min-height: 100vh;
-  padding: var.$spacing-md;
+  margin-left: 220px;
+  padding: 2.5rem 3vw 4rem;
+  background: #f5ede8;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: var.$light-gray;
-  margin-left: 250px;
-  overflow-y: auto;
+  align-items: stretch;
 
-  /* ========================
-     SECTIONS INTERNES
-  ========================= */
+  /* page title */
+  > h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    color: #2a1f1a;
+    letter-spacing: 0.02em;
+    margin-bottom: 2rem;
+    text-align: center;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: rgba(180, 130, 120, 0.35);
+      margin: 0.75rem auto 0;
+    }
+  }
+
   section {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
   }
 
   h2 {
-    margin-bottom: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #2a1f1a;
+    margin-bottom: 1rem;
     text-align: center;
   }
 
   /* ========================
-     RESPONSIVE : TABLETTE
+     WELCOME SCREEN
   ========================= */
-  @include mix.responsive(tablet) {
-    width: calc(100% - 180px);
-    margin-left: 180px;
+  .admin-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 0.5rem;
+    min-height: 60vh;
+
+    p {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      color: rgba(42, 31, 26, 0.4);
+      text-transform: uppercase;
+    }
   }
 
-  /* ========================
-     RESPONSIVE : MOBILE
-  ========================= */
-  @include mix.responsive(mobile) {
+  @include mix.responsive(sm) {
     width: 100%;
     margin-left: 0;
-    padding-top: 60px;
+    padding-top: calc(56px + 1.5rem);
+  }
+}
+
+/* ========================
+   PAGES ADMIN SPÉCIFIQUES
+======================== */
+.admin-users-management,
+.admin-images-management {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+
+  > h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    color: #2a1f1a;
+    text-align: center;
+    margin-bottom: 0.5rem;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: rgba(180, 130, 120, 0.35);
+      margin: 0.75rem auto 0;
+    }
+  }
+
+  > section > h2 {
+    font-size: 0.7rem;
+    font-family: 'Jost', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #b48278;
+    margin-bottom: 0.75rem;
+    text-align: left;
+
+    &::after { display: none; }
   }
 }

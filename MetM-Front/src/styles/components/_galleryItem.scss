@@ -1,82 +1,128 @@
 // src/styles/components/_galleryItem.scss
 // ========================
 @use "../utils/variables" as var;
+@use "../utils/mixins" as mix;
 
 /* ========================
    ITEM DE GALERIE
 ======================== */
 .gallery-item {
-  background: var.$light-color;
-  border-radius: 10px;
-  border: 1px solid var.$text;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 3px;
+  border: 1px solid rgba(180, 130, 120, 0.18);
   overflow: hidden;
-  text-align: center;
-  padding: 10px;
-  width: 250px;
-  height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 
-  /* ========================
-     IMAGE DE LA GALERIE
-  ========================= */
-  .gallery-image {
-    width: 100%;
-    min-height: 200px;
-    object-fit: cover;
-    border-bottom: 2px solid var.$button-bg;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(42, 31, 26, 0.1);
+    border-color: rgba(180, 130, 120, 0.4);
 
-    &:hover {
-      transform: scale(1.3);
-      transition: transform 0.3s;
+    .gallery-image {
+      transform: scale(1.04);
+    }
+
+    .download-btn {
+      color: #b48278;
+
+      &::after {
+        width: 100%;
+      }
     }
   }
 
   /* ========================
-     INFOS SOUS L’IMAGE
+     IMAGE
+  ========================= */
+  .gallery-image-wrapper {
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #f5ede8;
+  }
+
+  .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+    mix-blend-mode: multiply;
+  }
+
+  /* ========================
+     INFOS
   ========================= */
   .gallery-info {
-    flex-grow: 1;
-    padding: 10px;
+    padding: 0.9rem 1.1rem 1.1rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 0.3rem;
+    border-top: 1px solid rgba(180, 130, 120, 0.12);
 
     h3 {
-      font-size: 1rem;
-      margin: 5px 0;
+      font-family: "Jost", sans-serif;
+      font-weight: 400;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #2a1f1a;
+      margin: 0;
     }
 
-    .download-btn {
-      background: var.$button-bg;
-      color: var.$text;
-      border: 1px solid var.$text;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-top: auto;
-      align-self: center;
+    .gallery-item-meta {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      color: #b48278;
+    }
+  }
 
-      &:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 3px var.$text;
-        background: var.$links-hover;
-        border-color: 2px solid var.$links-hover;
-        text-decoration: underline;
-      }
+  /* ========================
+     BOUTON TÉLÉCHARGEMENT
+  ========================= */
+  .download-btn {
+    margin-top: 0.6rem;
+    font-family: "Jost", sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #2a1f1a;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    transition: color 0.25s ease;
+    align-self: flex-start;
 
-      &:focus:not(:focus-visible) {
-        outline: none;
-        box-shadow: none;
-      }
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 30%;
+      height: 1px;
+      background: #b48278;
+      transition: width 0.3s ease;
+    }
 
-      &:hover {
-        background: var.$links-hover;
-        border: 2px solid var.$links-hover;
-      }
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #b48278;
+      border-radius: 1px;
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
+      box-shadow: none;
     }
   }
 }

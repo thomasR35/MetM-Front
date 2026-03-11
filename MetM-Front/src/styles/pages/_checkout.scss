@@ -3,116 +3,288 @@
 @use "../utils/mixins" as mix;
 @use "../utils/variables" as var;
 
+/* ========================
+   PAGE PRINCIPALE
+======================== */
 .checkout-page {
-  max-width: 40vw;
-  margin: 0 auto;
-  align-items: center;
-  justify-items: center;
-  margin-bottom: 2.5rem;
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 600;
+  width: 100%;
+  background: #fdf8f5;
+  animation: fadeUp 0.6s ease both;
+  padding-bottom: 5rem;
+
+  /* ========================
+     HERO BANNIÈRE
+  ========================= */
+  > h1 {
+    background: #2a1f1a;
     text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  .checkout-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-    padding: 1rem;
-    li {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.5rem;
+    padding: 3.5rem 2rem 3rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    color: #fdf8f5;
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: rgba(253, 248, 245, 0.3);
+      margin: 1.25rem auto 0;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 80%, rgba(180,130,120,0.15) 0%, transparent 70%);
+      pointer-events: none;
     }
   }
-  .checkout-form {
+
+  /* panier vide — bouton centré */
+  &:has(> .generic-button) {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-    padding: 1rem;
-    margin-bottom: 3rem;
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-      input {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border: 1px solid var.$text;
-        font-size: 1.5rem;
-        font-weight: 500;
-        color: var.$text;
-        &:focus {
-          outline: none;
-          border-color: var.$links-hover;
-          box-shadow: 0 0 0.5rem var.$links-hover;
-        }
-      }
-    }
-  }
-  .checkout-button {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    width: 100%;
-    padding: 1rem;
-    background-color: var.$button-bg;
-    color: var.$text;
-    border-radius: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-align: center;
+    min-height: 60vh;
+    padding-bottom: 0;
+  }
+
+  > .generic-button {
+    margin: 3rem auto;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.85rem 2.5rem;
+    border: 1px solid #2a1f1a;
+    border-radius: 2px;
+    background: #2a1f1a;
+    color: #fdf8f5;
     cursor: pointer;
-    margin-bottom: 3rem;
-    &:hover {
-      background-color: var.$links-hover;
-    }
-    &:active {
-      background-color: var.$links;
-    }
-    &:focus {
-      outline: none;
-      border-color: var.$links-hover;
-      box-shadow: 0 0 0.5rem var.$links-hover;
-    }
-  }
+    transition: background 0.22s ease;
 
-  p {
-    font-size: 1.2rem;
-    font-weight: 500;
-    justify-self: start;
-    text-align: left;
-    margin-bottom: 1.5rem;
+    &:hover { background: #b48278; border-color: #b48278; }
   }
+}
 
-  @include mix.responsive(lg) {
-    max-width: 50vw;
-  }
-
-  @include mix.responsive(md-lg) {
-    max-width: 60vw;
-  }
-
-  @include mix.responsive(md) {
-    max-width: 65vw;
-  }
-
-  @include mix.responsive(sm-md) {
-    max-width: 70vw;
-  }
-
-  @include mix.responsive(sm) {
-    max-width: 80vw;
-  }
+/* ========================
+   LAYOUT CENTRÉ
+======================== */
+.checkout-summary,
+.checkout-total,
+.checkout-form,
+.payment-section,
+.checkout-info {
+  max-width: 560px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 4vw;
+  padding-right: 4vw;
 
   @include mix.responsive(xs) {
-    max-width: 80vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
+}
+
+/* ========================
+   RÉCAPITULATIF ARTICLES
+======================== */
+.checkout-summary {
+  margin-top: 2.5rem;
+}
+
+.checkout-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  li {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    color: rgba(42, 31, 26, 0.65);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(180, 130, 120, 0.1);
+    display: flex;
+    justify-content: space-between;
+
+    &:first-child { border-top: 1px solid rgba(180, 130, 120, 0.1); }
+  }
+}
+
+/* ========================
+   TOTAL
+======================== */
+.checkout-total {
+  padding-top: 1.25rem;
+  padding-bottom: 0;
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: #2a1f1a;
+    text-align: right;
+  }
+}
+
+/* ========================
+   FORMULAIRE
+======================== */
+.checkout-form {
+  margin-top: 2rem;
+
+  fieldset {
+    border: 1px solid rgba(180, 130, 120, 0.18);
+    border-radius: 3px;
+    padding: 1.5rem 1.5rem 0.5rem;
+    background: #fff;
+
+    legend {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #b48278;
+      padding: 0 0.5rem;
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+
+    label {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(42, 31, 26, 0.55);
+    }
+
+    input,
+    textarea {
+      padding: 0.65rem 0.85rem;
+      border: 1px solid rgba(180, 130, 120, 0.25);
+      border-radius: 2px;
+      background: #fdf8f5;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      color: #2a1f1a;
+      outline: none;
+      transition: border-color 0.2s ease;
+
+      &:focus { border-color: #b48278; }
+      &::placeholder { color: rgba(42, 31, 26, 0.3); }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+  }
+}
+
+/* ========================
+   BOUTON PAIEMENT STRIPE
+======================== */
+.payment-section {
+  margin-top: 1.5rem;
+}
+
+.checkout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: #2a1f1a;
+  color: #fdf8f5;
+  border: 1px solid #2a1f1a;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.22s ease, border-color 0.22s ease;
+
+  &:hover:not(:disabled) {
+    background: #b48278;
+    border-color: #b48278;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* indicateur de chargement */
+  &[aria-busy="true"]::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid rgba(253, 248, 245, 0.4);
+    border-top-color: #fdf8f5;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+}
+
+/* ========================
+   INFOS LÉGALES
+======================== */
+.checkout-info {
+  margin-top: 1.5rem;
+
+  p {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: rgba(42, 31, 26, 0.4);
+    line-height: 1.7;
+    margin-bottom: 0.35rem;
+  }
+
+  a {
+    color: #b48278;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(180, 130, 120, 0.3);
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      color: #2a1f1a;
+      border-color: #2a1f1a;
+    }
+  }
+}
+
+/* ========================
+   ANIMATIONS
+======================== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

@@ -1,15 +1,13 @@
-// src/components/admin/ImageTable.jsx
-//=====================================
+// src/components/admin/UsersTable.jsx
+//====================================
 import { useState, useEffect } from "react";
 
-const API_BASE = import.meta.env.VITE_API_URL.replace(/\/api\/?$/i, "");
-
-export default function ImagesTable({ images, loading, onEdit, onDelete }) {
+export default function UsersTable({ users, loading, onEdit, onDelete }) {
   const [selectedIds, setSelectedIds] = useState([]);
-  const allSelected = images.length > 0 && selectedIds.length === images.length;
+  const allSelected = users.length > 0 && selectedIds.length === users.length;
 
   const toggleAll = () => {
-    setSelectedIds(allSelected ? [] : images.map((img) => img.id));
+    setSelectedIds(allSelected ? [] : users.map((u) => u.id));
   };
 
   const toggleOne = (id) => {
@@ -18,12 +16,12 @@ export default function ImagesTable({ images, loading, onEdit, onDelete }) {
     );
   };
 
-  // Nettoyage si des images ont été supprimées
+  // Nettoyage si des users ont été supprimés
   useEffect(() => {
     setSelectedIds((prev) =>
-      prev.filter((id) => images.some((img) => img.id === id)),
+      prev.filter((id) => users.some((u) => u.id === id)),
     );
-  }, [images]);
+  }, [users]);
 
   if (loading)
     return (
@@ -42,7 +40,7 @@ export default function ImagesTable({ images, loading, onEdit, onDelete }) {
     );
 
   return (
-    <section>
+    <>
       <div
         style={{
           display: "flex",
@@ -51,7 +49,9 @@ export default function ImagesTable({ images, loading, onEdit, onDelete }) {
           marginBottom: "0.6rem",
         }}
       >
-        <h2>Images ({images.length})</h2>
+        <p className="table-count">
+          {users.length} utilisateur{users.length > 1 ? "s" : ""}
+        </p>
 
         {selectedIds.length > 0 && (
           <button
@@ -64,7 +64,7 @@ export default function ImagesTable({ images, loading, onEdit, onDelete }) {
               })
             }
           >
-            Supprimer {selectedIds.length} image
+            Supprimer {selectedIds.length} sélectionné
             {selectedIds.length > 1 ? "s" : ""}
           </button>
         )}
@@ -85,14 +85,14 @@ export default function ImagesTable({ images, loading, onEdit, onDelete }) {
                 />
               </th>
               <th>ID</th>
-              <th>Aperçu</th>
-              <th>Titre</th>
-              <th>Mots-clé</th>
+              <th>Nom d'utilisateur</th>
+              <th>Email</th>
+              <th>Rôle</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {images.length === 0 && (
+            {users.length === 0 && (
               <tr>
                 <td
                   colSpan="6"
@@ -102,50 +102,47 @@ export default function ImagesTable({ images, loading, onEdit, onDelete }) {
                     fontStyle: "italic",
                   }}
                 >
-                  Aucune image trouvée.
+                  Aucun utilisateur trouvé.
                 </td>
               </tr>
             )}
-            {images.map((img) => {
-              const isChecked = selectedIds.includes(img.id);
+            {users.map((u) => {
+              const isChecked = selectedIds.includes(u.id);
               return (
-                <tr key={img.id}>
+                <tr key={u.id}>
                   <td>
                     <input
                       type="checkbox"
                       checked={isChecked}
-                      onChange={() => toggleOne(img.id)}
+                      onChange={() => toggleOne(u.id)}
                       aria-label={
                         isChecked
-                          ? `Désélectionner image ${img.id}`
-                          : `Sélectionner image ${img.id}`
+                          ? `Désélectionner ${u.username}`
+                          : `Sélectionner ${u.username}`
                       }
                     />
                   </td>
-                  <td>{img.id}</td>
+                  <td>{u.id}</td>
+                  <td>{u.username}</td>
+                  <td>{u.email}</td>
                   <td>
-                    <img
-                      src={`${API_BASE}${img.url}`}
-                      alt={img.title}
-                      loading="lazy"
-                      className="image-thumbnail"
-                    />
-                  </td>
-                  <td>{img.title}</td>
-                  <td>
-                    {img.keywords ? img.keywords.split(",").join(", ") : "—"}
+                    <span
+                      className={`role-badge ${u.role === "admin" ? "admin" : "user"}`}
+                    >
+                      {u.role || "user"}
+                    </span>
                   </td>
                   <td>
                     <div className="table-actions">
-                      <button className="btn-edit" onClick={() => onEdit(img)}>
+                      <button className="btn-edit" onClick={() => onEdit(u)}>
                         Modifier
                       </button>
                       <button
                         className="btn-delete"
                         onClick={() => {
-                          onDelete(img);
+                          onDelete(u);
                           setSelectedIds((prev) =>
-                            prev.filter((x) => x !== img.id),
+                            prev.filter((x) => x !== u.id),
                           );
                         }}
                       >
@@ -159,6 +156,6 @@ export default function ImagesTable({ images, loading, onEdit, onDelete }) {
           </tbody>
         </table>
       </div>
-    </section>
+    </>
   );
 }

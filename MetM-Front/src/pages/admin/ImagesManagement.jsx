@@ -1,6 +1,6 @@
 // src/pages/admin/ImagesManagement.jsx
 //=====================================
-import { createPortal } from "react-dom";
+import { useState } from "react";
 import "@/styles/pages/_admin.scss";
 
 import { useImageManagement } from "@/hooks/admin/adminImageManagement/useImageManagement";
@@ -11,6 +11,7 @@ import ImageUploadForm from "@/components/admin/ImageUploadForm";
 import KeywordManagement from "@/components/admin/KeywordManagement";
 import ImagesTable from "@/components/admin/ImageTable";
 import EditImageModal from "@/components/admin/EditImageModal";
+import ConfirmDialog from "@/components/ConfirmDialog";
 
 export default function ImagesManagement() {
   const {
@@ -37,11 +38,59 @@ export default function ImagesManagement() {
     close: closeEditModal,
   } = useImageEditModal();
 
+  // État pour la modale de confirmation suppression
+  const [confirmState, setConfirmState] = useState({
+    isOpen: false,
+    image: null,
+    bulk: false,
+    bulkIds: [],
+    bulkOnDone: null,
+  });
+
+  // Appelé par ImagesTable — reçoit soit un objet image, soit { bulk, ids, onDone }
+  const askDelete = (target) => {
+    if (target?.bulk) {
+      setConfirmState({
+        isOpen: true,
+        image: null,
+        bulk: true,
+        bulkIds: target.ids,
+        bulkOnDone: target.onDone,
+      });
+    } else {
+      setConfirmState({
+        isOpen: true,
+        image: target,
+        bulk: false,
+        bulkIds: [],
+        bulkOnDone: null,
+      });
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (confirmState.bulk) {
+      await Promise.all(confirmState.bulkIds.map((id) => handleDelete(id)));
+      confirmState.bulkOnDone?.();
+    } else {
+      await handleDelete(confirmState.image.id);
+    }
+    setConfirmState({ isOpen: false, image: null, bulk: false, bulkIds: [], bulkOnDone: null });
+  };
+
+  const cancelDelete = () => {
+    setConfirmState({ isOpen: false, image: null, bulk: false, bulkIds: [], bulkOnDone: null });
+  };
+
+  const confirmMessage = confirmState.bulk
+    ? `Supprimer définitivement ${confirmState.bulkIds.length} image${confirmState.bulkIds.length > 1 ? "s" : ""} ? Cette action est irréversible.`
+    : `Supprimer définitivement « ${confirmState.image?.title || `image #${confirmState.image?.id}`} » ? Cette action est irréversible.`;
+
   return (
     <main className="admin-images-management">
       <h2>Gestion des images</h2>
 
-      {/* 1. Formulaire d’upload */}
+      {/* 1. Formulaire d'upload */}
       <ImageUploadForm
         onUpload={handleUpload}
         keywords={allKeywords}
@@ -63,22 +112,30 @@ export default function ImagesManagement() {
         images={images}
         loading={imgLoading}
         onEdit={openEditModal}
-        onDelete={handleDelete}
+        onDelete={askDelete}
       />
 
-      {/* 4. Modale d’édition */}
-      {isOpen &&
-        selectedImage &&
-        createPortal(
-          <EditImageModal
-            image={selectedImage}
-            editData={editData}
-            setEditData={setEditData}
-            onClose={closeEditModal}
-            onUpdate={handleUpdate}
-          />,
-          document.body
-        )}
+      {/* 4. Modale d'édition */}
+      {isOpen && selectedImage && (
+        <EditImageModal
+          image={selectedImage}
+          editData={editData}
+          setEditData={setEditData}
+          onClose={closeEditModal}
+          onUpdate={handleUpdate}
+        />
+      )}
+
+      {/* 5. Modale de confirmation suppression */}
+      <ConfirmDialog
+        isOpen={confirmState.isOpen}
+        title="Supprimer l'image"
+        message={confirmMessage}
+        confirmLabel="Supprimer"
+        cancelLabel="Annuler"
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </main>
   );
 }

@@ -1,7 +1,7 @@
 // src/pages/ProductPage.jsx
 // ========================
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -24,10 +24,18 @@ import MockupProduct from "@/components/MockupProduct";
 import ImageEditorModal from "@/components/ImageEditorModal";
 import SaveCreationModal from "@/components/SaveCreationModal";
 
+import "@/styles/pages/_productpage.scss";
+
+const PRODUCTS = [
+  { slug: "mug", label: "Mug" },
+  { slug: "tshirt", label: "T-Shirt" },
+  { slug: "pins", label: "Pin's" },
+];
+
 export default function ProductPage() {
   const { productType } = useParams();
+  const location = useLocation();
 
-  // ─── Hooks appelés en-tête ─────────────────────────────────────────
   const [product, setProduct] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -54,7 +62,6 @@ export default function ProductPage() {
   const { setShowSignup, setPostLoginRedirect } = useAuthModal();
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
-  // Préparer la fonction d'ajout au panier
   const { handleAddToCart } = useAddToCart({
     productType,
     product,
@@ -62,10 +69,9 @@ export default function ProductPage() {
     cropZones,
     customization: { customText, textOptions, customImageData },
   });
-  // Mémoriser le dernier produit visité
+
   useLastVisitedProduct(productType);
 
-  // Charger le produit depuis l’API
   useEffect(() => {
     fetchProductBySlug(productType)
       .then((p) => {
@@ -78,12 +84,25 @@ export default function ProductPage() {
       .catch(() => toast.error("Erreur de chargement du produit"));
   }, [productType]);
 
-  // Tant que le produit n'est pas chargé, on affiche un loader
   if (!product) {
-    return <p>Chargement…</p>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+          fontFamily: "'Cormorant Garamond', serif",
+          fontStyle: "italic",
+          fontSize: "1.4rem",
+          color: "rgba(42,31,26,0.4)",
+        }}
+      >
+        Chargement…
+      </div>
+    );
   }
 
-  // Handlers
   const handleSaveClick = () => {
     if (!customImageData && !customText.trim()) {
       toast.info("Aucune modification détectée.");
@@ -96,13 +115,12 @@ export default function ProductPage() {
     }
     setIsSaveModalOpen(true);
   };
-  const closeSaveModal = () => setIsSaveModalOpen(false);
+
   const handleApplyCroppedImage = (data) => {
     const result = onImageApply(data);
     setCroppedImageData(result);
   };
 
-  // ─── JSX principal ─────────────────────────────────────────────────────
   return (
     <main
       id="main-content"
@@ -110,15 +128,17 @@ export default function ProductPage() {
       aria-labelledby="product-title"
       className="product-page"
     >
+      {/* Hero banner */}
       <h1 id="product-title" className="product-banner">
         Personnalisation du {product.name}
       </h1>
 
+      {/* Prix */}
       <p className="price" aria-label={`Prix: ${product.price}`}>
-        Prix Unitaire: {product.price}€
+        Prix unitaire — {product.price} €
       </p>
 
-      {/* Navigation produit */}
+      {/* Navigation inter-produits */}
       <nav
         role="navigation"
         aria-labelledby="switch-product-title"
@@ -126,19 +146,19 @@ export default function ProductPage() {
       >
         <h2 id="switch-product-title">Changer de produit</h2>
         <div className="product-switch-links">
-          <Link to="/product/mug" className="product-switch-link">
-            Mug
-          </Link>
-          <Link to="/product/tshirt" className="product-switch-link">
-            T-Shirt
-          </Link>
-          <Link to="/product/pins" className="product-switch-link">
-            Pin’s
-          </Link>
+          {PRODUCTS.map((p) => (
+            <Link
+              key={p.slug}
+              to={`/product/${p.slug}`}
+              className={`product-switch-link${productType === p.slug ? " active" : ""}`}
+            >
+              {p.label}
+            </Link>
+          ))}
         </div>
       </nav>
 
-      {/* Slider + Aperçu */}
+      {/* Grid principal */}
       <section
         className="product-sections"
         role="region"
@@ -147,13 +167,15 @@ export default function ProductPage() {
         <h2 id="customization-section" className="sr-only">
           Personnalisation et aperçu
         </h2>
+
+        {/* Slider */}
         <section
           className="product-slider"
           role="region"
           aria-labelledby="slider-title"
         >
           <h3 id="slider-title" className="sr-only">
-            Galerie d’images {product.name}
+            Galerie d'images {product.name}
           </h3>
           <Swiper
             modules={[Navigation]}
@@ -178,7 +200,7 @@ export default function ProductPage() {
           </Swiper>
         </section>
 
-        {/* Options de personnalisation */}
+        {/* Aside droite : options + upload */}
         <aside
           className="product-aside"
           role="region"
@@ -187,13 +209,16 @@ export default function ProductPage() {
           <h3 id="options-title" className="sr-only">
             Options de personnalisation
           </h3>
+
           <form
             className="customization-options"
             onSubmit={(e) => e.preventDefault()}
           >
+            <p className="options-title">Personnalisation</p>
+
             {/* Texte */}
             <fieldset>
-              <label htmlFor="customText">Texte personnalisé:</label>
+              <label htmlFor="customText">Texte personnalisé</label>
               <input
                 id="customText"
                 type="text"
@@ -206,7 +231,7 @@ export default function ProductPage() {
             {/* Taille */}
             <fieldset>
               <label htmlFor="fontSizeRange">
-                Taille du texte: {textOptions.fontSize}px
+                Taille du texte — {textOptions.fontSize}px
               </label>
               <input
                 id="fontSizeRange"
@@ -223,12 +248,11 @@ export default function ProductPage() {
 
             {/* Position Y */}
             <fieldset>
-              <label htmlFor="positionRange">
-                Position verticale du texte:{" "}
-                {Math.round(textOptions.position.y * 100)}%
+              <label htmlFor="positionYRange">
+                Position verticale — {Math.round(textOptions.position.y * 100)}%
               </label>
               <input
-                id="positionRange"
+                id="positionYRange"
                 type="range"
                 min={0}
                 max={1}
@@ -245,12 +269,12 @@ export default function ProductPage() {
 
             {/* Position X */}
             <fieldset>
-              <label htmlFor="positionRange">
-                Position horizontale du texte:{" "}
+              <label htmlFor="positionXRange">
+                Position horizontale —{" "}
                 {Math.round(textOptions.position.x * 100)}%
               </label>
               <input
-                id="positionRange"
+                id="positionXRange"
                 type="range"
                 min={0}
                 max={1}
@@ -267,7 +291,7 @@ export default function ProductPage() {
 
             {/* Police */}
             <fieldset>
-              <label htmlFor="fontFamily">Police :</label>
+              <label htmlFor="fontFamily">Police</label>
               <select
                 id="fontFamily"
                 value={textOptions.fontFamily}
@@ -284,7 +308,7 @@ export default function ProductPage() {
 
             {/* Couleur */}
             <fieldset>
-              <label htmlFor="fontColor">Couleur du texte :</label>
+              <label htmlFor="fontColor">Couleur du texte</label>
               <input
                 id="fontColor"
                 type="color"
@@ -295,32 +319,81 @@ export default function ProductPage() {
               />
             </fieldset>
           </form>
-        </aside>
 
-        {/* Dropzone */}
-        <section
-          className="upload-container"
-          role="region"
-          aria-labelledby="upload-title"
-        >
-          <h3 id="upload-title" className="sr-only">
-            Importer une image
-          </h3>
-          <div
-            {...getRootProps()}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) =>
-              (e.key === "Enter" || e.key === " ") && getRootProps().onClick(e)
-            }
-            className="dropzone"
-            aria-label="Importer une image pour personnaliser le produit"
+          {/* Dropzone */}
+          <section
+            className="upload-container"
+            role="region"
+            aria-labelledby="upload-title"
           >
-            <input {...getInputProps()} />
-            <p>Déposez votre image ou cliquez pour importer</p>
-          </div>
-        </section>
+            <h3 id="upload-title" className="sr-only">
+              Importer une image
+            </h3>
+            <div
+              {...getRootProps()}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) =>
+                (e.key === "Enter" || e.key === " ") &&
+                getRootProps().onClick(e)
+              }
+              className="dropzone"
+              aria-label="Importer une image pour personnaliser le produit"
+            >
+              <input {...getInputProps()} />
+              <p>Déposez ou cliquez pour importer</p>
+            </div>
+          </section>
+        </aside>
       </section>
+
+      {/* Actions bas de page */}
+      <div className="product-actions">
+        <button className="generic-button" onClick={handleSaveClick}>
+          Enregistrer la création
+        </button>
+
+        <section
+          role="group"
+          aria-label="Choix de la quantité"
+          className="quantity-selector"
+        >
+          <button onClick={decrement} aria-label="Réduire la quantité">
+            −
+          </button>
+          <span aria-live="polite" aria-atomic="true">
+            {quantity}
+          </span>
+          <button onClick={increment} aria-label="Augmenter la quantité">
+            +
+          </button>
+        </section>
+
+        <button
+          className="generic-button"
+          onClick={() => handleAddToCart(quantity)}
+        >
+          Ajouter au panier
+        </button>
+
+        <Link
+          to="/panier"
+          style={{
+            width: "100%",
+            maxWidth: "480px",
+            display: "block",
+            margin: "0 auto",
+          }}
+        >
+          <button
+            className="generic-button"
+            aria-label="Accéder au panier"
+            style={{ width: "100%" }}
+          >
+            Accéder au panier
+          </button>
+        </Link>
+      </div>
 
       {/* Modales */}
       {isModalOpen && (
@@ -333,7 +406,7 @@ export default function ProductPage() {
       {isSaveModalOpen && (
         <SaveCreationModal
           isOpen={isSaveModalOpen}
-          onClose={closeSaveModal}
+          onClose={() => setIsSaveModalOpen(false)}
           productType={productType}
           productImages={product.images}
           currentSlide={currentSlide}
@@ -343,41 +416,6 @@ export default function ProductPage() {
           cropArea={cropZones[productType]}
         />
       )}
-
-      <button className="generic-button" onClick={handleSaveClick}>
-        Enregistrer la création
-      </button>
-      {/* Sélecteur de quantité */}
-      <section
-        role="group"
-        aria-label="Choix de la quantité"
-        className="quantity-selector"
-      >
-        <button onClick={decrement} aria-label="Réduire la quantité">
-          −
-        </button>
-        <span aria-live="polite" aria-atomic="true">
-          {quantity}
-        </span>
-        <button onClick={increment} aria-label="Augmenter la quantité">
-          +
-        </button>
-      </section>
-
-      {/* Actions */}
-      <button
-        className="generic-button"
-        onClick={() => handleAddToCart(quantity)}
-      >
-        Ajouter au panier
-      </button>
-
-      {/* Lien vers le panier */}
-      <Link to="/panier">
-        <button className="generic-button" aria-label="Accéder au panier">
-          Accéder au panier
-        </button>
-      </Link>
     </main>
   );
 }

@@ -14,8 +14,9 @@ const Home = () => {
       className="home-container"
       aria-labelledby="home-title"
     >
-      {/* Bannière principale */}
+      {/* Bannière hero */}
       <header className="home-banner" role="banner">
+        <p className="home-banner__label">Collection personnalisée</p>
         <h1 id="home-title">Personnalisez vos objets favoris</h1>
       </header>
 
@@ -32,19 +33,22 @@ const Home = () => {
               to: "/product/mug",
               img: mug,
               label: "Mug",
-              alt: "Exemple de mug blanc",
+              sub: "Céramique française, finition mate",
+              alt: "Exemple de mug personnalisable",
             },
             {
               to: "/product/tshirt",
               img: tshirt,
               label: "T-Shirt",
-              alt: "Exemple de t-shirt blanc",
+              sub: "Coton biologique, coupe unisexe",
+              alt: "Exemple de t-shirt personnalisable",
             },
             {
               to: "/product/pins",
               img: pins,
-              label: "Pin’s",
-              alt: "Exemple de pin’s en métal",
+              label: "Pin's",
+              sub: "Aluminium recyclé, finition brillante",
+              alt: "Exemple de pin's personnalisable",
             },
           ].map((p) => (
             <li key={p.to} className="product-selection__item" role="listitem">
@@ -53,8 +57,13 @@ const Home = () => {
                 className="product-selection__link"
                 aria-label={`Personnaliser ${p.label}`}
               >
-                <img src={p.img} alt={p.alt} loading="lazy" />
-                <span>{p.label}</span>
+                <div className="product-img-wrapper">
+                  <img src={p.img} alt={p.alt} loading="lazy" />
+                </div>
+                <div className="product-label">
+                  <span>{p.label}</span>
+                  <span className="product-cta-hint">Personnaliser →</span>
+                </div>
               </Link>
             </li>
           ))}
@@ -67,38 +76,33 @@ const Home = () => {
         role="region"
         aria-labelledby="product-info-title"
       >
+        <span className="product-info__label">Notre engagement</span>
         <h2 id="product-info-title">Pourquoi choisir nos produits ?</h2>
         <p>
           Nous vous proposons des articles de haute qualité, fabriqués en France
           à partir de matériaux biosourcés et durables. Mugs, t-shirts et pins
-          allient esthétisme, performance et respect de l’environnement.
+          allient esthétisme, performance et respect de l'environnement.
         </p>
 
         <ul className="product-info__list" role="list">
           <li className="product-info__item" role="listitem">
-            <h3>Mugs en céramique de haute qualité</h3>
+            <h3>Mugs en céramique</h3>
             <p>
               Nos mugs sont fabriqués en faïence française, une céramique
               réputée pour sa robustesse et son esthétisme garantissant une
               finition soignée et une durabilité appréciable. Nous collaborons
               avec des manufactures françaises renommées, telles que la
-              Faïencerie de Gien, fondée en 1821 et située dans le Loiret, qui
-              perpétue un savoir-faire d'exception dans la production de faïence
-              fine. Leur expertise garantit des produits à la fois esthétiques
-              et résistants, adaptés à un usage quotidien.
+              Faïencerie de Gien, fondée en 1821.
             </p>
           </li>
 
           <li className="product-info__item" role="listitem">
-            <h3>T-shirts en coton biologique français</h3>
+            <h3>T-shirts en coton bio</h3>
             <p>
               Nos t-shirts sont confectionnés à partir de coton biologique
               cultivé en France, assurant une empreinte écologique réduite et
               une traçabilité complète. Nous collaborons avec des marques
-              engagées dans le développement durable, telles que 1083, qui
-              propose des t-shirts en coton bio certifié, fabriqués
-              intégralement en France. Cette démarche garantit des textiles de
-              qualité supérieure, doux au toucher et résistants au temps.
+              engagées dans le développement durable, telles que 1083.
             </p>
           </li>
 
@@ -108,12 +112,7 @@ const Home = () => {
               Nos pins sont fabriqués à partir d'aluminium recyclé, provenant de
               circuits de recyclage français. Cette approche permet de réduire
               l'impact environnemental tout en assurant une qualité et une
-              finition irréprochables. Nous veillons à ce que chaque étape de
-              production respecte des normes strictes, garantissant des produits
-              durables et esthétiques.​ En choisissant nos produits, vous
-              soutenez l'artisanat français et optez pour des articles
-              écoresponsables, alliant qualité, durabilité et respect de
-              l'environnement.​
+              finition irréprochables.
             </p>
           </li>
         </ul>

@@ -1,5 +1,5 @@
 // src/pages/Gallery.jsx
-//=====================================
+// =====================================
 import { useState } from "react";
 import GalleryItem from "@/components/GalleryItem";
 import { useKeywords } from "@/hooks/pages/galleryPage/useKeywords";
@@ -12,20 +12,18 @@ export default function Gallery() {
   const [currentPage, setCurrentPage] = useState(1);
   const imagesPerPage = 20;
 
-  // Hooks
   const { keywords, loading: kwLoading } = useKeywords();
   const {
     images,
     totalImages,
     loading: imgLoading,
   } = useGallery(selectedKeywords, currentPage, imagesPerPage);
-  const { totalPages, canPrev, canNext, prev, next, goToPage } = usePagination(
+  const { totalPages, canPrev, canNext, prev, next } = usePagination(
     currentPage,
     totalImages,
     imagesPerPage
   );
 
-  // Gestion des clics sur mot-clé
   const handleKeywordClick = (kw) => {
     setSelectedKeywords((prev) =>
       prev.includes(kw) ? prev.filter((k) => k !== kw) : [...prev, kw]
@@ -40,7 +38,7 @@ export default function Gallery() {
       className="gallery-container"
       aria-labelledby="gallery-title"
     >
-      <h1 id="gallery-title">Galerie d’images</h1>
+      <h1 id="gallery-title">Galerie d'images</h1>
 
       {/* Nuage de mots-clés */}
       <section
@@ -52,17 +50,13 @@ export default function Gallery() {
           Filtrer par mot-clé
         </h2>
         {kwLoading ? (
-          <p role="status" aria-live="polite">
-            Chargement des mots-clés…
-          </p>
+          <p role="status" aria-live="polite">Chargement des filtres…</p>
         ) : (
           keywords.map(({ id, name }) => (
             <button
               key={id}
               type="button"
-              className={`keyword-btn ${
-                selectedKeywords.includes(name) ? "selected" : ""
-              }`}
+              className={`keyword-btn${selectedKeywords.includes(name) ? " selected" : ""}`}
               aria-pressed={selectedKeywords.includes(name)}
               onClick={() => handleKeywordClick(name)}
             >
@@ -72,14 +66,12 @@ export default function Gallery() {
         )}
       </section>
 
-      {/* Compteur d’images */}
+      {/* Compteur */}
       <p className="gallery-count" role="status" aria-live="polite">
         {imgLoading
-          ? "Chargement des images…"
+          ? "Chargement…"
           : totalImages > 0
-          ? `${totalImages} image${totalImages > 1 ? "s" : ""} trouvée${
-              totalImages > 1 ? "s" : ""
-            }`
+          ? `${totalImages} image${totalImages > 1 ? "s" : ""} trouvée${totalImages > 1 ? "s" : ""}`
           : "Aucune image trouvée"}
       </p>
 
@@ -89,13 +81,9 @@ export default function Gallery() {
         role="region"
         aria-labelledby="grid-title"
       >
-        <h2 id="grid-title" className="sr-only">
-          Résultats de la galerie
-        </h2>
+        <h2 id="grid-title" className="sr-only">Résultats de la galerie</h2>
         {imgLoading ? (
-          <p role="status" aria-live="polite">
-            Chargement...
-          </p>
+          <p role="status" aria-live="polite">Chargement…</p>
         ) : images.length > 0 ? (
           images.map((image) => <GalleryItem key={image.id} image={image} />)
         ) : (
@@ -112,7 +100,7 @@ export default function Gallery() {
             disabled={!canPrev}
             aria-label="Page précédente"
           >
-            ⬅️ Précédent
+            ← Précédent
           </button>
           <span aria-live="polite" aria-atomic="true">
             Page {currentPage} / {totalPages}
@@ -123,7 +111,7 @@ export default function Gallery() {
             disabled={!canNext}
             aria-label="Page suivante"
           >
-            Suivant ➡️
+            Suivant →
           </button>
         </nav>
       )}
