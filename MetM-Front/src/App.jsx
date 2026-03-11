@@ -1,11 +1,15 @@
+// src/App.jsx
+// ========================
+import { createPortal } from "react-dom";
 import PageMeta from "@/components/PageMeta";
 import AppRouter from "./router/AppRouter";
-import Signup from "./components/LoginModal";
-import Register from "./components/RegisterModal";
+import LoginModal from "./components/LoginModal";
+import RegisterModal from "./components/RegisterModal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthModal } from "@/context/AuthModalContext";
 import { useConfirm } from "@/hooks/components/confirmDialog/useConfirm.jsx";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const {
@@ -23,7 +27,13 @@ function App() {
     setShowSignup(true);
   };
 
-  const closeRegisterModal = () => {
+  const openRegisterModal = () => {
+    setShowSignup(false);
+    setShowRegister(true);
+  };
+
+  const closeAll = () => {
+    setShowSignup(false);
     setShowRegister(false);
   };
 
@@ -32,24 +42,26 @@ function App() {
       <PageMeta />
       <AppRouter />
 
-      {showSignup && (
-        <Signup
-          closeModal={() => setShowSignup(false)}
-          postLoginRedirect={postLoginRedirect}
-          setShowRegister={setShowRegister}
-        />
-      )}
+      {/* LoginModal — portal vers document.body */}
+      {showSignup &&
+        createPortal(
+          <LoginModal
+            onClose={closeAll}
+            onSwitchToRegister={openRegisterModal}
+            postLoginRedirect={postLoginRedirect}
+          />,
+          document.body,
+        )}
 
-      {showRegister && (
-        <div className="modal-overlay">
-          <Register
-            openLoginModal={openLoginModal}
-            closeRegisterModal={closeRegisterModal}
-          />
-        </div>
-      )}
+      {/* RegisterModal — portal vers document.body */}
+      {showRegister &&
+        createPortal(
+          <RegisterModal onClose={closeAll} onSwitchToLogin={openLoginModal} />,
+          document.body,
+        )}
 
       <ToastContainer position="top-right" autoClose={3000} />
+      <ScrollToTop />
       <ConfirmUI />
     </>
   );
