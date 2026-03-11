@@ -1,58 +1,65 @@
 // src/pages/AdminLogin.jsx
-//=====================================
+// =====================================
 import { useAdminLogin } from "@/hooks/admin/adminLoginPage/useAdminLogin";
 import { useNavigate } from "react-router-dom";
+import "@/styles/pages/_admin.scss";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
   const { credentials, error, handleChange, handleSubmit } = useAdminLogin();
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card p-4" style={{ width: "400px" }}>
-        <h2 className="text-center">Connexion Admin</h2>
-        {error && <div className="alert alert-danger">{error}</div>}
+    <main className="admin-login-page">
+      <div className="admin-login-card">
+
+        <div className="admin-login-header">
+          <h1>Admin</h1>
+          <span>Marcelle &amp; Maurice Shop</span>
+        </div>
+
+        {error && (
+          <div className="error-message" role="alert">{error}</div>
+        )}
+
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="admin-username" className="form-label">
-              Identifiant
-            </label>
+          <div className="form-group">
+            <label htmlFor="admin-username">Identifiant</label>
             <input
               id="admin-username"
               type="text"
               name="username"
-              className="form-control"
               value={credentials.username}
               onChange={handleChange}
               required
+              autoComplete="username"
             />
           </div>
-          <div className="mb-3">
-            <label htmlFor="admin-password" className="form-label">
-              Mot de passe
-            </label>
+          <div className="form-group">
+            <label htmlFor="admin-password">Mot de passe</label>
             <input
               id="admin-password"
               type="password"
               name="password"
-              className="form-control"
               value={credentials.password}
               onChange={handleChange}
               required
+              autoComplete="current-password"
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">
+
+          <button type="submit" className="btn-admin-login">
             Se connecter
           </button>
           <button
             type="button"
-            className="generic-button mt-2"
+            className="btn-admin-back"
             onClick={() => navigate("/")}
           >
-            Retour à l’accueil
+            ← Retour à l'accueil
           </button>
         </form>
+
       </div>
-    </div>
+    </main>
   );
 }
