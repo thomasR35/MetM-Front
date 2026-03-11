@@ -1,44 +1,26 @@
 // src/components/LoginModal.jsx
 // ======================================
-import { createPortal } from "react-dom";
 import "@/styles/components/_signup.scss";
-import RegisterModal from "./RegisterModal";
 import { useLoginModal } from "@/hooks/components/loginModal/useLoginModal";
 
-export default function LoginModal() {
-  const {
-    showSignup,
-    showRegister,
-    credentials,
-    error,
-    loading,
-    closeModal,
-    switchToRegister,
-    switchToLogin,
-    handleChange,
-    handleSubmit,
-  } = useLoginModal();
+export default function LoginModal({
+  onClose,
+  onSwitchToRegister,
+  postLoginRedirect,
+}) {
+  const { credentials, error, loading, handleChange, handleSubmit } =
+    useLoginModal({ onClose, postLoginRedirect });
 
-  // quand rien n'est affiché
-  if (!showSignup && !showRegister) return null;
-
-  // si on veut la modal d'inscription à la place
-  if (showRegister) {
-    return (
-      <RegisterModal closeModal={closeModal} switchToLogin={switchToLogin} />
-    );
-  }
-
-  // Modal de connexion
-  return createPortal(
-    <div className="modal-overlay" role="presentation">
+  return (
+    <div className="modal-overlay" role="presentation" onClick={onClose}>
       <div
         className="modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby="login-title"
+        onClick={(e) => e.stopPropagation()}
       >
-        <button className="close-btn" onClick={closeModal} aria-label="Fermer">
+        <button className="close-btn" onClick={onClose} aria-label="Fermer">
           ✖
         </button>
 
@@ -57,7 +39,7 @@ export default function LoginModal() {
           aria-describedby={error ? "login-error" : undefined}
         >
           <div className="input-group">
-            <label htmlFor="login-username">Nom d’utilisateur</label>
+            <label htmlFor="login-username">Nom d'utilisateur</label>
             <input
               id="login-username"
               name="username"
@@ -94,14 +76,13 @@ export default function LoginModal() {
             <button
               type="button"
               className="generic-button"
-              onClick={switchToRegister}
+              onClick={onSwitchToRegister}
             >
               Rejoignez-nous !
             </button>
           </p>
         </form>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
