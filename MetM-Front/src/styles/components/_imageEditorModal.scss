@@ -3,11 +3,14 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
+// ⚠️  Classes propres à cette modale — préfixe .editor-
+// pour éviter tout conflit avec .modal-overlay (_signup.scss)
+// ou .admin-modal-overlay (_admin-modals.scss)
+
 /* ========================
    OVERLAY
-   (réutilise les animations de _signup.scss)
 ======================== */
-.modal-overlay {
+.editor-overlay {
   position: fixed;
   inset: 0;
   background: rgba(42, 31, 26, 0.5);
@@ -15,15 +18,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9998; // juste sous .confirm-overlay (10000) et .admin-modal-overlay (9999)
   padding: 1rem;
-  animation: fadeIn 0.2s ease both;
+  animation: editorFadeIn 0.2s ease both;
 }
 
 /* ========================
    MODALE ÉDITEUR
 ======================== */
-.modal {
+.editor-modal {
   position: relative;
   background: #fdf8f5;
   padding: 2.5rem 2rem 2rem;
@@ -33,7 +36,7 @@
   overflow-y: auto;
   border: 1px solid rgba(180, 130, 120, 0.2);
   box-shadow: 0 24px 64px rgba(42, 31, 26, 0.18);
-  animation: slideUp 0.25s ease both;
+  animation: editorSlideUp 0.25s ease both;
 
   h3 {
     font-family: 'Cormorant Garamond', serif;
@@ -60,7 +63,7 @@
 /* ========================
    BOUTON FERMER
 ======================== */
-.close-btn {
+.editor-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -105,12 +108,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &:hover {
-      background: #2a1f1a;
-      color: #fdf8f5;
-      border-color: #2a1f1a;
-    }
-
+    &:hover,
     &[aria-pressed="true"] {
       background: #2a1f1a;
       color: #fdf8f5;
@@ -152,10 +150,8 @@
       border-radius: 50%;
       cursor: pointer;
       transition: transform 0.15s ease;
-    }
 
-    &::-webkit-slider-thumb:hover {
-      transform: scale(1.25);
+      &:hover { transform: scale(1.25); }
     }
   }
 }
@@ -191,9 +187,7 @@
   align-items: center;
   justify-content: center;
 
-  &.circle {
-    clip-path: circle(50%);
-  }
+  &.circle  { clip-path: circle(50%); }
 
   &.heart {
     clip-path: path(
@@ -208,9 +202,7 @@
     user-select: none;
     cursor: grab;
 
-    &:active {
-      cursor: grabbing;
-    }
+    &:active { cursor: grabbing; }
   }
 }
 
@@ -241,12 +233,12 @@
 /* ========================
    ANIMATIONS
 ======================== */
-@keyframes fadeIn {
+@keyframes editorFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes slideUp {
+@keyframes editorSlideUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }

@@ -1,167 +1,96 @@
 // src/components/RegisterModal.jsx
-// ========================
-import "../styles/pages/_register.scss";
+// ======================================
+import "@/styles/components/_signup.scss";
 import { useRegisterModal } from "@/hooks/components/registerModal/useRegisterModal";
 
-export default function RegisterModal() {
-  const {
-    credentials,
-    error,
-    successMessage,
-    loading,
-    handleChange,
-    handleSubmit,
-    closeRegisterModal,
-  } = useRegisterModal();
+export default function RegisterModal({ onClose, onSwitchToLogin }) {
+  const { formData, error, loading, handleChange, handleSubmit } =
+    useRegisterModal({ onClose });
 
   return (
-    <div
-      className="modal-content"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="register-title"
-    >
-      <button
-        className="close-modal"
-        onClick={closeRegisterModal}
-        aria-label="Fermer la fenêtre d’inscription"
-        aria-controls="register-form"
-      >
-        ✖
-      </button>
-
-      <h2 id="register-title">Créer un compte</h2>
-
-      {error && (
-        <div
-          id="register-error"
-          className="error-message"
-          role="alert"
-          aria-live="assertive"
-        >
-          {error}
-        </div>
-      )}
-      {successMessage && (
-        <div
-          id="register-success"
-          className="success-message"
-          role="status"
-          aria-live="polite"
-        >
-          {successMessage}
-        </div>
-      )}
-
-      <form
-        id="register-form"
-        onSubmit={handleSubmit}
+    <div className="modal-overlay" role="presentation" onClick={onClose}>
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
         aria-labelledby="register-title"
-        aria-describedby={
-          (error ? "register-error " : "") +
-          (successMessage ? "register-success" : "")
-        }
+        onClick={(e) => e.stopPropagation()}
       >
-        <div
-          className="input-group"
-          role="group"
-          aria-labelledby="label-username"
-        >
-          <label id="label-username" htmlFor="register-username">
-            Nom d’utilisateur
-          </label>
-          <input
-            type="text"
-            id="register-username"
-            name="username"
-            value={credentials.username}
-            onChange={handleChange}
-            required
-            aria-required="true"
-            aria-labelledby="label-username"
-          />
-        </div>
-
-        <div className="input-group" role="group" aria-labelledby="label-email">
-          <label id="label-email" htmlFor="register-email">
-            Email
-          </label>
-          <input
-            type="email"
-            id="register-email"
-            name="email"
-            value={credentials.email}
-            onChange={handleChange}
-            required
-            aria-required="true"
-            aria-labelledby="label-email"
-          />
-        </div>
-
-        <div
-          className="input-group"
-          role="group"
-          aria-labelledby="label-password"
-        >
-          <p id="register-password-requirements" className="pwd-requirements">
-            Le mot de passe doit faire au moins 8 caractères, contenir une
-            majuscule, un chiffre et un caractère spécial.
-          </p>
-          <label id="label-password" htmlFor="register-password">
-            Mot de passe
-          </label>
-          <input
-            type="password"
-            id="register-password"
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            required
-            aria-required="true"
-            pattern="(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}"
-            title="Le mot de passe doit contenir au moins 8 caractères, dont 1 majuscule, 1 chiffre et 1 caractère spécial."
-            aria-labelledby="label-password"
-            aria-describedby={`register-password-requirements${
-              error ? " register-error" : ""
-            }`}
-          />
-        </div>
-
-        <div
-          className="input-group"
-          role="group"
-          aria-labelledby="label-confirmPassword"
-        >
-          <label id="label-confirmPassword" htmlFor="register-confirmPassword">
-            Confirmer le mot de passe
-          </label>
-          <input
-            type="password"
-            id="register-confirmPassword"
-            name="confirmPassword"
-            value={credentials.confirmPassword}
-            onChange={handleChange}
-            required
-            aria-required="true"
-            pattern="(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}"
-            title="Le mot de passe doit contenir au moins 8 caractères, dont 1 majuscule, 1 chiffre et 1 caractère spécial."
-            aria-labelledby="label-confirmPassword"
-            aria-describedby={`register-password-requirements${
-              error ? " register-error" : ""
-            }`}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="generic-button"
-          disabled={loading}
-          aria-busy={loading}
-          aria-disabled={loading}
-        >
-          {loading ? "Inscription en cours…" : "S’inscrire"}
+        <button className="close-btn" onClick={onClose} aria-label="Fermer">
+          ✖
         </button>
-      </form>
+
+        <h2 id="register-title" className="modal-title">
+          Inscription
+        </h2>
+
+        {error && (
+          <div id="register-error" className="error-message" role="alert">
+            {error}
+          </div>
+        )}
+
+        <form
+          onSubmit={handleSubmit}
+          aria-describedby={error ? "register-error" : undefined}
+        >
+          <div className="input-group">
+            <label htmlFor="register-username">Nom d'utilisateur</label>
+            <input
+              id="register-username"
+              name="username"
+              type="text"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="register-email">Email</label>
+            <input
+              id="register-email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="register-password">Mot de passe</label>
+            <input
+              id="register-password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="apply-btn"
+            disabled={loading}
+            aria-busy={loading}
+          >
+            {loading ? "Inscription en cours…" : "S'inscrire"}
+          </button>
+
+          <p className="signup-link">
+            Déjà inscrit&nbsp;?
+            <button
+              type="button"
+              className="generic-button"
+              onClick={onSwitchToLogin}
+            >
+              Se connecter
+            </button>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

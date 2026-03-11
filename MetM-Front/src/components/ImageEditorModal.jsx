@@ -2,7 +2,6 @@
 // ========================
 import "@/styles/components/_imageEditorModal.scss";
 import { createPortal } from "react-dom";
-import React from "react";
 import { useImageEditor } from "@/hooks/components/imageEditorModal/useImageEditor";
 
 export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
@@ -21,23 +20,25 @@ export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
 
   return createPortal(
     <div
-      className="modal-overlay"
+      className="editor-overlay"
       role="dialog"
       aria-modal="true"
       aria-labelledby="editor-title"
       aria-describedby="editor-desc"
     >
-      <div className="modal" role="document">
+      <div className="editor-modal" role="document">
+
         <button
-          className="close-btn"
+          className="editor-close"
           onClick={onClose}
-          aria-label="Fermer l’éditeur d’image"
+          aria-label="Fermer l'éditeur d'image"
         >
-          ✖
+          ✕
         </button>
-        <h3 id="editor-title">Ajuster l’image</h3>
+
+        <h3 id="editor-title">Ajuster l'image</h3>
         <p id="editor-desc" className="sr-only">
-          Utilisez les options de forme, le curseur de zoom et glissez l’image
+          Utilisez les options de forme, le curseur de zoom et glissez l'image
           pour la recadrer. Appuyez sur Appliquer lorsque vous avez terminé.
         </p>
 
@@ -63,9 +64,7 @@ export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
         </div>
 
         <div className="zoom-control" role="group" aria-labelledby="zoom-label">
-          <label id="zoom-label" htmlFor="zoom-range">
-            Zoom
-          </label>
+          <label id="zoom-label" htmlFor="zoom-range">Zoom</label>
           <input
             id="zoom-range"
             type="range"
@@ -114,6 +113,7 @@ export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
         >
           Appliquer
         </button>
+
       </div>
     </div>,
     document.body
