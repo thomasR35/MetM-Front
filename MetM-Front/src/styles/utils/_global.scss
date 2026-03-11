@@ -3,59 +3,31 @@
 @use "variables" as var;
 
 /* ========================
-   FONTS CUSTOM
+   FONTS — Google Fonts (chargées via index.html ou main.jsx)
+   Les @font-face locaux Asap/Gwendolyn sont supprimés
+   car remplacés par Cormorant Garamond + Jost
 ======================== */
-
-/* 🔹 Asap Regular */
-@font-face {
-  font-family: "Asap";
-  src: url("../../assets/fonts/Asap-Regular.woff2") format("woff2"),
-    url("../../assets/fonts/Asap-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* 🔹 Asap Italic */
-@font-face {
-  font-family: "Asap";
-  src: url("../../assets/fonts/Asap-Italic.woff2") format("woff2"),
-    url("../../assets/fonts/Asap-Italic.woff") format("woff");
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* 🔹 Gwendolyn Regular */
-@font-face {
-  font-family: "Gwendolyn";
-  src: url("../../assets/fonts/Gwendolyn-Regular.woff2") format("woff2"),
-    url("../../assets/fonts/Gwendolyn-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* 🔹 Gwendolyn Bold */
-@font-face {
-  font-family: "Gwendolyn";
-  src: url("../../assets/fonts/Gwendolyn-Bold.woff2") format("woff2"),
-    url("../../assets/fonts/Gwendolyn-Bold.woff") format("woff");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
 
 /* ========================
-   BASE HTML & BODY
+   RESET / BASE
 ======================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Asap", sans-serif;
+  font-family: var.$font-sans;
+  font-weight: 300;
   background-color: var.$main-bg;
+  color: var.$text;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ========================
@@ -72,12 +44,83 @@ body {
 }
 
 /* ========================
+   SCROLLBAR DISCRÈTE
+======================== */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(180, 130, 120, 0.25);
+  border-radius: 10px;
+
+  &:hover {
+    background: rgba(180, 130, 120, 0.45);
+  }
+}
+
+/* ========================
+   SÉLECTION TEXTE
+======================== */
+::selection {
+  background: rgba(180, 130, 120, 0.2);
+  color: var.$dark;
+}
+
+/* ========================
+   LIENS GLOBAUX
+======================== */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ========================
+   FOCUS VISIBLE (accessibilité)
+======================== */
+:focus-visible {
+  outline: 2px solid var.$accent;
+  outline-offset: 2px;
+}
+
+/* ========================
    FOOTER GLOBAL
 ======================== */
 footer {
-  background-color: var.$navbar-bg;
+  background: var.$dark;
+  color: rgba(253, 248, 245, 0.45);
   padding: 1.5rem 2rem;
   text-align: center;
   width: 100%;
-  border-top: 1px solid var.$text;
+  font-family: var.$font-sans;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+/* ========================
+   ANIMATION GLOBALE
+======================== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

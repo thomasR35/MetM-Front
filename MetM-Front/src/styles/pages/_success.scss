@@ -16,9 +16,9 @@
 
   /* icône décorative */
   &::before {
-    content: '✓';
+    content: "✓";
     display: block;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-size: 3rem;
     font-weight: 300;
     color: rgba(180, 130, 120, 0.4);
@@ -27,7 +27,10 @@
   }
 
   h1 {
-    font-family: 'Cormorant Garamond', serif;
+    // surcharge le .static-page > h1 { background: #2a1f1a } de _terms.scss
+    background: transparent;
+    padding: 0;
+    font-family: "Cormorant Garamond", serif;
     font-weight: 300;
     font-style: italic;
     font-size: clamp(1.6rem, 3vw, 2.4rem);
@@ -35,8 +38,11 @@
     letter-spacing: 0.02em;
     margin-bottom: 0.4rem;
 
+    &::before {
+      display: none;
+    } // désactive le glow radial hérité
     &::after {
-      content: '';
+      content: "";
       display: block;
       width: 40px;
       height: 1px;
@@ -46,7 +52,7 @@
   }
 
   p {
-    font-family: 'Jost', sans-serif;
+    font-family: "Jost", sans-serif;
     font-size: 0.78rem;
     letter-spacing: 0.08em;
     color: rgba(42, 31, 26, 0.45);
@@ -56,7 +62,7 @@
   }
 
   code {
-    font-family: 'Jost', sans-serif;
+    font-family: "Jost", sans-serif;
     font-size: 0.75rem;
     letter-spacing: 0.06em;
     color: rgba(42, 31, 26, 0.55);
@@ -68,7 +74,7 @@
 
   .generic-button {
     margin-top: 2.5rem;
-    font-family: 'Jost', sans-serif;
+    font-family: "Jost", sans-serif;
     font-size: 0.78rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -78,7 +84,9 @@
     background: #2a1f1a;
     color: #fdf8f5;
     cursor: pointer;
-    transition: background 0.22s ease, border-color 0.22s ease;
+    transition:
+      background 0.22s ease,
+      border-color 0.22s ease;
 
     &:hover {
       background: #b48278;
@@ -88,6 +96,12 @@
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,92 +1,120 @@
 // src/styles/utils/_mixins.scss
 // ========================
 @use "variables" as var;
-@use "global";
 
 /* ========================
-   MIXINS DE RESPONSIVITÉ
+   RESPONSIVITÉ
+   Breakpoints : xl lg md-lg md sm-md sm xs
 ======================== */
 @mixin responsive($breakpoint) {
   @if $breakpoint == xl {
-    @media (min-width: 1400px) {
-      @content;
-    }
+    @media (min-width: 1400px)                          { @content; }
   } @else if $breakpoint == lg {
-    @media (max-width: 1399px) and (min-width: 1200px) {
-      @content;
-    }
+    @media (max-width: 1399px) and (min-width: 1200px)  { @content; }
   } @else if $breakpoint == md-lg {
-    @media (max-width: 1199px) and (min-width: 1024px) {
-      @content;
-    }
+    @media (max-width: 1199px) and (min-width: 1024px)  { @content; }
   } @else if $breakpoint == md {
-    @media (max-width: 1023px) and (min-width: 992px) {
-      @content;
-    }
+    @media (max-width: 1023px) and (min-width: 992px)   { @content; }
   } @else if $breakpoint == sm-md {
-    @media (max-width: 991px) and (min-width: 768px) {
-      @content;
-    }
+    @media (max-width: 991px)  and (min-width: 768px)   { @content; }
   } @else if $breakpoint == sm {
-    @media (max-width: 767px) and (min-width: 426px) {
-      @content;
-    }
-  } @else if ($breakpoint == xs) {
-    @media (max-width: 425px) {
-      @content;
-    }
+    // ⚠️ couvre TOUT < 768px (incluant xs/375px)
+    // Avant : min-width: 426px → les écrans < 426px n'étaient jamais couverts
+    @media (max-width: 767px)                           { @content; }
+  } @else if $breakpoint == xs {
+    // Cas ultra-spécifiques (très petits téléphones < 375px)
+    @media (max-width: 375px)                           { @content; }
+  }
+  // alias pratiques
+  @else if $breakpoint == mobile {
+    @media (max-width: 767px)                           { @content; }
+  } @else if $breakpoint == tablet {
+    @media (max-width: 1023px) and (min-width: 768px)   { @content; }
   }
 }
 
 /* ========================
-   MIXIN STYLE DE POLICE
+   TYPOGRAPHIE
 ======================== */
-@mixin font-style($font-family, $font-weight: normal, $font-size: 16px) {
-  font-family: $font-family, sans-serif;
-  font-weight: $font-weight;
-  font-size: $font-size;
+@mixin font-serif($size: 1rem, $weight: 300, $style: normal) {
+  font-family: var.$font-serif;
+  font-size: $size;
+  font-weight: $weight;
+  font-style: $style;
+}
+
+@mixin font-sans($size: 0.85rem, $weight: 400) {
+  font-family: var.$font-sans;
+  font-size: $size;
+  font-weight: $weight;
+}
+
+// Alias pour compatibilité
+@mixin font-style($family, $weight: normal, $size: 16px) {
+  font-family: $family, sans-serif;
+  font-weight: $weight;
+  font-size: $size;
 }
 
 /* ========================
-   MIXIN BOUTON CLASSIQUE
+   BOUTON CTA (brun → terracotta)
 ======================== */
-@mixin button-style($bg-color) {
-  background-color: $bg-color;
-  color: var.$light-color;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 5px;
+@mixin button-style($bg-color: var.$dark) {
+  font-family: var.$font-sans;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: $bg-color;
+  color: var.$text-light;
+  border: 1px solid $bg-color;
+  border-radius: var.$radius-sm;
+  padding: 0.75rem 1.5rem;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  transition: background 0.22s ease, border-color 0.22s ease;
 
   &:hover {
-    background-color: darken($bg-color, 10%);
+    background: var.$accent;
+    border-color: var.$accent;
   }
 }
 
-/* ========================
-   MIXIN BOUTON PRINCIPAL (typé Gwendolyn)
-======================== */
-@mixin button-main($button-bg) {
-  background-color: var.$button-bg;
-  color: var.$text;
-  padding: 0 1.5rem;
-  border-radius: 10px;
-  border: solid 1px var.$text;
-  @include font-style("Gwendolyn", 400, 2.5rem);
-
-  &:hover {
-    background-color: var.$links-hover;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-  }
+// Alias ancienne API
+@mixin button-main($bg: var.$accent) {
+  @include button-style($bg);
 }
+
 /* ========================
-   MIXIN POUR STYLE DE CARTE
+   CARTE
 ======================== */
 @mixin card-style {
-  background: var.$light-color;
+  background: var.$card-bg;
+  border: var.$border-muted;
+  border-radius: var.$radius-md;
   padding: var.$spacing-md;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================
+   LABEL DE SECTION
+======================== */
+@mixin section-label {
+  font-family: var.$font-sans;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var.$accent;
+  font-weight: 400;
+}
+
+/* ========================
+   LIGNE DÉCORATIVE (::after sur titres)
+======================== */
+@mixin title-underline($width: 40px) {
+  &::after {
+    content: '';
+    display: block;
+    width: $width;
+    height: 1px;
+    background: rgba(180, 130, 120, 0.35);
+    margin: 0.75rem auto 0;
+  }
 }

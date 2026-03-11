@@ -1,30 +1,63 @@
 // src/styles/utils/_variables.scss
+// ========================
+
 /* ========================
-   PALETTE COULEURS
+   PALETTE PRINCIPALE
 ======================== */
+$main-bg:        #fdf8f5;   // fond crème
+$dark:           #2a1f1a;   // brun foncé — texte, hero, sidebar, CTA
+$accent:         #b48278;   // terracotta — accents, prix, hover, focus
+$accent-pale:    rgba(180, 130, 120, 0.12); // terracotta très dilué
+$card-bg:        #ffffff;   // cartes, inputs
+$image-bg:       #f5ede8;   // fond images / sections intermédiaires
 
-/* 🎨 Couleurs Bootstrap-like */
-$primary-color: #007bff;
-$secondary-color: #6c757d;
-$success-color: #28a745;
-$danger-color: #dc3545;
-$warning-color: #ffc107;
-$light-color: #faf8f9;
-$dark-color: #343a40;
-$light-gray: #f5f5f5;
+/* ========================
+   TEXTE
+======================== */
+$text:           #2a1f1a;
+$text-muted:     rgba(42, 31, 26, 0.45);
+$text-light:     #fdf8f5;
 
-/* 🎨 Couleurs personnalisées du site */
-$main-bg: #ffe5ec;
-$navbar-bg: #ffc2d1;
-$text-bg: #ffb3c6;
-$button-bg: #fb6f92;
-$links: #395619;
-$links-hover: #ff8fab;
-$text: #0b0809;
+/* ========================
+   ÉTATS SÉMANTIQUES
+   (toasts, alertes, confirms)
+======================== */
+$success:        #5c8a6a;   // vert discret
+$danger:         #b45050;   // rouge discret
+$warning:        #b48e50;   // ambre discret
+$info:           #4f7a9e;   // bleu-gris discret
+
+/* ========================
+   COMPATIBILITÉ (anciens mixins)
+   — gardés pour ne pas casser les @use existants
+======================== */
+$primary-color:   $accent;
+$secondary-color: $text-muted;
+$success-color:   $success;
+$danger-color:    $danger;
+$warning-color:   $warning;
+$light-color:     $main-bg;
+$dark-color:      $dark;
+$light-gray:      $image-bg;
 
 /* ========================
    ESPACEMENTS
 ======================== */
-$spacing-sm: 10px;
-$spacing-md: 20px;
-$spacing-lg: 30px;
+$spacing-xs:  6px;
+$spacing-sm:  10px;
+$spacing-md:  20px;
+$spacing-lg:  32px;
+$spacing-xl:  56px;
+
+/* ========================
+   TYPOGRAPHIE
+======================== */
+$font-serif:  'Cormorant Garamond', Georgia, serif;
+$font-sans:   'Jost', system-ui, sans-serif;
+
+/* ========================
+   BORDER / RADIUS
+======================== */
+$radius-sm:   2px;
+$radius-md:   3px;
+$border-muted: 1px solid rgba(180, 130, 120, 0.2);

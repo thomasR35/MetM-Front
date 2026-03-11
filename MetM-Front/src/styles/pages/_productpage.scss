@@ -3,7 +3,7 @@
 @use "../utils/variables" as var;
 @use "../utils/mixins" as mix;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap");
 
 /* ================== 
    PAGE PRINCIPALE 
@@ -26,7 +26,7 @@
   background: #2a1f1a;
   text-align: center;
   padding: 3.5rem 2rem 3rem;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-weight: 300;
   font-style: italic;
   font-size: clamp(1.8rem, 3.5vw, 3rem);
@@ -38,7 +38,7 @@
   width: 100%;
 
   &::after {
-    content: '';
+    content: "";
     display: block;
     width: 48px;
     height: 1px;
@@ -47,10 +47,14 @@
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 70% 60% at 50% 80%, rgba(180,130,120,0.15) 0%, transparent 70%);
+    background: radial-gradient(
+      ellipse 70% 60% at 50% 80%,
+      rgba(180, 130, 120, 0.15) 0%,
+      transparent 70%
+    );
     pointer-events: none;
   }
 }
@@ -59,7 +63,7 @@
    PRIX 
 ===================== */
 .price {
-  font-family: 'Jost', sans-serif !important;
+  font-family: "Jost", sans-serif !important;
   font-weight: 300 !important;
   font-size: 0.8rem !important;
   letter-spacing: 0.22em;
@@ -78,7 +82,7 @@
   text-align: center;
 
   h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-weight: 300;
     font-style: italic;
     font-size: 1.1rem;
@@ -95,7 +99,7 @@
   }
 
   .product-switch-link {
-    font-family: 'Jost', sans-serif;
+    font-family: "Jost", sans-serif;
     font-size: 0.75rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -107,7 +111,8 @@
     transition: all 0.22s ease;
     background: transparent;
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
       background: #2a1f1a;
       color: #fdf8f5;
       border-color: #2a1f1a;
@@ -133,14 +138,13 @@
     grid-template-columns: 1fr 280px;
   }
 
-  @include mix.responsive(sm) {
-    grid-template-columns: 1fr;
-    padding: 0 1.5rem 3rem;
+  @include mix.responsive(sm-md) {
+    grid-template-columns: 1fr 240px;
   }
 
-  @include mix.responsive(xs) {
+  @include mix.responsive(sm) {
     grid-template-columns: 1fr;
-    padding: 0 1rem 2rem;
+    padding: 0 1.25rem 2.5rem;
   }
 }
 
@@ -217,7 +221,7 @@
   }
 
   label {
-    font-family: 'Jost', sans-serif;
+    font-family: "Jost", sans-serif;
     font-size: 0.7rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -230,7 +234,7 @@
     border: 1px solid rgba(180, 130, 120, 0.25);
     border-radius: 2px;
     background: #fdf8f5;
-    font-family: 'Jost', sans-serif;
+    font-family: "Jost", sans-serif;
     font-size: 0.88rem;
     color: #2a1f1a;
     outline: none;
@@ -273,7 +277,7 @@
     border: 1px solid rgba(180, 130, 120, 0.25);
     border-radius: 2px;
     background: #fdf8f5;
-    font-family: 'Jost', sans-serif;
+    font-family: "Jost", sans-serif;
     font-size: 0.88rem;
     color: #2a1f1a;
     outline: none;
@@ -298,7 +302,7 @@
 
   /* Section title inside form */
   .options-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-weight: 300;
     font-style: italic;
     font-size: 1.1rem;
@@ -313,51 +317,57 @@
    ZONE D'UPLOAD D'IMAGE 
 ===================== */
 .upload-container {
-  grid-column: 1;
-  grid-row: 2;
+  // ⚠️ dans .product-aside (flex column) — pas de grid props
   width: 100%;
-  padding-top: 1.5rem;
-
-  @include mix.responsive(sm) {
-    grid-column: 1;
-    grid-row: auto;
-    padding-top: 0;
-  }
+  box-sizing: border-box;
 
   .dropzone {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
     height: 140px;
+    padding: 1rem;
+    box-sizing: border-box;
     border: 1px dashed rgba(180, 130, 120, 0.4);
     background: #fff;
     border-radius: 3px;
     cursor: pointer;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    text-align: center;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border-color: #b48278;
       background: rgba(180, 130, 120, 0.04);
       outline: none;
     }
 
     p {
-      font-family: 'Jost', sans-serif !important;
-      font-size: 0.78rem !important;
-      letter-spacing: 0.1em;
+      font-family: "Jost", sans-serif !important;
+      font-size: 0.75rem !important;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: rgba(42, 31, 26, 0.4) !important;
       margin: 0 !important;
+      line-height: 1.4;
+      text-align: center;
+      width: 100%;
+      word-break: break-word;
     }
 
-    /* upload icon */
     &::before {
-      content: '↑';
-      font-size: 1.5rem;
+      content: "↑";
+      font-size: 1.4rem;
       color: rgba(180, 130, 120, 0.45);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.45rem;
       display: block;
+      line-height: 1;
+      width: 100%;
+      text-align: center;
       transition: transform 0.2s ease;
     }
 
@@ -399,7 +409,7 @@
   }
 
   span {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: "Cormorant Garamond", serif;
     font-size: 1.4rem;
     font-weight: 300;
     color: #2a1f1a;
@@ -412,7 +422,7 @@
     BOUTONS D'ACTION 
 ========================== */
 .generic-button {
-  font-family: 'Jost', sans-serif;
+  font-family: "Jost", sans-serif;
   font-weight: 400;
   font-size: 0.78rem;
   letter-spacing: 0.16em;
@@ -473,6 +483,12 @@
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
