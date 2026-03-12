@@ -98,14 +98,16 @@
    GRILLE DES ARTICLES
 ======================== */
 .orders-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.25rem;
   list-style: none;
-  padding: 0;
   margin: 0 auto;
   max-width: 900px;
   padding: 0 4vw;
+
+  .order-card { flex: 0 0 200px; }
 
   @include mix.responsive(xs) { padding: 0 1rem; }
 }
