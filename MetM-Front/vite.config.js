@@ -5,8 +5,8 @@ import path from "path";
 import { imagetools } from "vite-imagetools";
 import compression from "vite-plugin-compression";
 
-export default defineConfig({
-  base: "/MetM-Front/",
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/MetM-Front/" : "/",
   plugins: [
     react(),
     imagetools(),
@@ -38,4 +38,4 @@ export default defineConfig({
     port: 5000,
     strictPort: true,
   },
-});
+}));
