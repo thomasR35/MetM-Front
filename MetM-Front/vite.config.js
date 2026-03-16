@@ -19,12 +19,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://mauriceetmarcelle.go.yj.fr/",
+        target: "https://metm.42web.io/",
         changeOrigin: true,
         secure: false,
       },
       "/uploads": {
-        target: "https://mauriceetmarcelle.go.yj.fr/",
+        target: "https://metm.42web.io/uploads",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/uploads/, "/uploads"),
       },
