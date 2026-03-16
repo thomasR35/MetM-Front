@@ -38,7 +38,7 @@ export default function OrderDetailPage() {
           >
             <img
               src={
-                "https://mauriceetmarcelle.go.yj.fr" + item.product_image_url ||
+                "https://metm.42web.io/" + item.product_image_url ||
                 "/images/placeholder.png"
               }
               alt={item.product_name}
