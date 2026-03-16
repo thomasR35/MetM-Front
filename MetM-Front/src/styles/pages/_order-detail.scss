@@ -1,0 +1,124 @@
+// src/styles/pages/_order-detail.scss
+// ========================
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+.order-detail {
+  width: 100%;
+  background: var.$main-bg;
+  animation: fadeUp 0.6s ease both;
+  padding-bottom: 5rem;
+
+  > p {
+    font-family: var.$font-sans;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: var.$text-muted;
+    font-style: italic;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+}
+
+.order-details {
+  @include mix.hero-banner;
+  padding-bottom: 3rem;
+
+  h1 {
+    font-family: var.$font-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    color: var.$text-light;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.4rem;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 1px;
+      background: rgba(253, 248, 245, 0.25);
+      margin: 1rem auto 1.25rem;
+    }
+  }
+
+  p {
+    font-family: var.$font-sans;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: rgba(253, 248, 245, 0.5);
+    text-transform: uppercase;
+    margin: 0.35rem 0;
+
+    strong, span { color: rgba(253, 248, 245, 0.85); font-weight: 400; }
+  }
+}
+
+.order-detail > h2 {
+  @include mix.section-label;
+  text-align: center;
+  margin: 3rem 0 1.5rem;
+}
+
+.orders-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 0 4vw;
+
+  .order-card { flex: 0 0 200px; }
+
+  @include mix.responsive(xs) { padding: 0 1rem; }
+}
+
+.order-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 1rem;
+  background: var.$card-bg;
+  border: 1px solid rgba(180, 130, 120, 0.18);
+  border-radius: var.$radius-md;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(42, 31, 26, 0.08); }
+
+  .order-thumb {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: var.$radius-sm;
+    background: var.$image-bg;
+    border: 1px solid rgba(180, 130, 120, 0.12);
+    margin-bottom: 1rem;
+  }
+
+  .order-info {
+    text-align: center;
+    width: 100%;
+
+    h3 {
+      font-family: var.$font-sans;
+      font-weight: 400;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var.$dark;
+      margin: 0 0 0.4rem;
+    }
+
+    p {
+      font-family: var.$font-serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var.$accent;
+      margin: 0;
+    }
+  }
+}

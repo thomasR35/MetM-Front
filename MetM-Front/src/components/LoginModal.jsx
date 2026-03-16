@@ -1,6 +1,5 @@
 // src/components/LoginModal.jsx
 // ======================================
-import "@/styles/components/_signup.scss";
 import { useLoginModal } from "@/hooks/components/loginModal/useLoginModal";
 
 export default function LoginModal({

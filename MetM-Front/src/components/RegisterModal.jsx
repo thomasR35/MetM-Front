@@ -1,6 +1,5 @@
 // src/components/RegisterModal.jsx
 // ======================================
-import "@/styles/components/_signup.scss";
 import { useRegisterModal } from "@/hooks/components/registerModal/useRegisterModal";
 
 export default function RegisterModal({ onClose, onSwitchToLogin }) {

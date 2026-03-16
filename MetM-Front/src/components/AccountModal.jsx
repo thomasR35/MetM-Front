@@ -3,7 +3,6 @@
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useConfirm } from "@/hooks/components/confirmDialog/useConfirm";
-import "@/styles/components/_accountModal.scss";
 
 export default function AccountModal({ isOpen, onClose }) {
   const navigate = useNavigate();

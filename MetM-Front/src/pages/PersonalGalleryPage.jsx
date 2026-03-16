@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { fetchMyImages } from "@/api/images";
 import GalleryItem from "@/components/GalleryItem";
-import "@/styles/pages/_personalGallery.scss";
+import "@/styles/pages/_personal-gallery.scss";
 
 export default function PersonalGalleryPage() {
   const [images, setImages] = useState([]);

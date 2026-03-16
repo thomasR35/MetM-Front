@@ -1,0 +1,105 @@
+// src/styles/pages/_orders-history.scss
+// ========================
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+.orders-history {
+  width: 100%;
+  background: var.$main-bg;
+  animation: fadeUp 0.6s ease both;
+  padding-bottom: 5rem;
+
+  > h1 { @include mix.hero-banner; }
+
+  > p {
+    font-family: var.$font-sans;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: var.$text-muted;
+    font-style: italic;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .orders-list {
+    list-style: none;
+    padding: 0 4vw;
+    margin: 3rem auto 0;
+    max-width: 760px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @include mix.responsive(xs) { padding: 0 1rem; }
+  }
+
+  .order-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var.$card-bg;
+    border: 1px solid rgba(180, 130, 120, 0.18);
+    border-radius: var.$radius-md;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+
+    &:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(42, 31, 26, 0.07); }
+
+    @include mix.responsive(xs) { flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1rem; }
+
+    .order-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      h2 {
+        font-family: var.$font-serif;
+        font-weight: 300;
+        font-style: italic;
+        font-size: 1.3rem;
+        color: var.$dark;
+        margin: 0;
+      }
+
+      p {
+        font-family: var.$font-sans;
+        font-size: 0.72rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var.$text-muted;
+        margin: 0;
+
+        &:last-child {
+          color: var.$accent;
+          font-family: var.$font-serif;
+          font-style: italic;
+          font-size: 1rem;
+          letter-spacing: 0.02em;
+          text-transform: none;
+        }
+      }
+    }
+
+    .details-link {
+      font-family: var.$font-sans;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.4rem;
+      border: 1px solid rgba(42, 31, 26, 0.22);
+      border-radius: var.$radius-sm;
+      background: transparent;
+      color: var.$dark;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+
+      &:hover, &:focus { background: var.$dark; color: var.$text-light; border-color: var.$dark; outline: none; }
+
+      @include mix.responsive(xs) { align-self: flex-end; }
+    }
+  }
+}

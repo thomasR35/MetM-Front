@@ -2,7 +2,7 @@
 // ========================
 import { useGalleryItem } from "@/hooks/components/galleryItem/useGalleryItem";
 import placeholder from "@/assets/images/placeholder.jpg";
-import "@/styles/components/_galleryItem.scss";
+import "@/styles/components/_gallery-item.scss";
 
 export default function GalleryItem({ image }) {
   const { imageUrl, handleDownload } = useGalleryItem({
@@ -11,7 +11,10 @@ export default function GalleryItem({ image }) {
   });
 
   return (
-    <article className="gallery-item" aria-label={`Image de ${image.uploaded_by}`}>
+    <article
+      className="gallery-item"
+      aria-label={`Image de ${image.uploaded_by}`}
+    >
       <div className="gallery-image-wrapper">
         <img
           src={imageUrl}

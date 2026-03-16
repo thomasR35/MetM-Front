@@ -1,0 +1,103 @@
+// src/styles/components/_save-creation-modal.scss
+// ========================
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+.modal {
+  height: min-content;
+  max-width: 480px;
+}
+
+.preview {
+  width: 100%;
+  border-radius: var.$radius-sm;
+  overflow: hidden;
+  border: 1px solid rgba(180, 130, 120, 0.18);
+  background: var.$image-bg;
+  margin-bottom: 1.5rem;
+
+  canvas, img { display: block; width: 100%; height: auto; }
+}
+
+.keyword-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+
+  label { @include mix.form-label; }
+
+  input { @include mix.form-field; }
+
+  .generic-button {
+    align-self: flex-start;
+    font-family: var.$font-sans;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(42, 31, 26, 0.22);
+    border-radius: var.$radius-sm;
+    background: transparent;
+    color: var.$dark;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover { background: var.$dark; color: var.$text-light; border-color: var.$dark; }
+  }
+}
+
+.keywords-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  min-height: 1.5rem;
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var.$font-sans;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var.$text-light;
+    background: var.$dark;
+    border-radius: var.$radius-sm;
+    padding: 0.3rem 0.6rem 0.3rem 0.8rem;
+
+    .close-btn {
+      position: static;
+      width: 16px;
+      height: 16px;
+      font-size: 0.7rem;
+      color: rgba(253, 248, 245, 0.6);
+      padding: 0;
+      margin: 0;
+
+      &:hover { color: var.$text-light; background: transparent; }
+    }
+  }
+}
+
+.modal > .generic-button,
+.modal > button[type="button"]:last-of-type {
+  width: 100%;
+  padding: 0.85rem;
+  font-family: var.$font-sans;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: var.$dark;
+  color: var.$text-light;
+  border: 1px solid var.$dark;
+  border-radius: var.$radius-sm;
+  cursor: pointer;
+  transition: background 0.22s ease, border-color 0.22s ease;
+
+  &:hover:not(:disabled) { background: var.$accent; border-color: var.$accent; }
+  &:disabled             { opacity: 0.5; cursor: not-allowed; }
+}

@@ -1,7 +1,7 @@
-// src/styles/pages/_notfound.scss
+// src/styles/pages/_not-found.scss
 // ========================
-@use "../utils/variables" as var;
-@use "../utils/mixins" as mix;
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
 
 .notfound-page {
   display: flex;
@@ -11,12 +11,11 @@
   min-height: 80vh;
   text-align: center;
   padding: 4rem 2rem;
-  background: #fdf8f5;
+  background: var.$main-bg;
   animation: fadeUp 0.6s ease both;
 
-  /* grand 404 décoratif */
   h1 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var.$font-serif;
     font-weight: 300;
     font-style: italic;
     font-size: clamp(5rem, 14vw, 9rem);
@@ -27,13 +26,12 @@
     user-select: none;
   }
 
-  /* sous-titre */
   p {
-    font-family: 'Jost', sans-serif;
+    font-family: var.$font-sans;
     font-size: 0.82rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(42, 31, 26, 0.45);
+    color: var.$text-muted;
     max-width: 340px;
     line-height: 1.7;
     margin: 0 0 2.5rem;
@@ -48,28 +46,8 @@
     }
   }
 
-  /* bouton retour */
   button {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    @include mix.button-style;
     padding: 0.85rem 2.5rem;
-    border: 1px solid #2a1f1a;
-    border-radius: 2px;
-    background: #2a1f1a;
-    color: #fdf8f5;
-    cursor: pointer;
-    transition: background 0.22s ease, border-color 0.22s ease;
-
-    &:hover {
-      background: #b48278;
-      border-color: #b48278;
-    }
   }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
 }

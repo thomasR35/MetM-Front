@@ -2,7 +2,6 @@
 // ========================
 import { useNavigate } from "react-router-dom";
 import { usePaymentSuccess } from "@/hooks/pages/successPage/usePaymentSuccess";
-import "../../styles/pages/_success.scss";
 
 export default function SuccessPage() {
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useAuthModal } from "@/context/AuthModalContext";
 import MockupProduct from "@/components/MockupProduct";
 import { useConfirm } from "@/hooks/components/confirmDialog/useConfirm.jsx";
-import "@/styles/pages/_cartpage.scss";
+import "@/styles/pages/_cart-page.scss";
 
 export default function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, total } = useCart();
@@ -110,7 +110,7 @@ export default function CartPage() {
                     <h2 id={`${itemId}-title`}>{item.product.name}</h2>
                     <p
                       aria-label={`Prix unitaire : ${item.product.price.toFixed(
-                        2
+                        2,
                       )} €`}
                     >
                       {item.product.price.toFixed(2)} €
@@ -128,13 +128,13 @@ export default function CartPage() {
                             updateQuantity(
                               item.product.id,
                               custom?.dataUrl ?? null,
-                              item.quantity - 1
+                              item.quantity - 1,
                             );
                           } else {
                             askDelete(
                               item.product.id,
                               custom?.dataUrl ?? null,
-                              item.product.name
+                              item.product.name,
                             );
                           }
                         }}
@@ -150,7 +150,7 @@ export default function CartPage() {
                           updateQuantity(
                             item.product.id,
                             custom?.dataUrl ?? null,
-                            item.quantity + 1
+                            item.quantity + 1,
                           )
                         }
                       >
@@ -165,7 +165,7 @@ export default function CartPage() {
                         askDelete(
                           item.product.id,
                           custom?.dataUrl ?? null,
-                          item.product.name
+                          item.product.name,
                         )
                       }
                     >
@@ -197,7 +197,7 @@ export default function CartPage() {
             className="generic-button"
             onClick={() =>
               navigate(
-                `/product/${localStorage.getItem("lastProduct") || "mug"}`
+                `/product/${localStorage.getItem("lastProduct") || "mug"}`,
               )
             }
           >

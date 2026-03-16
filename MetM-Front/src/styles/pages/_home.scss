@@ -1,20 +1,17 @@
 // src/styles/pages/_home.scss
 // ========================
-@use "../utils/variables" as var;
-@use "../utils/mixins" as mix;
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
 
-/* ========================
-   CONTENEUR GLOBAL DE LA HOME
-======================== */
 .home-container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0;
-  background: #fdf8f5;
+  background: var.$main-bg;
 }
 
 /* ========================
-   BANNIÈRE HERO
+   HERO
 ======================== */
 .home-banner {
   display: flex;
@@ -24,7 +21,7 @@
   padding: 5rem 2rem 4rem;
   text-align: center;
   position: relative;
-  background: linear-gradient(160deg, #fdf8f5 60%, #f5e8e0 100%);
+  background: linear-gradient(160deg, var.$main-bg 60%, #f5e8e0 100%);
   border-bottom: 1px solid rgba(180, 130, 120, 0.15);
 
   &::before {
@@ -38,17 +35,6 @@
     background: rgba(180, 130, 120, 0.35);
   }
 
-  h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-style: italic;
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    color: #2a1f1a;
-    line-height: 1.2;
-    letter-spacing: 0.01em;
-    margin: 0 0 1.5rem;
-  }
-
   &::after {
     content: '';
     display: block;
@@ -58,30 +44,37 @@
     margin-top: 0.25rem;
   }
 
-  @include mix.responsive(sm) {
-    padding: 3.5rem 1.5rem 3rem;
+  h1 {
+    font-family: var.$font-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    color: var.$dark;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    margin: 0 0 1.5rem;
   }
+
+  @include mix.responsive(sm) { padding: 3.5rem 1.5rem 3rem; }
 }
 
 .home-banner__label {
-  font-family: 'Jost', sans-serif;
+  font-family: var.$font-sans;
   font-size: 0.7rem;
   font-weight: 400;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #b48278;
+  color: var.$accent;
   margin-bottom: 1.25rem;
 }
 
 /* ========================
-   SECTION SÉLECTION DE PRODUITS
+   SÉLECTION PRODUITS
 ======================== */
 .product-selection {
   padding: 4rem 2rem;
 
-  @include mix.responsive(sm) {
-    padding: 2.5rem 1.25rem;
-  }
+  @include mix.responsive(sm) { padding: 2.5rem 1.25rem; }
 
   &__list {
     display: grid;
@@ -91,18 +84,8 @@
     margin: 0;
     padding: 0;
 
-    @include mix.responsive(sm) {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-
-    @include mix.responsive(sm-md) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  &__item {
-    // nothing needed – grid handles sizing
+    @include mix.responsive(sm-md) { grid-template-columns: repeat(2, 1fr); }
+    @include mix.responsive(sm)    { grid-template-columns: 1fr; gap: 1.25rem; }
   }
 
   &__link {
@@ -110,7 +93,7 @@
     flex-direction: column;
     align-items: center;
     text-decoration: none;
-    background: #fff;
+    background: var.$card-bg;
     border: 1px solid rgba(180, 130, 120, 0.18);
     border-radius: 4px;
     overflow: hidden;
@@ -125,7 +108,6 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      position: relative;
     }
 
     img {
@@ -146,19 +128,19 @@
     }
 
     span {
-      font-family: 'Jost', sans-serif;
+      font-family: var.$font-sans;
       font-weight: 400;
       font-size: 0.78rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #2a1f1a;
+      color: var.$dark;
     }
 
     .product-cta-hint {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: var.$font-serif;
       font-style: italic;
       font-size: 0.95rem;
-      color: #b48278;
+      color: var.$accent;
       opacity: 0;
       transform: translateY(4px);
       transition: opacity 0.25s ease, transform 0.25s ease;
@@ -171,42 +153,34 @@
       border-color: rgba(180, 130, 120, 0.4);
       outline: none;
 
-      img {
-        transform: scale(1.04);
-      }
-
-      .product-cta-hint {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      img { transform: scale(1.04); }
+      .product-cta-hint { opacity: 1; transform: translateY(0); }
     }
   }
 }
 
 /* ========================
-   SECTION INFOS PRODUITS
+   INFOS PRODUITS
 ======================== */
 .product-info {
-  padding: 5rem 2rem 5rem;
+  padding: 5rem 2rem;
   border-top: 1px solid rgba(180, 130, 120, 0.15);
-  background: linear-gradient(180deg, #fdf8f5 0%, #f9f1ec 100%);
+  background: linear-gradient(180deg, var.$main-bg 0%, #f9f1ec 100%);
 
-  @include mix.responsive(sm) {
-    padding: 3rem 1.25rem;
-  }
+  @include mix.responsive(sm) { padding: 3rem 1.25rem; }
 
   h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var.$font-serif;
     font-weight: 300;
     font-style: italic;
     font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-    color: #2a1f1a;
+    color: var.$dark;
     margin: 0 0 0.75rem;
     line-height: 1.2;
   }
 
-  & > p {
-    font-family: 'Jost', sans-serif;
+  > p {
+    font-family: var.$font-sans;
     font-weight: 300;
     font-size: 0.92rem;
     color: #7a5a52;
@@ -217,12 +191,7 @@
   }
 
   &__label {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 400;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: #b48278;
+    @include mix.section-label;
     margin-bottom: 1rem;
     display: block;
   }
@@ -236,41 +205,33 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 
-  @include mix.responsive(sm-md) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include mix.responsive(sm) {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+  @include mix.responsive(sm-md) { grid-template-columns: repeat(2, 1fr); }
+  @include mix.responsive(sm)    { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 
 .product-info__item {
   padding: 1.75rem;
-  background: #fff;
+  background: var.$card-bg;
   border: 1px solid rgba(180, 130, 120, 0.15);
   border-radius: 4px;
   transition: box-shadow 0.25s ease;
 
-  &:hover {
-    box-shadow: 0 8px 28px rgba(42, 31, 26, 0.07);
-  }
+  &:hover { box-shadow: 0 8px 28px rgba(42, 31, 26, 0.07); }
 
   h3 {
-    font-family: 'Jost', sans-serif;
+    font-family: var.$font-sans;
     font-weight: 500;
     font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #2a1f1a;
+    color: var.$dark;
     margin: 0 0 0.85rem;
     padding-bottom: 0.85rem;
     border-bottom: 1px solid rgba(180, 130, 120, 0.2);
   }
 
   p {
-    font-family: 'Jost', sans-serif;
+    font-family: var.$font-sans;
     font-weight: 300;
     font-size: 0.88rem;
     line-height: 1.75;

@@ -1,12 +1,9 @@
 // src/pages/admin/ImagesManagement.jsx
 //=====================================
 import { useState } from "react";
-import "@/styles/pages/_admin.scss";
-
 import { useImageManagement } from "@/hooks/admin/adminImageManagement/useImageManagement";
 import { useKeywordManagement } from "@/hooks/admin/adminImageManagement/useKeywordManagement";
 import { useImageEditModal } from "@/hooks/admin/adminImageManagement/useImageEditModal";
-
 import ImageUploadForm from "@/components/admin/ImageUploadForm";
 import KeywordManagement from "@/components/admin/KeywordManagement";
 import ImagesTable from "@/components/admin/ImageTable";
@@ -75,11 +72,23 @@ export default function ImagesManagement() {
     } else {
       await handleDelete(confirmState.image.id);
     }
-    setConfirmState({ isOpen: false, image: null, bulk: false, bulkIds: [], bulkOnDone: null });
+    setConfirmState({
+      isOpen: false,
+      image: null,
+      bulk: false,
+      bulkIds: [],
+      bulkOnDone: null,
+    });
   };
 
   const cancelDelete = () => {
-    setConfirmState({ isOpen: false, image: null, bulk: false, bulkIds: [], bulkOnDone: null });
+    setConfirmState({
+      isOpen: false,
+      image: null,
+      bulk: false,
+      bulkIds: [],
+      bulkOnDone: null,
+    });
   };
 
   const confirmMessage = confirmState.bulk

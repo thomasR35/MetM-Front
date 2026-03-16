@@ -7,7 +7,6 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { toast } from "react-toastify";
-import "@/styles/utils/_toastOverrides.scss";
 
 import { fetchProductBySlug } from "@/api/products";
 import { cropZones } from "@/services/cropping/cropZones";
@@ -24,7 +23,7 @@ import MockupProduct from "@/components/MockupProduct";
 import ImageEditorModal from "@/components/ImageEditorModal";
 import SaveCreationModal from "@/components/SaveCreationModal";
 
-import "@/styles/pages/_productpage.scss";
+import "@/styles/pages/_product-page.scss";
 
 const PRODUCTS = [
   { slug: "mug", label: "Mug" },

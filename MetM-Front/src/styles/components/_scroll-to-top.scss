@@ -1,12 +1,13 @@
-// src/styles/components/_scrollToTop.scss
+// src/styles/components/_scroll-to-top.scss
 // ========================
+@use "../abstracts/variables" as var;
 
 .scroll-to-top {
   position: fixed;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%) translateY(8px);
-  z-index: 400;  // sous tarteaucitron (z-index ~999)
+  z-index: 400;
 
   width: 52px;
   height: 52px;
@@ -16,11 +17,9 @@
   backdrop-filter: blur(6px);
   color: rgba(42, 31, 26, 0.6);
   cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   opacity: 0;
   pointer-events: none;
   transition:
@@ -30,11 +29,7 @@
     color 0.22s ease,
     background 0.22s ease;
 
-  svg {
-    width: 22px;
-    height: 22px;
-    display: block;
-  }
+  svg { width: 22px; height: 22px; display: block; }
 
   &--visible {
     opacity: 1;
@@ -43,13 +38,10 @@
   }
 
   &:hover {
-    border-color: #b48278;
-    color: #b48278;
+    border-color: var.$accent;
+    color: var.$accent;
     background: rgba(253, 248, 245, 0.98);
   }
 
-  &:focus-visible {
-    outline: 2px solid #b48278;
-    outline-offset: 3px;
-  }
+  &:focus-visible { outline: 2px solid var.$accent; outline-offset: 3px; }
 }

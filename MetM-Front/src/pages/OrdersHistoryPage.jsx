@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { fetchMyOrders } from "@/api/orders";
-import "@/styles/pages/_ordersHistory.scss";
+import "@/styles/pages/_orders-history.scss";
 
 export default function OrdersHistoryPage() {
   const [orders, setOrders] = useState([]);

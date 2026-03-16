@@ -1,0 +1,81 @@
+// src/styles/components/_toast.scss
+// ========================
+@use "../abstracts/variables" as var;
+
+.Toastify__toast-container {
+  --toastify-font-family: #{var.$font-sans};
+  padding: 0 !important;
+  width: auto !important;
+  min-width: 280px;
+  max-width: 380px;
+}
+
+.Toastify__toast {
+  font-family: var.$font-sans !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.55 !important;
+  background: var.$main-bg !important;
+  color: var.$dark !important;
+  border-radius: var.$radius-md !important;
+  border: 1px solid rgba(180, 130, 120, 0.22) !important;
+  box-shadow: 0 8px 32px rgba(42, 31, 26, 0.1) !important;
+  padding: 0.9rem 1rem 0.9rem 1.1rem !important;
+  min-height: unset !important;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: var.$radius-md var.$radius-md 0 0;
+  }
+}
+
+.Toastify__close-button {
+  color: rgba(42, 31, 26, 0.3) !important;
+  opacity: 1 !important;
+  align-self: center !important;
+
+  &:hover { color: var.$dark !important; }
+  svg { width: 12px !important; height: 12px !important; }
+}
+
+.Toastify__progress-bar { height: 2px !important; bottom: 0 !important; opacity: 0.35 !important; }
+.Toastify__toast-icon   { width: 18px !important; margin-right: 0.6rem !important; }
+
+.Toastify__toast--success {
+  border-color: rgba(92, 138, 106, 0.3) !important;
+  &::before { background: var.$success; }
+  .Toastify__progress-bar { background: var.$success !important; }
+  .Toastify__toast-icon svg { fill: var.$success !important; }
+}
+
+.Toastify__toast--error {
+  border-color: rgba(180, 80, 80, 0.25) !important;
+  &::before { background: var.$danger; }
+  .Toastify__progress-bar { background: var.$danger !important; }
+  .Toastify__toast-icon svg { fill: var.$danger !important; }
+}
+
+.Toastify__toast--warning {
+  border-color: rgba(180, 142, 80, 0.28) !important;
+  &::before { background: var.$warning; }
+  .Toastify__progress-bar { background: var.$warning !important; }
+  .Toastify__toast-icon svg { fill: var.$warning !important; }
+}
+
+.Toastify__toast--info {
+  border-color: rgba(79, 122, 158, 0.25) !important;
+  &::before { background: var.$info; }
+  .Toastify__progress-bar { background: var.$info !important; }
+  .Toastify__toast-icon svg { fill: var.$info !important; }
+}
+
+.Toastify__toast--default {
+  border-color: rgba(180, 130, 120, 0.22) !important;
+  &::before { background: var.$accent; }
+  .Toastify__progress-bar { background: var.$accent !important; }
+}

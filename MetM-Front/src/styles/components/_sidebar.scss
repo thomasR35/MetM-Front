@@ -1,28 +1,16 @@
 // src/styles/components/_sidebar.scss
 // ========================
-@use "../utils/variables" as var;
-@use "../utils/mixins" as mix;
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
 
-/* ========================
-   WRAPPER LAYOUT
-======================== */
-.admin-layout {
-  display: flex;
-  min-height: 100vh;
-  overflow: hidden;
-}
-
-/* ========================
-   SIDEBAR ADMIN
-======================== */
 .admin-sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   width: 220px;
-  background: #2a1f1a;
-  color: #fdf8f5;
+  background: var.$dark;
+  color: var.$text-light;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -44,14 +32,13 @@
     border-top: 1px solid rgba(180, 130, 120, 0.1);
   }
 
-  /* LOGO */
   h2 {
-    font-family: "Cormorant Garamond", serif;
+    font-family: var.$font-serif;
     font-weight: 300;
     font-style: italic;
     font-size: 1.25rem;
     letter-spacing: 0.04em;
-    color: #fdf8f5;
+    color: var.$text-light;
     text-align: center;
     padding: 1.75rem 1.5rem 1.5rem;
     border-bottom: 1px solid rgba(180, 130, 120, 0.12);
@@ -59,7 +46,7 @@
 
     span {
       display: block;
-      font-family: "Jost", sans-serif;
+      font-family: var.$font-sans;
       font-size: 0.62rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -70,7 +57,6 @@
     }
   }
 
-  /* NAV */
   .nav {
     list-style: none;
     padding: 1rem 0;
@@ -81,7 +67,7 @@
   }
 
   .nav-link {
-    font-family: "Jost", sans-serif;
+    font-family: var.$font-sans;
     font-size: 0.78rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -91,78 +77,55 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    transition:
-      color 0.2s ease,
-      background 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease;
     border-left: 2px solid transparent;
 
-    svg {
-      width: 15px;
-      height: 15px;
-      opacity: 0.6;
-      flex-shrink: 0;
-    }
+    svg { width: 15px; height: 15px; opacity: 0.6; flex-shrink: 0; }
 
-    &:hover {
-      color: #fdf8f5;
-      background: rgba(253, 248, 245, 0.05);
-    }
+    &:hover { color: var.$text-light; background: rgba(253, 248, 245, 0.05); }
 
     &.active {
-      color: #fdf8f5;
-      border-left-color: #b48278;
+      color: var.$text-light;
+      border-left-color: var.$accent;
       background: rgba(180, 130, 120, 0.08);
-      svg {
-        opacity: 1;
-      }
+      svg { opacity: 1; }
     }
   }
 
-  /* RETOUR AU SHOP */
   .back-to-shop-btn {
     width: 100%;
     padding: 0.65rem;
-    font-family: "Jost", sans-serif;
+    font-family: var.$font-sans;
     font-size: 0.7rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     background: transparent;
     color: rgba(253, 248, 245, 0.4);
     border: 1px solid rgba(253, 248, 245, 0.1);
-    border-radius: 2px;
+    border-radius: var.$radius-sm;
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &:hover {
-      color: #fdf8f5;
-      border-color: rgba(253, 248, 245, 0.25);
-      background: rgba(253, 248, 245, 0.05);
-    }
+    &:hover { color: var.$text-light; border-color: rgba(253, 248, 245, 0.25); background: rgba(253, 248, 245, 0.05); }
   }
 
-  /* DÉCONNEXION */
   .logout-btn {
     width: 100%;
     padding: 0.7rem;
-    font-family: "Jost", sans-serif;
+    font-family: var.$font-sans;
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     background: transparent;
     color: rgba(253, 248, 245, 0.4);
     border: 1px solid rgba(253, 248, 245, 0.1);
-    border-radius: 2px;
+    border-radius: var.$radius-sm;
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &:hover {
-      background: rgba(180, 80, 80, 0.15);
-      border-color: rgba(180, 80, 80, 0.35);
-      color: #e57373;
-    }
+    &:hover { background: rgba(180, 80, 80, 0.15); border-color: rgba(180, 80, 80, 0.35); color: #e57373; }
   }
 
-  /* MOBILE */
   @include mix.responsive(sm) {
     width: 100%;
     height: 56px;
@@ -172,30 +135,11 @@
     border-right: none;
     border-bottom: 1px solid rgba(180, 130, 120, 0.12);
 
-    h2 {
-      border-bottom: none;
-      padding: 0;
-      font-size: 1rem;
-    }
-    &__top {
-      flex-direction: row;
-      flex: unset;
-      overflow: visible;
-    }
-    &__bottom {
-      flex-direction: row;
-      padding: 0;
-      border-top: none;
-      gap: 0.4rem;
-    }
-    .nav {
-      display: none;
-    }
+    h2            { border-bottom: none; padding: 0; font-size: 1rem; }
+    &__top        { flex-direction: row; flex: unset; overflow: visible; }
+    &__bottom     { flex-direction: row; padding: 0; border-top: none; gap: 0.4rem; }
+    .nav          { display: none; }
     .back-to-shop-btn,
-    .logout-btn {
-      width: auto;
-      padding: 0.45rem 0.8rem;
-      font-size: 0.65rem;
-    }
+    .logout-btn   { width: auto; padding: 0.45rem 0.8rem; font-size: 0.65rem; }
   }
 }

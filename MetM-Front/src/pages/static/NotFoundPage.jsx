@@ -1,7 +1,6 @@
 // src/pages/static/NotFoundPage.jsx
 // ========================
 import { useNavigate } from "react-router-dom";
-import "../../styles/pages/_notfound.scss";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();

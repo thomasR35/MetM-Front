@@ -1,7 +1,6 @@
 // src/components/ConfirmDialog.jsx
 //======================================
 import { createPortal } from "react-dom";
-import "@/styles/components/_confirmDialog.scss";
 
 export default function ConfirmDialog({
   isOpen,
@@ -39,6 +38,6 @@ export default function ConfirmDialog({
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

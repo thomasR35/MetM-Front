@@ -2,7 +2,7 @@
 // =====================================
 import { useAdminLogin } from "@/hooks/admin/adminLoginPage/useAdminLogin";
 import { useNavigate } from "react-router-dom";
-import "@/styles/pages/_admin.scss";
+import "@/styles/pages/_admin-login.scss";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -11,14 +11,15 @@ export default function AdminLogin() {
   return (
     <main className="admin-login-page">
       <div className="admin-login-card">
-
         <div className="admin-login-header">
           <h1>Admin</h1>
           <span>Marcelle &amp; Maurice Shop</span>
         </div>
 
         {error && (
-          <div className="error-message" role="alert">{error}</div>
+          <div className="error-message" role="alert">
+            {error}
+          </div>
         )}
 
         <form onSubmit={handleSubmit}>
@@ -58,7 +59,6 @@ export default function AdminLogin() {
             ← Retour à l'accueil
           </button>
         </form>
-
       </div>
     </main>
   );

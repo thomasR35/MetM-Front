@@ -1,53 +1,16 @@
 // src/styles/pages/_checkout.scss
 // ========================
-@use "../utils/mixins" as mix;
-@use "../utils/variables" as var;
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
 
-/* ========================
-   PAGE PRINCIPALE
-======================== */
 .checkout-page {
   width: 100%;
-  background: #fdf8f5;
+  background: var.$main-bg;
   animation: fadeUp 0.6s ease both;
   padding-bottom: 5rem;
 
-  /* ========================
-     HERO BANNIÈRE
-  ========================= */
-  > h1 {
-    background: #2a1f1a;
-    text-align: center;
-    padding: 3.5rem 2rem 3rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    font-style: italic;
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
-    color: #fdf8f5;
-    letter-spacing: 0.02em;
-    position: relative;
-    overflow: hidden;
-    margin: 0;
+  > h1 { @include mix.hero-banner; }
 
-    &::after {
-      content: '';
-      display: block;
-      width: 48px;
-      height: 1px;
-      background: rgba(253, 248, 245, 0.3);
-      margin: 1.25rem auto 0;
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 80%, rgba(180,130,120,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-  }
-
-  /* panier vide — bouton centré */
   &:has(> .generic-button) {
     display: flex;
     flex-direction: column;
@@ -58,25 +21,11 @@
 
   > .generic-button {
     margin: 3rem auto;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    @include mix.button-style;
     padding: 0.85rem 2.5rem;
-    border: 1px solid #2a1f1a;
-    border-radius: 2px;
-    background: #2a1f1a;
-    color: #fdf8f5;
-    cursor: pointer;
-    transition: background 0.22s ease;
-
-    &:hover { background: #b48278; border-color: #b48278; }
   }
 }
 
-/* ========================
-   LAYOUT CENTRÉ
-======================== */
 .checkout-summary,
 .checkout-total,
 .checkout-form,
@@ -89,18 +38,10 @@
   padding-left: 4vw;
   padding-right: 4vw;
 
-  @include mix.responsive(xs) {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+  @include mix.responsive(xs) { padding-left: 1rem; padding-right: 1rem; }
 }
 
-/* ========================
-   RÉCAPITULATIF ARTICLES
-======================== */
-.checkout-summary {
-  margin-top: 2.5rem;
-}
+.checkout-summary { margin-top: 2.5rem; }
 
 .checkout-list {
   list-style: none;
@@ -108,10 +49,9 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0;
 
   li {
-    font-family: 'Jost', sans-serif;
+    font-family: var.$font-sans;
     font-size: 0.82rem;
     letter-spacing: 0.06em;
     color: rgba(42, 31, 26, 0.65);
@@ -124,89 +64,36 @@
   }
 }
 
-/* ========================
-   TOTAL
-======================== */
 .checkout-total {
   padding-top: 1.25rem;
-  padding-bottom: 0;
 
   h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var.$font-serif;
     font-weight: 300;
     font-style: italic;
     font-size: 1.5rem;
-    color: #2a1f1a;
+    color: var.$dark;
     text-align: right;
   }
 }
 
-/* ========================
-   FORMULAIRE
-======================== */
 .checkout-form {
   margin-top: 2rem;
 
   fieldset {
     border: 1px solid rgba(180, 130, 120, 0.18);
-    border-radius: 3px;
+    border-radius: var.$radius-md;
     padding: 1.5rem 1.5rem 0.5rem;
-    background: #fff;
+    background: var.$card-bg;
 
     legend {
-      font-family: 'Jost', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #b48278;
+      @include mix.section-label;
       padding: 0 0.5rem;
     }
   }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-
-    label {
-      font-family: 'Jost', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(42, 31, 26, 0.55);
-    }
-
-    input,
-    textarea {
-      padding: 0.65rem 0.85rem;
-      border: 1px solid rgba(180, 130, 120, 0.25);
-      border-radius: 2px;
-      background: #fdf8f5;
-      font-family: 'Jost', sans-serif;
-      font-size: 0.88rem;
-      color: #2a1f1a;
-      outline: none;
-      transition: border-color 0.2s ease;
-
-      &:focus { border-color: #b48278; }
-      &::placeholder { color: rgba(42, 31, 26, 0.3); }
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-      line-height: 1.6;
-    }
-  }
 }
 
-/* ========================
-   BOUTON PAIEMENT STRIPE
-======================== */
-.payment-section {
-  margin-top: 1.5rem;
-}
+.payment-section { margin-top: 1.5rem; }
 
 .checkout-button {
   display: flex;
@@ -214,34 +101,26 @@
   justify-content: center;
   width: 100%;
   padding: 1rem;
-  font-family: 'Jost', sans-serif;
+  font-family: var.$font-sans;
   font-size: 0.82rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  background: #2a1f1a;
-  color: #fdf8f5;
-  border: 1px solid #2a1f1a;
-  border-radius: 2px;
+  background: var.$dark;
+  color: var.$text-light;
+  border: 1px solid var.$dark;
+  border-radius: var.$radius-sm;
   cursor: pointer;
   transition: background 0.22s ease, border-color 0.22s ease;
 
-  &:hover:not(:disabled) {
-    background: #b48278;
-    border-color: #b48278;
-  }
+  &:hover:not(:disabled) { background: var.$accent; border-color: var.$accent; }
+  &:disabled             { opacity: 0.45; cursor: not-allowed; }
 
-  &:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-
-  /* indicateur de chargement */
   &[aria-busy="true"]::before {
     content: '';
     width: 12px;
     height: 12px;
     border: 1.5px solid rgba(253, 248, 245, 0.4);
-    border-top-color: #fdf8f5;
+    border-top-color: var.$text-light;
     border-radius: 50%;
     margin-right: 0.75rem;
     animation: spin 0.7s linear infinite;
@@ -249,14 +128,11 @@
   }
 }
 
-/* ========================
-   INFOS LÉGALES
-======================== */
 .checkout-info {
   margin-top: 1.5rem;
 
   p {
-    font-family: 'Jost', sans-serif;
+    font-family: var.$font-sans;
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     color: rgba(42, 31, 26, 0.4);
@@ -265,26 +141,11 @@
   }
 
   a {
-    color: #b48278;
+    color: var.$accent;
     text-decoration: none;
     border-bottom: 1px solid rgba(180, 130, 120, 0.3);
     transition: color 0.2s ease, border-color 0.2s ease;
 
-    &:hover {
-      color: #2a1f1a;
-      border-color: #2a1f1a;
-    }
+    &:hover { color: var.$dark; border-color: var.$dark; }
   }
-}
-
-/* ========================
-   ANIMATIONS
-======================== */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }

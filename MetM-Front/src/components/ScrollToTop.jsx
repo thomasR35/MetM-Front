@@ -1,7 +1,7 @@
 // src/components/ScrollToTop.jsx
 // ========================
 import { useState, useEffect } from "react";
-import "@/styles/components/_scrollToTop.scss";
+import "@/styles/components/_scroll-to-top.scss";
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);

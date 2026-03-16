@@ -1,12 +1,8 @@
 // src/pages/admin/UsersManagement.jsx
 //=====================================
 import { useState } from "react";
-import { createPortal } from "react-dom";
-import "@/styles/pages/_admin.scss";
-
 import { useUserManagement } from "@/hooks/admin/adminUserManagement/useUserManagement";
 import { useUserEditModal } from "@/hooks/admin/adminUserManagement/useUserEditModal";
-
 import NewUserForm from "@/components/admin/NewUserForm";
 import UsersTable from "@/components/admin/UsersTable";
 import EditUserModal from "@/components/admin/EditUserModal";

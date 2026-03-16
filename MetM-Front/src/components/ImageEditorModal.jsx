@@ -1,6 +1,5 @@
 // src/components/ImageEditorModal.jsx
 // ========================
-import "@/styles/components/_imageEditorModal.scss";
 import { createPortal } from "react-dom";
 import { useImageEditor } from "@/hooks/components/imageEditorModal/useImageEditor";
 
@@ -27,7 +26,6 @@ export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
       aria-describedby="editor-desc"
     >
       <div className="editor-modal" role="document">
-
         <button
           className="editor-close"
           onClick={onClose}
@@ -64,7 +62,9 @@ export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
         </div>
 
         <div className="zoom-control" role="group" aria-labelledby="zoom-label">
-          <label id="zoom-label" htmlFor="zoom-range">Zoom</label>
+          <label id="zoom-label" htmlFor="zoom-range">
+            Zoom
+          </label>
           <input
             id="zoom-range"
             type="range"
@@ -113,9 +113,8 @@ export default function ImageEditorModal({ uploadedImage, onClose, onApply }) {
         >
           Appliquer
         </button>
-
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

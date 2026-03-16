@@ -1,24 +1,17 @@
 // src/styles/components/_footer.scss
 // ========================
-@use "../utils/variables" as var;
-@use "../utils/mixins" as mix;
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
 
-/* ========================
-   FOOTER GLOBAL
-======================== */
 .footer {
-  background-color: #2a1f1a;
-  padding: 2rem 2rem;
+  background-color: var.$dark;
+  padding: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-top: none;
   margin-top: auto;
 }
 
-/* ========================
-   CONTAINER CENTRAL DU FOOTER
-======================== */
 .footer-container {
   display: flex;
   justify-content: space-between;
@@ -41,12 +34,9 @@
   }
 }
 
-/* ========================
-   LIENS ET TEXTES DU FOOTER
-======================== */
 .footer-link,
 .footer-text {
-  font-family: 'Jost', sans-serif;
+  font-family: var.$font-sans;
   font-weight: 300;
   font-size: 0.78rem;
   letter-spacing: 0.1em;
@@ -55,27 +45,16 @@
   text-decoration: none;
   transition: color 0.2s ease;
 
-  @include mix.responsive(sm) {
-    font-size: 0.75rem;
-  }
+  @include mix.responsive(sm) { font-size: 0.75rem; }
 }
 
-/* ========================
-   HOVER SUR LES LIENS
-======================== */
-.footer-link:hover {
-  color: #b48278;
-  text-decoration: none;
-}
+.footer-link:hover { color: var.$accent; }
 
-/* ========================
-   TEXTE COPYRIGHT (centré)
-======================== */
 .footer-text {
   text-align: center;
   color: rgba(253, 248, 245, 0.3);
   font-style: italic;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var.$font-serif;
   font-size: 0.9rem;
   letter-spacing: 0.05em;
 }

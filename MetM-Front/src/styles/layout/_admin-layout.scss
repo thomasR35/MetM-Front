@@ -1,76 +1,50 @@
-// src/styles/pages/_dashboard.scss
+// src/styles/layout/_admin-layout.scss
 // ========================
-@use "../utils/variables" as var;
-@use "../utils/mixins" as mix;
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
 
-/* ========================
-   BACKGROUND
-======================== */
-body {
-  background: #f5ede8;
-}
-
-/* ========================
-   WRAPPER DASHBOARD
-======================== */
-.d-flex {
+.admin-layout {
   display: flex;
-  max-height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
 }
 
-/* ========================
-   CONTENU PRINCIPAL
-======================== */
 .admin-content {
   width: calc(100% - 220px);
   min-height: 100vh;
   margin-left: 220px;
   padding: 2.5rem 3vw 4rem;
-  background: #f5ede8;
+  background: var.$image-bg;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
-  /* page title */
   > h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var.$font-serif;
     font-weight: 300;
     font-style: italic;
     font-size: clamp(1.4rem, 2.5vw, 2rem);
-    color: #2a1f1a;
+    color: var.$dark;
     letter-spacing: 0.02em;
     margin-bottom: 2rem;
     text-align: center;
 
-    &::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 1px;
-      background: rgba(180, 130, 120, 0.35);
-      margin: 0.75rem auto 0;
-    }
+    @include mix.title-underline(40px);
   }
 
-  section {
-    margin-bottom: 1.5rem;
-  }
+  section      { margin-bottom: 1.5rem; }
 
   h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var.$font-serif;
     font-weight: 300;
     font-style: italic;
     font-size: 1.25rem;
-    color: #2a1f1a;
+    color: var.$dark;
     margin-bottom: 1rem;
     text-align: center;
   }
 
-  /* ========================
-     WELCOME SCREEN
-  ========================= */
   .admin-welcome {
     display: flex;
     flex-direction: column;
@@ -81,7 +55,7 @@ body {
     min-height: 60vh;
 
     p {
-      font-family: 'Jost', sans-serif;
+      font-family: var.$font-sans;
       font-size: 0.82rem;
       letter-spacing: 0.08em;
       color: rgba(42, 31, 26, 0.4);
@@ -107,32 +81,25 @@ body {
   width: 100%;
 
   > h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var.$font-serif;
     font-weight: 300;
     font-style: italic;
     font-size: clamp(1.4rem, 2.5vw, 2rem);
-    color: #2a1f1a;
+    color: var.$dark;
     text-align: center;
     margin-bottom: 0.5rem;
 
-    &::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 1px;
-      background: rgba(180, 130, 120, 0.35);
-      margin: 0.75rem auto 0;
-    }
+    @include mix.title-underline(40px);
   }
 
   > section > h2 {
     font-size: 0.7rem;
-    font-family: 'Jost', sans-serif;
+    font-family: var.$font-sans;
     font-style: normal;
     font-weight: 400;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #b48278;
+    color: var.$accent;
     margin-bottom: 0.75rem;
     text-align: left;
 

@@ -1,0 +1,66 @@
+// src/styles/base/_base.scss
+// ========================
+@use "../abstracts/variables" as var;
+
+/* ========================
+   STRUCTURE PRINCIPALE
+======================== */
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+/* ========================
+   SCROLLBAR DISCRÈTE
+======================== */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(180, 130, 120, 0.25);
+  border-radius: 10px;
+  &:hover { background: rgba(180, 130, 120, 0.45); }
+}
+
+/* ========================
+   ACCESSIBILITÉ — SR ONLY
+======================== */
+.sr-only,
+.sr-only-focusable:not(:focus, :focus-within) {
+  border: 0 !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  width: 1px !important;
+  white-space: nowrap !important;
+}
+
+.sr-only:not(caption),
+.sr-only-focusable:not(caption):not(:focus, :focus-within) {
+  position: absolute !important;
+}
+
+.sr-only *,
+.sr-only-focusable:not(:focus, :focus-within) * {
+  overflow: hidden !important;
+}
+
+/* ========================
+   FOOTER GLOBAL
+======================== */
+footer {
+  background: var.$dark;
+  color: rgba(253, 248, 245, 0.45);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  width: 100%;
+  font-family: var.$font-sans;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}

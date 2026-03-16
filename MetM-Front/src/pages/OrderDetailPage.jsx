@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "@/api/axiosConfig";
-import "@/styles/pages/_orderDetail.scss";
+import "@/styles/pages/_order-detail.scss";
 
 export default function OrderDetailPage() {
   const { orderId } = useParams();

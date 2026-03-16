@@ -1,0 +1,214 @@
+// src/styles/pages/_static.scss
+// ========================
+// Remplace _terms.scss, _legal-mentions.scss et _privacy.scss
+// Toutes les pages de contenu légal/statique partagent .static-page
+@use "../abstracts/variables" as var;
+@use "../abstracts/mixins" as mix;
+
+.static-page {
+  width: 100%;
+  background: var.$main-bg;
+  animation: fadeUp 0.6s ease both;
+  padding-bottom: 5rem;
+
+  > h1 { @include mix.hero-banner; }
+
+  > section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 4vw 0;
+
+    @include mix.responsive(xs) { padding: 2rem 1rem 0; }
+
+    & + section {
+      border-top: 1px solid rgba(180, 130, 120, 0.12);
+      padding-top: 2.5rem;
+    }
+  }
+
+  h2 {
+    font-family: var.$font-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1.35rem;
+    color: var.$dark;
+    letter-spacing: 0.02em;
+    margin: 0 0 1rem;
+
+    @include mix.title-underline(28px);
+  }
+
+  h3 {
+    @include mix.section-label;
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  p, address {
+    font-family: var.$font-sans;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: rgba(42, 31, 26, 0.7);
+    font-style: normal;
+    margin-bottom: 0.75rem;
+  }
+
+  strong { font-weight: 500; color: var.$dark; }
+
+  a {
+    color: var.$accent;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(180, 130, 120, 0.3);
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    &:hover { color: var.$dark; border-color: var.$dark; }
+  }
+
+  ul, ol {
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+
+    li {
+      font-family: var.$font-sans;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: rgba(42, 31, 26, 0.7);
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+
+/* ========================
+   PAGE SUCCESS
+   Surcharge hero h1 hérité
+======================== */
+.static-page.success-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+  padding: 4rem 2rem;
+
+  &::before {
+    content: "✓";
+    display: block;
+    font-family: var.$font-serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: rgba(180, 130, 120, 0.4);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    background: transparent !important;
+    padding: 0 !important;
+    font-family: var.$font-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var.$dark !important;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.4rem;
+
+    &::before { display: none !important; }
+    &::after {
+      content: "";
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: rgba(180, 130, 120, 0.35);
+      margin: 0.9rem auto 0;
+    }
+  }
+
+  p {
+    font-family: var.$font-sans;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var.$text-muted;
+    margin: 1rem 0 0;
+    max-width: 380px;
+    line-height: 1.7;
+  }
+
+  code {
+    font-family: var.$font-sans;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: rgba(42, 31, 26, 0.55);
+    background: rgba(180, 130, 120, 0.08);
+    border: 1px solid rgba(180, 130, 120, 0.18);
+    padding: 0.15rem 0.5rem;
+    border-radius: var.$radius-sm;
+  }
+
+  .generic-button {
+    margin-top: 2.5rem;
+    @include mix.button-style;
+    padding: 0.85rem 2.5rem;
+  }
+}
+
+/* ========================
+   PAGE CANCEL
+======================== */
+.static-page.cancel-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+  padding: 4rem 2rem;
+
+  &::before {
+    content: '×';
+    display: block;
+    font-family: var.$font-serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(180, 130, 120, 0.35);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    background: transparent !important;
+    padding: 0 !important;
+    font-family: var.$font-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var.$dark !important;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.4rem;
+
+    &::before { display: none !important; }
+    &::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: rgba(180, 130, 120, 0.35);
+      margin: 0.9rem auto 0;
+    }
+  }
+
+  p {
+    font-family: var.$font-sans;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: rgba(42, 31, 26, 0.5);
+    margin: 1rem 0 0;
+    max-width: 360px;
+    line-height: 1.7;
+  }
+
+  .generic-button {
+    margin-top: 2.5rem;
+    @include mix.button-style;
+    padding: 0.85rem 2.5rem;
+  }
+}

@@ -1,0 +1,49 @@
+// src/styles/abstracts/_variables.scss
+// ========================
+
+/* ========================
+   PALETTE PRINCIPALE
+======================== */
+$main-bg:      #fdf8f5;                      // fond crème
+$dark:         #2a1f1a;                      // brun foncé
+$accent:       #b48278;                      // terracotta
+$accent-pale:  rgba(180, 130, 120, 0.12);    // terracotta dilué
+$card-bg:      #ffffff;                      // cartes, inputs
+$image-bg:     #f5ede8;                      // fond images
+
+/* ========================
+   TEXTE
+======================== */
+$text:         #2a1f1a;
+$text-muted:   rgba(42, 31, 26, 0.45);
+$text-light:   #fdf8f5;
+
+/* ========================
+   ÉTATS SÉMANTIQUES
+======================== */
+$success:      #5c8a6a;
+$danger:       #b45050;
+$warning:      #b48e50;
+$info:         #4f7a9e;
+
+/* ========================
+   ESPACEMENTS
+======================== */
+$spacing-xs:   6px;
+$spacing-sm:   10px;
+$spacing-md:   20px;
+$spacing-lg:   32px;
+$spacing-xl:   56px;
+
+/* ========================
+   TYPOGRAPHIE
+======================== */
+$font-serif:   'Cormorant Garamond', Georgia, serif;
+$font-sans:    'Jost', system-ui, sans-serif;
+
+/* ========================
+   BORDER / RADIUS
+======================== */
+$radius-sm:    2px;
+$radius-md:    3px;
+$border-muted: 1px solid rgba(180, 130, 120, 0.2);

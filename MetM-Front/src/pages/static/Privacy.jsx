@@ -1,6 +1,5 @@
 // src/pages/static/Privacy.jsx
 // ========================
-import "../../styles/pages/_privacy.scss";
 
 export default function Privacy() {
   return (

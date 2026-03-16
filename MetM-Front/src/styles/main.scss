@@ -1,69 +1,45 @@
 // src/styles/main.scss
 // ========================
-@use "utils/variables" as var;
-@use "utils/mixins";
-@use "utils/global";
-@use "utils/toastOverrides";
+// Architecture 7-1
+// Abstracts → Base → Layout → Components → Pages
 
+// ─── ABSTRACTS ──────────────────────────────
+@use "abstracts/variables";
+@use "abstracts/mixins";
+
+// ─── BASE ────────────────────────────────────
+@use "base/reset";
+@use "base/typography";
+@use "base/animations";
+@use "base/base";
+
+// ─── LAYOUT ──────────────────────────────────
+@use "layout/admin-layout";
+
+// ─── COMPONENTS ──────────────────────────────
+@use "components/navbar";
 @use "components/footer";
 @use "components/forms";
-@use "components/galleryItem";
-@use "components/signup";
-@use "components/navbar";
+@use "components/modals";
+@use "components/admin-modals";
+@use "components/image-editor-modal";
+@use "components/save-creation-modal";
+@use "components/gallery-item";
 @use "components/sidebar";
 @use "components/table";
-@use "components/saveCreationModal";
-@use "components/accountModal";
-@use "components/admin-modals";
-@use "components/confirmDialog";
-@use "components/scrollToTop";
+@use "components/toast";
+@use "components/scroll-to-top";
 
-@use "pages/admin";
-@use "pages/dashboard";
+// ─── PAGES ───────────────────────────────────
+@use "pages/admin-login";
 @use "pages/home";
 @use "pages/gallery";
-@use "pages/legal-mentions";
-@use "pages/contact";
-@use "pages/cartpage";
+@use "pages/product-page";
+@use "pages/cart-page";
 @use "pages/checkout";
-@use "pages/productpage";
-@use "pages/notfound";
-@use "pages/terms";
-@use "pages/privacy";
-@use "pages/success";
-@use "pages/cancel";
-@use "pages/ordersHistory";
-@use "pages/personalGallery";
-@use "pages/orderDetail";
-
-a {
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-  }
-}
-
-// VISUALLY HIDDEN
-// ===============
-.sr-only,
-.sr-only-focusable:not(:focus, :focus-within) {
-  border: 0 !important;
-  clip-path: inset(50%) !important;
-  height: 1px !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  width: 1px !important;
-  white-space: nowrap !important;
-}
-
-.sr-only:not(caption),
-.sr-only-focusable:not(caption):not(:focus, :focus-within) {
-  position: absolute !important;
-}
-
-.sr-only *,
-.sr-only-focusable:not(:focus, :focus-within) * {
-  overflow: hidden !important;
-}
+@use "pages/contact";
+@use "pages/orders-history";
+@use "pages/order-detail";
+@use "pages/personal-gallery";
+@use "pages/static";       // terms + privacy + legal-mentions + success + cancel
+@use "pages/not-found";

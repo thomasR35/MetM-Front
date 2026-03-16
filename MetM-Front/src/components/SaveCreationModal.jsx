@@ -2,7 +2,6 @@
 // ========================
 import { createPortal } from "react-dom";
 import { useEffect, useRef } from "react";
-import "@/styles/components/_saveCreationModal.scss";
 import { useSaveCreation } from "@/hooks/components/saveCreationModal/useSaveCreation";
 import MockupProduct from "@/components/MockupProduct";
 

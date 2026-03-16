@@ -1,6 +1,5 @@
 // src/pages/static/Terms.jsx
 // ========================
-import "../../styles/pages/_terms.scss";
 
 export default function Terms() {
   return (
