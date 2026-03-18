@@ -26,6 +26,7 @@
     "fabric": "^7.2.0",
     "glob": "^11.0.1",
     "lru-cache": "^11.0.2",
+    "minimatch": "^10.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.8",
